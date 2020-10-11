@@ -14,15 +14,15 @@ import java.io.IOException;
 import java.net.URL;
 
 @Component
-public class StageListener implements ApplicationListener<StageReadyEvent> {
+public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
     private final String applicationTitle;
     private final Resource fxml;
     private final ApplicationContext app;
 
-    public StageListener(
-            @Value("${spring.application.ui.title}") String applicationTitle,
-            @Value("classpath:/ui.fxml") Resource resource, ApplicationContext app) {
+    public StageInitializer(
+            @Value("${spring.application.signup.title}") String applicationTitle,
+            @Value("classpath:/view/main.fxml") Resource resource, ApplicationContext app) {
         this.applicationTitle = applicationTitle;
         this.fxml = resource;
         this.app = app;

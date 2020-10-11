@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.snake.fxclient.SimpleUiController">
+-->
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.snake.fxclient.controller.GameController">
+
+      <HBox>
+            <Label>GAME</Label>
+      </HBox>
+
+      <Button onAction="#showHistory" text="show History" styleClass="button-raised"></Button>
+      <Button onAction="#startGame" text="start Game" styleClass="button-raised"></Button>
+      <Button onAction="#logout" text="logout" styleClass="button-raised"></Button>
+
+</VBox>
