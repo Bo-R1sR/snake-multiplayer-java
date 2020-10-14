@@ -1,9 +1,8 @@
-package de.snake.fxclient;
+package de.snake.fxclient.controller;
 
 import de.snake.fxclient.domain.User;
 import de.snake.fxclient.task.HistoryTask;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.event.ActionEvent;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 

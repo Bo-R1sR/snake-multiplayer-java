@@ -1,11 +1,5 @@
-package de.snake.fxclient;
+package de.snake.fxclient.controller;
 
-import de.snake.fxclient.BackgroundController;
-import de.snake.fxclient.LogoutController;
-import de.snake.fxclient.MainController;
-import de.snake.fxclient.domain.User;
-import de.snake.fxclient.task.HistoryTask;
-import javafx.concurrent.WorkerStateEvent;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 

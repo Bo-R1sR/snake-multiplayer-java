@@ -1,4 +1,4 @@
-package de.snake.fxclient;
+package de.snake.fxclient.controller;
 
 import de.snake.fxclient.domain.User;
 import de.snake.fxclient.task.LoginTask;

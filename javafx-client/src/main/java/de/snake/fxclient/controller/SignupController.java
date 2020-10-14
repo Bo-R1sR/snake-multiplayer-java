@@ -1,4 +1,4 @@
-package de.snake.fxclient;
+package de.snake.fxclient.controller;
 
 import de.snake.fxclient.domain.User;
 import de.snake.fxclient.task.SignupTask;
@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component

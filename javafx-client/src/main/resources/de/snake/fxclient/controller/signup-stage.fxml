@@ -5,7 +5,7 @@
 
 <VBox fx:id="dialog" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="de.snake.fxclient.SignupController">
+      fx:controller="de.snake.fxclient.controller.SignupController">
 
       <HBox>
             <Label>Sign up</Label>

@@ -1,5 +1,6 @@
 package de.snake.fxclient;
 
+import de.snake.fxclient.controller.BackgroundController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;

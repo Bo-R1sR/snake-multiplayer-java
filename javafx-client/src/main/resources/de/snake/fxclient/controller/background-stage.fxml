@@ -5,7 +5,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="de.snake.fxclient.BackgroundController">
+            fx:controller="de.snake.fxclient.controller.BackgroundController">
 
     <!--
     <VBox xmlns="http://javafx.com/javafx"

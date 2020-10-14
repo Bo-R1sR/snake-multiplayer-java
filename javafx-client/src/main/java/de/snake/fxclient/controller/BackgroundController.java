@@ -1,4 +1,4 @@
-package de.snake.fxclient;
+package de.snake.fxclient.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;

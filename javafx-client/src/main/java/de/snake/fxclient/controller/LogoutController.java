@@ -1,4 +1,4 @@
-package de.snake.fxclient;
+package de.snake.fxclient.controller;
 
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
