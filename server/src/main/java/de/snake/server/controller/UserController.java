@@ -43,12 +43,18 @@ public class UserController {
         user.setUsername(createUserRequest.getUsername());
         user.setPassword(createUserRequest.getPassword());
 
+        if(userRepository.findByUsername(user.getUsername()) != null) {
+            return ResponseEntity.badRequest().build();
+        };
+
+
+
 //        if (createUserRequest.getPassword().length() < 7 || !createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())) {
 //            log.error("error during user creation - password criteria not met - reference: {}", createUserRequest.getUsername());
 //            return ResponseEntity.badRequest().build();
 //        }
 
-        //user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
 
         userRepository.save(user);
         log.info("create user request successfully fulfilled for user with name: {}", createUserRequest.getUsername());
