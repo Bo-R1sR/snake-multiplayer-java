@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="dialog" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="de.snake.fxclient.LogoutController">
+
+    <HBox>
+        <Label>You have successfully logged out</Label>
+        <Button onAction="#goToLoginPage" text="click here to login again" styleClass="button-raised"></Button>
+    </HBox>
+</VBox>

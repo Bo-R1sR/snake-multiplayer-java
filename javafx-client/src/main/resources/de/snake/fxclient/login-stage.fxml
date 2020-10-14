@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="dialog" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="de.snake.fxclient.LoginController">
+
+    <HBox>
+        <Label>Anmelden</Label>
+    </HBox>
+    <TextField fx:id="username" promptText="Username" styleClass="input"></TextField>
+    <PasswordField fx:id="password" promptText="Passwort" styleClass="input"></PasswordField>
+
+    <Button onAction="#loginAction" text="LOGIN" styleClass="button-raised"></Button>
+
+    <Label fx:id="loginFailure" visible="false">login fehlgeschlagen!</Label>
+
+    <Button onAction="#goToSignup" text="Signup first" styleClass="button-raised"></Button>
+</VBox>

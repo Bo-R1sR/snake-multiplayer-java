@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="dialog" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="de.snake.fxclient.MainController">
+
+    <HBox>
+        <Label>GAME</Label>
+    </HBox>
+
+    <Button onAction="#showHistory" text="show History" styleClass="button-raised"></Button>
+    <Button onAction="#startGame" text="start Game" styleClass="button-raised"></Button>
+    <Button onAction="#logout" text="logout" styleClass="button-raised"></Button>
+</VBox>
