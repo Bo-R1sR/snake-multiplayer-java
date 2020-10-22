@@ -3,9 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.canvas.Canvas?>
 <VBox fx:id="dialog" xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="de.snake.fxclient.controller.GameController">
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="de.snake.fxclient.controller.GameController">
 
     <HBox>
         <Label>GAME</Label>
@@ -17,4 +18,6 @@
     <Button onAction="#back" text="back" styleClass="button-raised"></Button>
     <TextField fx:id="chatMess" promptText="enter Chat Message" styleClass="input"></TextField>
     <Button onAction="#submitMessage" text="submitMessage" styleClass="button-raised"></Button>
+    <Canvas fx:id="gameCanvas" height="500.0" width="500.0" />
+
 </VBox>

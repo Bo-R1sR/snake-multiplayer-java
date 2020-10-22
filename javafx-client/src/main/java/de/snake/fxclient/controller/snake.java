@@ -1,99 +1,23 @@
 package de.snake.fxclient.controller;
 
-import de.snake.fxclient.domain.User;
-import de.snake.fxclient.websocket.Message;
-import javafx.animation.AnimationTimer;
-import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.messaging.simp.stomp.StompSession;
-import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Component
-@FxmlView("game-stage.fxml")
-public class GameController {
+import javafx.animation.AnimationTimer;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
-    private final BackgroundController backgroundController;
-    private final User user;
-
-    static Scene scene;
-
-//    public Scene getScene() {
-//        return scene;
-//    }
-//
-//    public void setScene(Scene scene) {
-//        this.scene = scene;
-//    }
-
-    @FXML
-    private Label testMessage;
-
-    @FXML
-    private TextField chatMess;
-
-    @FXML
-    private Canvas gameCanvas ;
-
-    GraphicsContext gc ;
-
-    public GameController(BackgroundController backgroundController, User user) {
-        this.backgroundController = backgroundController;
-        this.user = user;
-    }
-
-    @FXML
-    public void initialize() {
-        scene = backgroundController.getViewHolder().getParent().getScene();
-
-
-        gc = gameCanvas.getGraphicsContext2D();
-//        gc.setFill(Color.BLACK);
-//        System.out.println("color set to black");
-//        gc.fillRect(50, 50, 100, 100);
-//        System.out.println("draw rectangle");
-    }
-
-    public Label getTestMessage() {
-        return testMessage;
-    }
-
-    public void setTestMessage(Label testMessage) {
-        this.testMessage = testMessage;
-    }
-
-    public void back() {
-        backgroundController.changeView(MainController.class);
-    }
-
-
-    public void submitMessage() {
-        startGame();
-//        gc.setFill(Color.AQUA);
-//        gc.fillRect(10,10,100,100);
-        StompSession session = user.getSession();
-        session.send("/app/game", getSampleMessage());
-    }
-
-    private Message getSampleMessage() {
-        Message msg = new Message();
-        msg.setText(chatMess.getText());
-        return msg;
-    }
-
+class Snake {
+    // variable
     static int speed = 5;
     static int foodcolor = 0;
     static int width = 20;
@@ -101,10 +25,14 @@ public class GameController {
     static int foodX = 0;
     static int foodY = 0;
     static int cornersize = 25;
-    static List<Snake.Corner> snake = new ArrayList<>();
-    static Snake.Dir direction = Snake.Dir.left;
+    static List<Corner> snake = new ArrayList<>();
+    static Dir direction = Dir.left;
     static boolean gameOver = false;
     static Random rand = new Random();
+
+    public enum Dir {
+        left, right, up, down
+    }
 
     public static class Corner {
         int x;
@@ -117,34 +45,67 @@ public class GameController {
 
     }
 
-    public void startGame() {
-        newFood();
+    public void start(Stage primaryStage) {
+        try {
+            newFood();
 
-        new AnimationTimer() {
-            long lastTick = 0;
+            VBox root = new VBox();
+            Canvas c = new Canvas(width * cornersize, height * cornersize);
+            GraphicsContext gc = c.getGraphicsContext2D();
+            root.getChildren().add(c);
 
-            public void handle(long now) {
-                if (lastTick == 0) {
-                    lastTick = now;
-                    tick(gc);
-                    return;
+            new AnimationTimer() {
+                long lastTick = 0;
+
+                public void handle(long now) {
+                    if (lastTick == 0) {
+                        lastTick = now;
+                        tick(gc);
+                        return;
+                    }
+
+                    if (now - lastTick > 1000000000 / speed) {
+                        lastTick = now;
+                        tick(gc);
+                    }
                 }
 
-                if (now - lastTick > 1000000000 / speed) {
-                    lastTick = now;
-                    tick(gc);
+            }.start();
+
+            Scene scene = new Scene(root, width * cornersize, height * cornersize);
+
+            // control
+            scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
+                if (key.getCode() == KeyCode.W) {
+                    direction = Dir.up;
                 }
-            }
+                if (key.getCode() == KeyCode.A) {
+                    direction = Dir.left;
+                }
+                if (key.getCode() == KeyCode.S) {
+                    direction = Dir.down;
+                }
+                if (key.getCode() == KeyCode.D) {
+                    direction = Dir.right;
+                }
 
-        }.start();
+            });
 
-        snake.add(new Snake.Corner(width / 2, height / 2));
-        snake.add(new Snake.Corner(width / 2, height / 2));
-        snake.add(new Snake.Corner(width / 2, height / 2));
-
+            // add start snake parts
+            snake.add(new Corner(width / 2, height / 2));
+            snake.add(new Corner(width / 2, height / 2));
+            snake.add(new Corner(width / 2, height / 2));
+            //If you do not want to use css style, you can just delete the next line.
+            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("SNAKE GAME");
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-
+    // tick
     public static void tick(GraphicsContext gc) {
         if (gameOver) {
             gc.setFill(Color.RED);
@@ -157,27 +118,6 @@ public class GameController {
             snake.get(i).x = snake.get(i - 1).x;
             snake.get(i).y = snake.get(i - 1).y;
         }
-
-
-       // viewHolder.getParent().getScene();
-//        // control
-
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-            if (key.getCode() == KeyCode.UP) {
-                direction = Snake.Dir.up;
-            }
-            if (key.getCode() == KeyCode.LEFT) {
-                direction = Snake.Dir.left;
-            }
-            if (key.getCode() == KeyCode.DOWN) {
-                direction = Snake.Dir.down;
-            }
-            if (key.getCode() == KeyCode.RIGHT) {
-                direction = Snake.Dir.right;
-            }
-
-        });
-
 
         switch (direction) {
             case up:
@@ -209,7 +149,7 @@ public class GameController {
 
         // eat food
         if (foodX == snake.get(0).x && foodY == snake.get(0).y) {
-            snake.add(new Snake.Corner(-1, -1));
+            snake.add(new Corner(-1, -1));
             newFood();
         }
 
@@ -220,6 +160,8 @@ public class GameController {
             }
         }
 
+        // fill
+        // background
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, width * cornersize, height * cornersize);
 
@@ -251,24 +193,24 @@ public class GameController {
         gc.setFill(cc);
         gc.fillOval(foodX * cornersize, foodY * cornersize, cornersize, cornersize);
 
-
-
         // snake
-        for (Snake.Corner c : snake) {
+        for (Corner c : snake) {
             gc.setFill(Color.LIGHTGREEN);
             gc.fillRect(c.x * cornersize, c.y * cornersize, cornersize - 1, cornersize - 1);
             gc.setFill(Color.GREEN);
             gc.fillRect(c.x * cornersize, c.y * cornersize, cornersize - 2, cornersize - 2);
 
         }
+
     }
+
     // food
     public static void newFood() {
         start: while (true) {
             foodX = rand.nextInt(width);
             foodY = rand.nextInt(height);
 
-            for (Snake.Corner c : snake) {
+            for (Corner c : snake) {
                 if (c.x == foodX && c.y == foodY) {
                     continue start;
                 }
@@ -279,4 +221,6 @@ public class GameController {
 
         }
     }
+
+
 }
