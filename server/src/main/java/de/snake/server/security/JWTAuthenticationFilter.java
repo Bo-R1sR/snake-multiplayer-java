@@ -1,5 +1,7 @@
 package de.snake.server.security;
 
+// link zur quelle: https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
+
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.snake.server.domain.User;

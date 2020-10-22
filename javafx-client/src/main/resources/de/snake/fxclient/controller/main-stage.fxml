@@ -8,10 +8,12 @@
             fx:controller="de.snake.fxclient.controller.MainController">
 
     <HBox>
-        <Label>GAME</Label>
+        <Label>MAIN</Label>
     </HBox>
 
     <Button onAction="#showHistory" text="show History" styleClass="button-raised"></Button>
     <Button onAction="#startGame" text="start Game" styleClass="button-raised"></Button>
     <Button onAction="#logout" text="logout" styleClass="button-raised"></Button>
+
+
 </VBox>

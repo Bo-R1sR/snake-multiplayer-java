@@ -13,6 +13,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static de.snake.server.security.SecurityConstants.SIGN_UP_URL;
+import static de.snake.server.security.SecurityConstants.CHAT_URL;
 
 
 @EnableWebSecurity
@@ -30,15 +31,30 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        http.authorizeRequests()
+//                .antMatchers(SIGN_UP_URL, "/h2-console/**").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+//                .addFilter(new JWTAuthenticationVerificationFilter(authenticationManager()))
+//                // this disables session creation on Spring Security
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//
+//        http.csrf()
+//                .ignoringAntMatchers("/h2-console/**");
+//        http.headers().frameOptions().sameOrigin();
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+                .antMatchers(SIGN_UP_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthenticationVerificationFilter(authenticationManager()))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
     }
+
+
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {

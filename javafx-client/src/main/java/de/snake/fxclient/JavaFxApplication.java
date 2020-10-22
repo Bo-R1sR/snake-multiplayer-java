@@ -20,7 +20,7 @@ public class JavaFxApplication extends Application {
         String[] args = getParameters().getRaw().toArray(new String[0]);
 
         this.applicationContext = new SpringApplicationBuilder()
-                .sources(SpringBootBasicApplication.class)
+                .sources(ClientApplication.class)
                 .run(args);
     }
 

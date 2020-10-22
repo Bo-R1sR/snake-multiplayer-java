@@ -1,6 +1,9 @@
 package de.snake.fxclient.domain;
 
+import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.stereotype.Component;
+
+import javax.websocket.Session;
 
 @Component
 public class User {
@@ -10,6 +13,16 @@ public class User {
     private String password;
     private String confirmPassword;
     private String jsonWebToken;
+
+    private StompSession session;
+
+    public StompSession getSession() {
+        return session;
+    }
+
+    public void setSession(StompSession session) {
+        this.session = session;
+    }
 
     public Integer getId() {
         return id;
