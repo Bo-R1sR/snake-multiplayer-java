@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-public class Game {
+public class GameHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

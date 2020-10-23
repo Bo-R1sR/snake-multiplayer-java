@@ -13,7 +13,6 @@ import java.util.Date;
 
 @Controller
 public class MessageController {
-
     //default /app/questions wird weitergeleitet auf topic/questions
 
     @MessageMapping("/game")
@@ -26,4 +25,5 @@ public class MessageController {
         final String time = new SimpleDateFormat("HH:mm").format(new Date());
         return new OutputMessage(sender.getName(), message.getText(), time);
     }
+
 }

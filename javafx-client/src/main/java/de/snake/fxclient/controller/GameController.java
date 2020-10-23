@@ -1,6 +1,8 @@
 package de.snake.fxclient.controller;
 
 import de.snake.fxclient.domain.User;
+import de.snake.fxclient.game.SnakeBodyPart;
+import de.snake.fxclient.game.Snake;
 import de.snake.fxclient.websocket.Message;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
@@ -17,27 +19,31 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 @Component
 @FxmlView("game-stage.fxml")
 public class GameController {
 
+    static int speed = 5;
+    static int foodcolor = 0;
+    static int width = 20;
+    static int height = 20;
+    static int foodX = 0;
+    static int foodY = 0;
+    static int cornersize = 25;
+    //static List<Snake.Corner> snake = new ArrayList<>();
+    static Dir direction = Dir.left;
+    static boolean gameOver = false;
+    static Random rand = new Random();
+
+    public enum Dir {
+        left, right, up, down
+    }
+
     private final BackgroundController backgroundController;
     private final User user;
-
-    static Scene scene;
-
-//    public Scene getScene() {
-//        return scene;
-//    }
-//
-//    public void setScene(Scene scene) {
-//        this.scene = scene;
-//    }
+    private final Snake snake;
 
     @FXML
     private Label testMessage;
@@ -48,23 +54,41 @@ public class GameController {
     @FXML
     private Canvas gameCanvas ;
 
-    GraphicsContext gc ;
+    private GraphicsContext gc ;
 
-    public GameController(BackgroundController backgroundController, User user) {
+    private static StompSession session;
+
+    public GameController(BackgroundController backgroundController, User user, Snake snake) {
         this.backgroundController = backgroundController;
         this.user = user;
+
+        this.snake = snake;
     }
 
     @FXML
     public void initialize() {
-        scene = backgroundController.getViewHolder().getParent().getScene();
 
+        Scene scene = backgroundController.getViewHolder().getParent().getScene();
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
+            if (key.getCode() == KeyCode.UP) {
+                direction = Dir.up;
+            }
+            if (key.getCode() == KeyCode.LEFT) {
+                direction = Dir.left;
+            }
+            if (key.getCode() == KeyCode.DOWN) {
+                direction = Dir.down;
+            }
+            if (key.getCode() == KeyCode.RIGHT) {
+                direction = Dir.right;
+            }
+            session.send("/app/direction", direction);
+
+        });
 
         gc = gameCanvas.getGraphicsContext2D();
-//        gc.setFill(Color.BLACK);
-//        System.out.println("color set to black");
-//        gc.fillRect(50, 50, 100, 100);
-//        System.out.println("draw rectangle");
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, width * cornersize, height * cornersize);
     }
 
     public Label getTestMessage() {
@@ -81,44 +105,20 @@ public class GameController {
 
 
     public void submitMessage() {
-        startGame();
-//        gc.setFill(Color.AQUA);
-//        gc.fillRect(10,10,100,100);
-        StompSession session = user.getSession();
+        session = user.getSession();
+
         session.send("/app/game", getSampleMessage());
-    }
 
-    private Message getSampleMessage() {
-        Message msg = new Message();
-        msg.setText(chatMess.getText());
-        return msg;
-    }
 
-    static int speed = 5;
-    static int foodcolor = 0;
-    static int width = 20;
-    static int height = 20;
-    static int foodX = 0;
-    static int foodY = 0;
-    static int cornersize = 25;
-    static List<Snake.Corner> snake = new ArrayList<>();
-    static Snake.Dir direction = Snake.Dir.left;
-    static boolean gameOver = false;
-    static Random rand = new Random();
-
-    public static class Corner {
-        int x;
-        int y;
-
-        public Corner(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
+        startGame();
 
     }
+
 
     public void startGame() {
-        newFood();
+
+        session.send("/app/snake2", getSampleMessage());
+       // newFood();
 
         new AnimationTimer() {
             long lastTick = 0;
@@ -138,14 +138,18 @@ public class GameController {
 
         }.start();
 
-        snake.add(new Snake.Corner(width / 2, height / 2));
-        snake.add(new Snake.Corner(width / 2, height / 2));
-        snake.add(new Snake.Corner(width / 2, height / 2));
+
+
+//        snake.add(new Snake.Corner(width / 2, height / 2));
+//        snake.add(new Snake.Corner(width / 2, height / 2));
+//        snake.add(new Snake.Corner(width / 2, height / 2));
 
     }
 
 
-    public static void tick(GraphicsContext gc) {
+    public void tick(GraphicsContext gc) {
+        System.out.println("ticked");
+       // session.send("/app/snake", getSampleMessage());
         if (gameOver) {
             gc.setFill(Color.RED);
             gc.setFont(new Font("", 50));
@@ -153,73 +157,30 @@ public class GameController {
             return;
         }
 
-        for (int i = snake.size() - 1; i >= 1; i--) {
-            snake.get(i).x = snake.get(i - 1).x;
-            snake.get(i).y = snake.get(i - 1).y;
-        }
 
 
-       // viewHolder.getParent().getScene();
-//        // control
-
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-            if (key.getCode() == KeyCode.UP) {
-                direction = Snake.Dir.up;
-            }
-            if (key.getCode() == KeyCode.LEFT) {
-                direction = Snake.Dir.left;
-            }
-            if (key.getCode() == KeyCode.DOWN) {
-                direction = Snake.Dir.down;
-            }
-            if (key.getCode() == KeyCode.RIGHT) {
-                direction = Snake.Dir.right;
-            }
-
-        });
+//        for (int i = snake.getSnakeBody().size() - 1; i >= 1; i--) {
+//            snake.getSnakeBody().get(i).setX(snake.getSnakeBody().get(i - 1).getX());
+//            snake.getSnakeBody().get(i).setY(snake.getSnakeBody().get(i - 1).getY());
+//        }
 
 
-        switch (direction) {
-            case up:
-                snake.get(0).y--;
-                if (snake.get(0).y < 0) {
-                    gameOver = true;
-                }
-                break;
-            case down:
-                snake.get(0).y++;
-                if (snake.get(0).y > height) {
-                    gameOver = true;
-                }
-                break;
-            case left:
-                snake.get(0).x--;
-                if (snake.get(0).x < 0) {
-                    gameOver = true;
-                }
-                break;
-            case right:
-                snake.get(0).x++;
-                if (snake.get(0).x > width) {
-                    gameOver = true;
-                }
-                break;
 
-        }
+//        // eat food
+//        if (foodX == snake.get(0).x && foodY == snake.get(0).y) {
+//            snake.add(new Snake.Corner(-1, -1));
+//            newFood();
+//        }
+//
+//        // self destroy
+//        for (int i = 1; i < snake.size(); i++) {
+//            if (snake.get(0).x == snake.get(i).x && snake.get(0).y == snake.get(i).y) {
+//                gameOver = true;
+//            }
+//        }
 
-        // eat food
-        if (foodX == snake.get(0).x && foodY == snake.get(0).y) {
-            snake.add(new Snake.Corner(-1, -1));
-            newFood();
-        }
-
-        // self destroy
-        for (int i = 1; i < snake.size(); i++) {
-            if (snake.get(0).x == snake.get(i).x && snake.get(0).y == snake.get(i).y) {
-                gameOver = true;
-            }
-        }
-
+        // fill
+        // background
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, width * cornersize, height * cornersize);
 
@@ -253,30 +214,36 @@ public class GameController {
 
 
 
-        // snake
-        for (Snake.Corner c : snake) {
+//        // snake
+        for (SnakeBodyPart c : snake.getSnakeBody()) {
             gc.setFill(Color.LIGHTGREEN);
-            gc.fillRect(c.x * cornersize, c.y * cornersize, cornersize - 1, cornersize - 1);
+            gc.fillRect(c.getX() * cornersize, c.getY() * cornersize, cornersize - 1, cornersize - 1);
             gc.setFill(Color.GREEN);
-            gc.fillRect(c.x * cornersize, c.y * cornersize, cornersize - 2, cornersize - 2);
+            gc.fillRect(c.getX() * cornersize, c.getY() * cornersize, cornersize - 2, cornersize - 2);
 
         }
     }
-    // food
-    public static void newFood() {
-        start: while (true) {
-            foodX = rand.nextInt(width);
-            foodY = rand.nextInt(height);
+//    // food
+//    public static void newFood() {
+//        start: while (true) {
+//            foodX = rand.nextInt(width);
+//            foodY = rand.nextInt(height);
+//
+//            for (Snake.Corner c : snake) {
+//                if (c.x == foodX && c.y == foodY) {
+//                    continue start;
+//                }
+//            }
+//            foodcolor = rand.nextInt(5);
+//            speed++;
+//            break;
+//
+//        }
+//    }
+private Message getSampleMessage() {
+    Message msg = new Message();
+    msg.setText(chatMess.getText());
+    return msg;
+}
 
-            for (Snake.Corner c : snake) {
-                if (c.x == foodX && c.y == foodY) {
-                    continue start;
-                }
-            }
-            foodcolor = rand.nextInt(5);
-            speed++;
-            break;
-
-        }
-    }
 }

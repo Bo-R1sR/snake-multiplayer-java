@@ -30,7 +30,7 @@ public class JavaFxApplication extends Application {
     public void start(Stage stage) {
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(BackgroundController.class);
-        Scene scene = new Scene(root, 600, 600);
+        Scene scene = new Scene(root, 800, 800);
         stage.setTitle("Snake the GAME");
         stage.setScene(scene);
         stage.show();
