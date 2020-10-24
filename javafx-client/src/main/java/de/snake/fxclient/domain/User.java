@@ -3,8 +3,6 @@ package de.snake.fxclient.domain;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.stereotype.Component;
 
-import javax.websocket.Session;
-
 @Component
 public class User {
 
@@ -13,6 +11,7 @@ public class User {
     private String password;
     private String confirmPassword;
     private String jsonWebToken;
+    private Integer playerId;
 
     private StompSession session;
 
@@ -54,6 +53,14 @@ public class User {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public Integer getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(Integer playerId) {
+        this.playerId = playerId;
     }
 
     public String getJsonWebToken() {

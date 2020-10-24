@@ -43,7 +43,8 @@ public class GameController {
 
     private final BackgroundController backgroundController;
     private final User user;
-    private final Snake snake;
+    private final Snake snake1;
+    private final Snake snake2;
 
     @FXML
     private Label testMessage;
@@ -58,16 +59,15 @@ public class GameController {
 
     private static StompSession session;
 
-    public GameController(BackgroundController backgroundController, User user, Snake snake) {
+    public GameController(BackgroundController backgroundController, User user, Snake snake1, Snake snake2) {
         this.backgroundController = backgroundController;
         this.user = user;
-
-        this.snake = snake;
+        this.snake1 = snake1;
+        this.snake2 = snake2;
     }
 
     @FXML
     public void initialize() {
-
         Scene scene = backgroundController.getViewHolder().getParent().getScene();
         scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             if (key.getCode() == KeyCode.UP) {
@@ -82,7 +82,7 @@ public class GameController {
             if (key.getCode() == KeyCode.RIGHT) {
                 direction = Dir.right;
             }
-            session.send("/app/direction", direction);
+            session.send("/app/direction" + user.getPlayerId(), direction);
 
         });
 
@@ -106,49 +106,38 @@ public class GameController {
 
     public void submitMessage() {
         session = user.getSession();
-
-        session.send("/app/game", getSampleMessage());
-
-
-        startGame();
-
-    }
+        session.send("/app/message", getSampleMessage());
+      }
 
 
-    public void startGame() {
-
-        session.send("/app/snake2", getSampleMessage());
+    public void playGame() {
+        session = user.getSession();
+        session.send("/app/snake", getSampleMessage());
        // newFood();
 
         new AnimationTimer() {
-            long lastTick = 0;
+            long lastUpdate = 0;
 
             public void handle(long now) {
-                if (lastTick == 0) {
-                    lastTick = now;
-                    tick(gc);
+                if (lastUpdate == 0) {
+                    lastUpdate = now;
+                    update(gc);
                     return;
                 }
 
-                if (now - lastTick > 1000000000 / speed) {
-                    lastTick = now;
-                    tick(gc);
+                if (now - lastUpdate > 1000000000 / speed) {
+                    lastUpdate = now;
+                    update(gc);
                 }
             }
 
         }.start();
 
-
-
-//        snake.add(new Snake.Corner(width / 2, height / 2));
-//        snake.add(new Snake.Corner(width / 2, height / 2));
-//        snake.add(new Snake.Corner(width / 2, height / 2));
-
     }
 
 
-    public void tick(GraphicsContext gc) {
-        System.out.println("ticked");
+    public void update(GraphicsContext gc) {
+        System.out.println("updated");
        // session.send("/app/snake", getSampleMessage());
         if (gameOver) {
             gc.setFill(Color.RED);
@@ -156,14 +145,6 @@ public class GameController {
             gc.fillText("GAME OVER", 100, 250);
             return;
         }
-
-
-
-//        for (int i = snake.getSnakeBody().size() - 1; i >= 1; i--) {
-//            snake.getSnakeBody().get(i).setX(snake.getSnakeBody().get(i - 1).getX());
-//            snake.getSnakeBody().get(i).setY(snake.getSnakeBody().get(i - 1).getY());
-//        }
-
 
 
 //        // eat food
@@ -215,10 +196,17 @@ public class GameController {
 
 
 //        // snake
-        for (SnakeBodyPart c : snake.getSnakeBody()) {
+        for (SnakeBodyPart c : snake1.getSnakeBody()) {
             gc.setFill(Color.LIGHTGREEN);
             gc.fillRect(c.getX() * cornersize, c.getY() * cornersize, cornersize - 1, cornersize - 1);
             gc.setFill(Color.GREEN);
+            gc.fillRect(c.getX() * cornersize, c.getY() * cornersize, cornersize - 2, cornersize - 2);
+
+        }
+        for (SnakeBodyPart c : snake2.getSnakeBody()) {
+            gc.setFill(Color.LIGHTBLUE);
+            gc.fillRect(c.getX() * cornersize, c.getY() * cornersize, cornersize - 1, cornersize - 1);
+            gc.setFill(Color.BLUE);
             gc.fillRect(c.getX() * cornersize, c.getY() * cornersize, cornersize - 2, cornersize - 2);
 
         }

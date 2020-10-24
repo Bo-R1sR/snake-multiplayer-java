@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class Snake {
     private int width;
     private int height;

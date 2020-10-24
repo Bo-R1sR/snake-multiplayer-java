@@ -3,82 +3,53 @@ package de.snake.server.controller;
 import de.snake.server.domain.SnakeDirection;
 import de.snake.server.game.Snake;
 import de.snake.server.game.SnakeBodyPart;
-import javafx.animation.AnimationTimer;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Timer;
 import java.util.TimerTask;
 
 @Controller
-public class GameController {
+public class SnakeController {
 
-    private final Snake snake;
+    private final Snake snake1;
+    private final Snake snake2;
     private final SimpMessagingTemplate template;
+    private final int speed = 1;
+    SnakeDirection direction1 = SnakeDirection.left;
+    SnakeDirection direction2 = SnakeDirection.right;
 
-    private int speed = 5;
-
-    public GameController(Snake snake, SimpMessagingTemplate template) {
-        this.snake = snake;
+    public SnakeController(Snake snake1, Snake snake2, SimpMessagingTemplate template) {
+        this.snake1 = snake1;
+        this.snake2 = snake2;
         this.template = template;
     }
 
-
-
-    public void tick() {
-        Snake finalSnake = get();
-        System.out.println(finalSnake.toString());
-        this.template.convertAndSend("/topic/snake", finalSnake);
+    @MessageMapping("/direction1")
+    public void changeDirection1(SnakeDirection direction) {
+        this.direction1 = direction;
     }
 
-    SnakeDirection direction = SnakeDirection.left;
-
-        @MessageMapping("/snake2")
-        @SendTo("/topic/snake")
-        public void submit() throws InterruptedException {
-            new Timer().scheduleAtFixedRate(new NewsletterTask(), 0, 1000);
-
-            for (int i = 0; i < 3; i++) {
-                Thread.sleep(1000);
-            }
-        }
-
-    public class NewsletterTask extends TimerTask {
-        @Override
-        public void run() {
-            tick();
-
-        }
+    @MessageMapping("/direction2")
+    public void changeDirection2(SnakeDirection direction) {
+        this.direction2 = direction;
     }
+
 
     @MessageMapping("/snake")
-    @SendTo("/topic/snake")
-    public Snake get() {
+    public void changeSnake() throws InterruptedException {
 
+        //peridod: delay between TastExecutions
+        new Timer().scheduleAtFixedRate(new SnakeUpdateTask(), 0, 1000/(speed));
+    }
+
+    public void updateSnake(Snake snake, SnakeDirection direction, Integer number) {
         for (int i = snake.getSnakeBody().size() - 1; i >= 1; i--) {
             snake.getSnakeBody().get(i).setX(snake.getSnakeBody().get(i - 1).getX());
             snake.getSnakeBody().get(i).setY(snake.getSnakeBody().get(i - 1).getY());
         }
-        Snake movedSnake = calculateNewPosition(direction);
 
-        return movedSnake;
-
-    }
-
-
-    @MessageMapping("/direction")
-    @SendTo("/topic/snakeDirection")
-    public void changeDirection(SnakeDirection direction) {
-        this.direction = direction;
-    }
-
-
-    public Snake calculateNewPosition(SnakeDirection direction) {
         System.out.println(direction);
         SnakeBodyPart snakeHead = snake.getSnakeBody().get(0);
         switch (direction) {
@@ -106,10 +77,16 @@ public class GameController {
 //                    gameOver = true;
 //                }
                 break;
-
         }
-        return snake;
-
+        this.template.convertAndSend("/topic/snake" + number, snake);
     }
 
+    public class SnakeUpdateTask extends TimerTask {
+        @Override
+        public void run() {
+            updateSnake(snake1, direction1, 1);
+            updateSnake(snake2, direction2, 2);
+            System.out.println("TEST");
+        }
+    }
 }

@@ -18,6 +18,7 @@
     <Button onAction="#back" text="back" styleClass="button-raised"></Button>
     <TextField fx:id="chatMess" promptText="enter Chat Message" styleClass="input"></TextField>
     <Button onAction="#submitMessage" text="submitMessage" styleClass="button-raised"></Button>
+    <Button onAction="#playGame" text="play Game" styleClass="button-raised"></Button>
     <Canvas fx:id="gameCanvas" height="500.0" width="500.0" />
 
 </VBox>
