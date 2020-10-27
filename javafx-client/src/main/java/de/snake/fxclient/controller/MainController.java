@@ -40,7 +40,7 @@ public class MainController {
         backgroundController.changeView(LogoutController.class);
     }
 
-    public void startGame() throws DeploymentException, IOException, URISyntaxException {
+    public void showGame() throws DeploymentException, IOException, URISyntaxException {
         backgroundController.changeView(GameController.class);
         customStompClient.connectToServerWS();
     }

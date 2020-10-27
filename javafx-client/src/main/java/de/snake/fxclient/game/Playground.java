@@ -19,15 +19,6 @@ public class Playground implements Serializable {
     public Playground() {
     }
 
-//    @PostConstruct
-//    public void init() {
-//        snake1 = new Snake();
-//        snake2 = new Snake();
-//        width = 20;
-//        height = 20;
-//        snakeBodySize = 25;
-//    }
-
     public Snake getSnake1() {
         return snake1;
     }

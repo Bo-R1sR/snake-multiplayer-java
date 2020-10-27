@@ -25,7 +25,8 @@ public class PlaygroundController {
     private int speed = 10;
     private SnakeDirection direction1 = SnakeDirection.left;
     private SnakeDirection direction2 = SnakeDirection.right;
-    Timer timer;
+    private Timer timer;
+    private final Random rand = new Random();
 
 
     public PlaygroundController(Playground playground, ScreenText screenText, SimpMessagingTemplate template) {
@@ -44,7 +45,7 @@ public class PlaygroundController {
         this.direction2 = direction;
     }
 
-    @MessageMapping("/snakeNeg/{id}")
+    @MessageMapping("/playerActive/{id}")
     public void waitForAllPlayers(@DestinationVariable int id) throws InterruptedException {
         if (id == 1) player1active = true;
         if (id == 2) player2active = true;
@@ -72,18 +73,15 @@ public class PlaygroundController {
         Thread.sleep(1000);
         screenText.setPlayerText("");
         this.template.convertAndSend("/topic/screenText", screenText);
-        changeSnake();
+        startRefreshingCanvas();
     }
 
 
 
-    @MessageMapping("/snake")
-    public void changeSnake() throws InterruptedException {
+    //@MessageMapping("/snake")
+    public void startRefreshingCanvas() throws InterruptedException {
         timer = new Timer();
-
-        //peridod: delay between TastExecutions
-        //new Timer().scheduleAtFixedRate(new SnakeUpdateTask(template), 0, 1000 / (speed));
-        timer.scheduleAtFixedRate(new SnakeUpdateTask(template), 0, 10000 / (speed));
+        timer.scheduleAtFixedRate(new SnakeUpdateTask(), 0, 10000 / (speed));
     }
 
     public void updateSnake(Snake snake, SnakeDirection direction, Integer number) {
@@ -124,12 +122,11 @@ public class PlaygroundController {
     }
 
     public class SnakeUpdateTask extends TimerTask {
-        private final SimpMessagingTemplate template;
-        private final Random rand = new Random();
 
-        public SnakeUpdateTask(SimpMessagingTemplate template) {
-            this.template = template;
-        }
+
+//        public SnakeUpdateTask(SimpMessagingTemplate template) {
+//            this.template = template;
+//        }
 
         @Override
         public void run() {
@@ -176,7 +173,7 @@ public class PlaygroundController {
 
 
             System.out.println("TEST");
-            this.template.convertAndSend("/topic/playground", playground);
+            template.convertAndSend("/topic/playground", playground);
         }
 
         public void createNewFood() throws InterruptedException {
@@ -205,7 +202,7 @@ public class PlaygroundController {
                 playground.getFood().setFoodColor(rand.nextInt(5));
                 playground.getFood().setFoodX(foodX);
                 playground.getFood().setFoodY(foodY);
-                changeSnake();
+                startRefreshingCanvas();
                 break;
 
             }

@@ -12,7 +12,7 @@
     </HBox>
 
     <Button onAction="#showHistory" text="show History" styleClass="button-raised"></Button>
-    <Button onAction="#startGame" text="start Game" styleClass="button-raised"></Button>
+    <Button onAction="#showGame" text="go to Game" styleClass="button-raised"></Button>
     <Button onAction="#logout" text="logout" styleClass="button-raised"></Button>
 
 

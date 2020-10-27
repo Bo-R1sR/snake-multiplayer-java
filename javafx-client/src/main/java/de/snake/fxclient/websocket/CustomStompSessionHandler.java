@@ -51,7 +51,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
                 Platform.runLater(() -> {
                     user.setPlayerId(returnId);
-                    gameController.begin();
+                    gameController.startGame();
                 });
             }
 
