@@ -1,4 +1,4 @@
-package de.snake.server.domain;
+package de.snake.server.game;
 
 public enum SnakeDirection {
         left, right, up, down

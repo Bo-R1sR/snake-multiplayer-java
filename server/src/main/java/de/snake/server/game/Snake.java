@@ -7,21 +7,36 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class Snake implements Serializable {
-    private int width;
-    private int height;
-    private List<SnakeBodyPart> snakeBody;
+    private int width = 20;
+    private int height = 20;
+    private final int position;
 
-    @PostConstruct
-    public void init() {
-        width = 20;
-        height = 20;
-        snakeBody = new ArrayList<>();
-        snakeBody.add(new SnakeBodyPart(width / 2 , height / 2));
-        snakeBody.add(new SnakeBodyPart(width / 2 , height / 2));
-        snakeBody.add(new SnakeBodyPart(width / 2 , height / 2));
+    private List<SnakeBodyPart> snakeBody = new ArrayList<>();
+
+    public Snake(int position) {
+        this.position = position;
+        snakeBody.add(new SnakeBodyPart(width/2 , position));
+        snakeBody.add(new SnakeBodyPart(width/2 , position));
+        snakeBody.add(new SnakeBodyPart(width/2 , position));
     }
+
+//    public Snake() {
+//
+//    }
+
+//    @PostConstruct
+//    public void init() {
+//        width = 20;
+//        height = 20;
+//        snakeBody = new ArrayList<>();
+////        snakeBody.add(new SnakeBodyPart(width / 2 , height / 2));
+////        snakeBody.add(new SnakeBodyPart(width / 2 , height / 2));
+////        snakeBody.add(new SnakeBodyPart(width / 2 , height / 2));
+//        snakeBody.add(new SnakeBodyPart(position , position));
+//        snakeBody.add(new SnakeBodyPart(position , position));
+//        snakeBody.add(new SnakeBodyPart(position , position));
+//    }
 
     public int getWidth() {
         return width;

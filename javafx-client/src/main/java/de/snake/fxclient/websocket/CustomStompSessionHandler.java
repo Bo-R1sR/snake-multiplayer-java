@@ -2,10 +2,12 @@ package de.snake.fxclient.websocket;
 
 import de.snake.fxclient.controller.GameController;
 import de.snake.fxclient.domain.User;
-import de.snake.fxclient.game.Snake;
+import de.snake.fxclient.game.Playground;
+import de.snake.fxclient.game.ScreenText;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.simp.stomp.*;
 import org.springframework.stereotype.Component;
 
@@ -15,16 +17,19 @@ import java.lang.reflect.Type;
 public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
     private final GameController gameController;
+    private final ScreenText screenText;
     private final User user;
     private final Logger logger = LogManager.getLogger(CustomStompSessionHandler.class);
-    private final Snake snake1;
-    private final Snake snake2;
+//    private final Snake snake1;
+//    private final Snake snake2;
+    private final Playground playground;
 
-    public CustomStompSessionHandler(GameController gameController, User user, Snake snake1, Snake snake2) {
+    public CustomStompSessionHandler(GameController gameController, ScreenText screenText, User user, Playground playground) {
         this.gameController = gameController;
+        this.screenText = screenText;
         this.user = user;
-        this.snake1 = snake1;
-        this.snake2 = snake2;
+
+        this.playground = playground;
     }
 
     @Override
@@ -44,12 +49,15 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
                 System.out.println("PlayerId " + payload);
                 Integer returnId = (Integer) payload;
 
-                Platform.runLater(() -> user.setPlayerId(returnId));
+                Platform.runLater(() -> {
+                    user.setPlayerId(returnId);
+                    gameController.begin();
+                });
             }
 
         });
 
-       session.send("/app/playerId", getSampleMessage());
+//       session.send("/app/playerId", getSampleMessage());
 
         session.subscribe("/topic/messages", new StompFrameHandler() {
 
@@ -67,41 +75,77 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
         });
 
-
-        session.subscribe("/topic/snake1", new StompFrameHandler() {
+        session.subscribe("/topic/screenText", new StompFrameHandler() {
 
             @Override
             public Type getPayloadType(StompHeaders headers) {
-                return Snake.class;
+                return ScreenText.class;
             }
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                System.out.println("snake arrived");
-                Snake returnSnake = (Snake) payload;
-                snake1.setHeight(returnSnake.getHeight());
-                snake1.setWidth(returnSnake.getWidth());
-                snake1.setSnakeBody(returnSnake.getSnakeBody());
-
+                ScreenText msg = (ScreenText) payload;
+                logger.info("Received : " + msg.getPlayerText());
+//                Playground returnedPlayground = (Playground) payload;
+                BeanUtils.copyProperties(payload, screenText);
+                gameController.updateScreenText();
+                //Platform.runLater(() -> playgroundController.getTestMessage().setText(msg.getText()));
             }
 
         });
 
-        session.subscribe("/topic/snake2", new StompFrameHandler() {
+
+//        session.subscribe("/topic/snake1", new StompFrameHandler() {
+//
+//            @Override
+//            public Type getPayloadType(StompHeaders headers) {
+//                return Snake.class;
+//            }
+//
+//            @Override
+//            public void handleFrame(StompHeaders headers, Object payload) {
+//                System.out.println("snake arrived");
+//                Snake returnSnake = (Snake) payload;
+//                snake1.setHeight(returnSnake.getHeight());
+//                snake1.setWidth(returnSnake.getWidth());
+//                snake1.setSnakeBody(returnSnake.getSnakeBody());
+//
+//            }
+//
+//        });
+//
+//        session.subscribe("/topic/snake2", new StompFrameHandler() {
+//
+//            @Override
+//            public Type getPayloadType(StompHeaders headers) {
+//                return Snake.class;
+//            }
+//
+//            @Override
+//            public void handleFrame(StompHeaders headers, Object payload) {
+//                System.out.println("snake arrived");
+//                Snake returnSnake = (Snake) payload;
+//                snake2.setHeight(returnSnake.getHeight());
+//                snake2.setWidth(returnSnake.getWidth());
+//                snake2.setSnakeBody(returnSnake.getSnakeBody());
+//
+//            }
+//
+//        });
+
+        session.subscribe("/topic/playground", new StompFrameHandler() {
 
             @Override
             public Type getPayloadType(StompHeaders headers) {
-                return Snake.class;
+                return Playground.class;
             }
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                System.out.println("snake arrived");
-                Snake returnSnake = (Snake) payload;
-                snake2.setHeight(returnSnake.getHeight());
-                snake2.setWidth(returnSnake.getWidth());
-                snake2.setSnakeBody(returnSnake.getSnakeBody());
-
+                logger.info("Playground arrived");
+//                Playground returnedPlayground = (Playground) payload;
+                BeanUtils.copyProperties(payload, playground);
+                gameController.updatePlayground();
             }
 
         });

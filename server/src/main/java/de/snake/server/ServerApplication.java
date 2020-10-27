@@ -14,15 +14,15 @@ public class ServerApplication {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	public Snake snake1() {
-		return new Snake();
-	}
-
-	@Bean
-	public Snake snake2() {
-		return new Snake();
-	}
+//	@Bean
+//	public Snake snake1() {
+//		return new Snake();
+//	}
+//
+//	@Bean
+//	public Snake snake2() {
+//		return new Snake();
+//	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(ServerApplication.class, args);

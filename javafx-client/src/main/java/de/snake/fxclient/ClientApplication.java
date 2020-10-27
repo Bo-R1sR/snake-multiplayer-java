@@ -16,15 +16,15 @@ public class ClientApplication {
         return new WebSocketStompClient(new StandardWebSocketClient());
     }
 
-    @Bean
-    public Snake snake1() {
-        return new Snake();
-    }
-
-    @Bean
-    public Snake snake2() {
-        return new Snake();
-    }
+//    @Bean
+//    public Snake snake1() {
+//        return new Snake();
+//    }
+//
+//    @Bean
+//    public Snake snake2() {
+//        return new Snake();
+//    }
 
 
     public static void main(String[] args) {
