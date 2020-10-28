@@ -17,12 +17,14 @@ public class GameController {
     private final ScreenText screenText;
     private final SimpMessagingTemplate template;
     private final Random rand = new Random();
+    boolean immortal = false;
+    private Timer refreshTimer;
+    private Timer immortalTimer;
     private Boolean player1active = false;
     private Boolean player2active = false;
     private int speed = 500;
     private SnakeDirection direction1 = SnakeDirection.LEFT;
     private SnakeDirection direction2 = SnakeDirection.RIGHT;
-    private Timer timer;
 
 
     public GameController(Playground playground, ScreenText screenText, SimpMessagingTemplate template) {
@@ -71,8 +73,8 @@ public class GameController {
     }
 
     public void startRefreshingCanvas() throws InterruptedException {
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new SnakeUpdateTask(), 0, 100000 / (speed));
+        refreshTimer = new Timer();
+        refreshTimer.scheduleAtFixedRate(new SnakeUpdateTask(), 0, 100000 / (speed));
 
 //        new AnimationTimer() {
 //            long lastTick = 0;
@@ -128,7 +130,16 @@ public class GameController {
         }
     }
 
+//    public class ImmortalResetTask(Snake snake) extends TimerTask {
+//
+//        @Override
+//        public void run() {
+//              = false;
+//        }
+//    }
+
     public class SnakeUpdateTask extends TimerTask {
+
         @Override
         public void run() {
             updateSnake(playground.getSnake1(), direction1);
@@ -137,8 +148,12 @@ public class GameController {
             checkSnakeAgainstFood(playground.getSnake1());
             checkSnakeAgainstFood(playground.getSnake2());
 
-            checkSnakeAgainstSelf(playground.getSnake1());
-            checkSnakeAgainstSelf(playground.getSnake2());
+            if(!playground.getSnake1().isImmortal()) {
+                checkSnakeAgainstSelf(playground.getSnake1());
+            }
+            if(!playground.getSnake2().isImmortal()) {
+                checkSnakeAgainstSelf(playground.getSnake2());
+            }
 
             template.convertAndSend("/topic/playground", playground);
         }
@@ -147,12 +162,35 @@ public class GameController {
             if (playground.getFood().getFoodPositionX() == snake.getSnakeBody().get(0).getPositionX() &&
                     playground.getFood().getFoodPositionY() == snake.getSnakeBody().get(0).getPositionY()) {
                 snake.getSnakeBody().add(new SnakeBodyPart(-1, -1));
+                snake.setLastFoodColor(playground.getFood().getFoodColor());
+                if (snake.getLastFoodColor() == 2) {
+
+                    try {
+                        immortalTimer.cancel();
+                    } catch (Exception e) {
+                    }
+
+                    snake.setImmortal(true);
+                    immortalTimer = new Timer();
+                    immortalTimer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            snake.setImmortal(false);
+                        }
+                    }, 20000);
+                }
+
                 try {
                     createNewFood();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+
             }
+
+            //playground.getFood().getFoodColor();
+
         }
 
         public void checkSnakeAgainstSelf(Snake snake) {
@@ -160,7 +198,7 @@ public class GameController {
                 if (snake.getSnakeBody().get(0).getPositionX() == snake.getSnakeBody().get(i).getPositionX() &&
                         snake.getSnakeBody().get(0).getPositionY() == snake.getSnakeBody().get(i).getPositionY()) {
                     playground.setGameOver(true);
-                    timer.cancel();
+                    refreshTimer.cancel();
                 }
             }
         }
@@ -182,10 +220,10 @@ public class GameController {
                         continue start;
                     }
                 }
-                speed += 5;
-                timer.cancel();
+                speed += 10;
+                refreshTimer.cancel();
 
-                playground.getFood().setFoodColor(rand.nextInt(5));
+                playground.getFood().setFoodColor(rand.nextInt(3));
                 playground.getFood().setFoodPositionX(foodX);
                 playground.getFood().setFoodPositionY(foodY);
                 startRefreshingCanvas();

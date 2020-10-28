@@ -99,6 +99,7 @@ public class GameController {
         drawBackground();
         drawScore();
         drawFood();
+
         drawSnake(playground.getSnake1(), Color.LIGHTGREEN, Color.GREEN);
         drawSnake(playground.getSnake2(), Color.LIGHTBLUE, Color.BLUE);
     }
@@ -109,6 +110,12 @@ public class GameController {
             gc.fillRect(c.getPositionX() * playground.getSnakeBodySize(), c.getPositionY() * playground.getSnakeBodySize(), playground.getSnakeBodySize() - 1, playground.getSnakeBodySize() - 1);
             gc.setFill(colorFront);
             gc.fillRect(c.getPositionX() * playground.getSnakeBodySize(), c.getPositionY() * playground.getSnakeBodySize(), playground.getSnakeBodySize() - 2, playground.getSnakeBodySize() - 2);
+            if (snake.isImmortal()) {
+
+                gc.setFill(Color.YELLOW);
+                gc.fillOval(c.getPositionX() * playground.getSnakeBodySize(), c.getPositionY() * playground.getSnakeBodySize(), playground.getSnakeBodySize() -2, playground.getSnakeBodySize() - 2);
+            }
+
         }
     }
 

@@ -42,7 +42,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                logger.info("PlayerId " + payload);
+                //logger.info("PlayerId " + payload);
 
                 Platform.runLater(() -> {
                     user.setPlayerId((Integer) payload);
@@ -59,7 +59,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                logger.info("Received : screenText");
+                //logger.info("Received : screenText");
                 BeanUtils.copyProperties(payload, screenText);
                 gameController.updateScreenText();
             }
@@ -73,7 +73,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                logger.info("Playground arrived");
+                //logger.info("Playground arrived");
                 BeanUtils.copyProperties(payload, playground);
                 gameController.updatePlayground();
             }
