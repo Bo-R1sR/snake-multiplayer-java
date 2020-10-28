@@ -12,7 +12,7 @@ public class Playground implements Serializable {
     private int snakeBodySize = 20;
     private Snake snake1 = new Snake(3, width / 2, height / 2 + 5);
     private Snake snake2 = new Snake(3, width / 2, height / 2 - 5);
-    private Food food = new Food(width/2, height/2);
+    private Food food = new Food(width / 2, height / 2);
     private boolean gameOver = false;
 
     public Playground() {

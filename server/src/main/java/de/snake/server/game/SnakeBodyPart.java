@@ -30,12 +30,15 @@ public class SnakeBodyPart implements Serializable {
     public void decreaseX() {
         this.positionX--;
     }
+
     public void increaseX() {
         this.positionX++;
     }
+
     public void decreaseY() {
         this.PositionY--;
     }
+
     public void increaseY() {
         this.PositionY++;
     }

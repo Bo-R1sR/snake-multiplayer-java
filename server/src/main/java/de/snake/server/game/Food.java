@@ -13,7 +13,6 @@ public class Food implements Serializable {
     }
 
 
-
     public int getFoodPositionX() {
         return foodPositionX;
     }

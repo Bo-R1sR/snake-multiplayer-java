@@ -1,6 +1,5 @@
 package de.snake.fxclient;
 
-import de.snake.fxclient.game.Snake;
 import javafx.application.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -11,9 +10,8 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 public class ClientApplication {
 
 
-    @Bean
-    public WebSocketStompClient webSocketStompClient() {
-        return new WebSocketStompClient(new StandardWebSocketClient());
+    public static void main(String[] args) {
+        Application.launch(JavaFxApplication.class, args);
     }
 
 //    @Bean
@@ -26,8 +24,8 @@ public class ClientApplication {
 //        return new Snake();
 //    }
 
-
-    public static void main(String[] args) {
-        Application.launch(JavaFxApplication.class, args);
+    @Bean
+    public WebSocketStompClient webSocketStompClient() {
+        return new WebSocketStompClient(new StandardWebSocketClient());
     }
 }

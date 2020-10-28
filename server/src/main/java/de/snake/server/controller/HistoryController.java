@@ -16,7 +16,7 @@ public class HistoryController {
     @PostMapping
     public String getHistory(@RequestBody String username) {
         System.out.println(username);
-        return("hello from server");
+        return ("hello from server");
     }
 
     @GetMapping

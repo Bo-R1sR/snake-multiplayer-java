@@ -27,7 +27,7 @@ public class ChatController {
     }
 
     @MessageMapping("/playerId")
-    @SendToUser(destinations="/queue/playerId", broadcast = false)
+    @SendToUser(destinations = "/queue/playerId", broadcast = false)
     public Integer sendID() {
         return ++numberOfConnections;
     }

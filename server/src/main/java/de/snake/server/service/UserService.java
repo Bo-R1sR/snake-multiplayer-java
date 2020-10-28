@@ -23,9 +23,9 @@ public class UserService {
         user.setUsername(createUserRequest.getUsername());
         user.setPassword(createUserRequest.getPassword());
 
-        if(userRepository.findByUsername(user.getUsername()) != null) {
+        if (userRepository.findByUsername(user.getUsername()) != null) {
             return ResponseEntity.badRequest().build();
-        };
+        }
 
         user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
 

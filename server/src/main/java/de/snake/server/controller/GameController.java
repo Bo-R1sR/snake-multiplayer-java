@@ -134,51 +134,47 @@ public class GameController {
             updateSnake(playground.getSnake1(), direction1);
             updateSnake(playground.getSnake2(), direction2);
 
-            if (playground.getFood().getFoodPositionX() == playground.getSnake1().getSnakeBody().get(0).getPositionX() &&
-                    playground.getFood().getFoodPositionY() == playground.getSnake1().getSnakeBody().get(0).getPositionY()) {
-                playground.getSnake1().getSnakeBody().add(new SnakeBodyPart(-1, -1));
-                try {
-                    createNewFood();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            checkSnakeAgainstFood(playground.getSnake1());
+            checkSnakeAgainstFood(playground.getSnake2());
 
-            if (playground.getFood().getFoodPositionX() == playground.getSnake2().getSnakeBody().get(0).getPositionX() &&
-                    playground.getFood().getFoodPositionY() == playground.getSnake2().getSnakeBody().get(0).getPositionY()) {
-                playground.getSnake2().getSnakeBody().add(new SnakeBodyPart(-1, -1));
-                try {
-                    createNewFood();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            // self destroy
-            for (int i = 1; i < playground.getSnake1().getSnakeBody().size(); i++) {
-                if (playground.getSnake1().getSnakeBody().get(0).getPositionX() == playground.getSnake1().getSnakeBody().get(i).getPositionX() &&
-                        playground.getSnake1().getSnakeBody().get(0).getPositionY() == playground.getSnake1().getSnakeBody().get(i).getPositionY()) {
-                    playground.setGameOver(true);
-                    timer.cancel();
-                }
-            }
+            checkSnakeAgainstSelf(playground.getSnake1());
+            checkSnakeAgainstSelf(playground.getSnake2());
 
             template.convertAndSend("/topic/playground", playground);
         }
 
+        public void checkSnakeAgainstFood(Snake snake) {
+            if (playground.getFood().getFoodPositionX() == snake.getSnakeBody().get(0).getPositionX() &&
+                    playground.getFood().getFoodPositionY() == snake.getSnakeBody().get(0).getPositionY()) {
+                snake.getSnakeBody().add(new SnakeBodyPart(-1, -1));
+                try {
+                    createNewFood();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public void checkSnakeAgainstSelf(Snake snake) {
+            for (int i = 1; i < snake.getSnakeBody().size(); i++) {
+                if (snake.getSnakeBody().get(0).getPositionX() == snake.getSnakeBody().get(i).getPositionX() &&
+                        snake.getSnakeBody().get(0).getPositionY() == snake.getSnakeBody().get(i).getPositionY()) {
+                    playground.setGameOver(true);
+                    timer.cancel();
+                }
+            }
+        }
+
         public void createNewFood() throws InterruptedException {
-            Snake totalSnake = new Snake(0,-1,-1);
-            //totalSnake.getSnakeBody().clear();
+            Snake totalSnake = new Snake(0, -1, -1);
 
             totalSnake.getSnakeBody().addAll(playground.getSnake1().getSnakeBody());
             totalSnake.getSnakeBody().addAll(playground.getSnake2().getSnakeBody());
-            int width = playground.getWidth();
-            int height = playground.getHeight();
 
             start:
             while (true) {
-                int foodX = rand.nextInt(width);
-                int foodY = rand.nextInt(height);
+                int foodX = rand.nextInt(playground.getWidth());
+                int foodY = rand.nextInt(playground.getHeight());
 
                 for (SnakeBodyPart sbp : totalSnake.getSnakeBody()) {
 
@@ -194,10 +190,7 @@ public class GameController {
                 playground.getFood().setFoodPositionY(foodY);
                 startRefreshingCanvas();
                 break;
-
             }
-
-
         }
     }
 }

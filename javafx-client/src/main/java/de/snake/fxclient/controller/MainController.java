@@ -35,6 +35,7 @@ public class MainController {
         });
 
     }
+
     public void logout() {
         user.reset();
         backgroundController.changeView(LogoutController.class);
