@@ -1,10 +1,6 @@
 package de.snake.server.controller;
 
-import de.snake.server.game.SnakeDirection;
-import de.snake.server.game.Playground;
-import de.snake.server.game.ScreenText;
-import de.snake.server.game.Snake;
-import de.snake.server.game.SnakeBodyPart;
+import de.snake.server.game.*;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -15,21 +11,21 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 @Controller
-public class PlaygroundController {
+public class GameController {
 
-    private static Boolean player1active = false;
-    private static Boolean player2active = false;
     private final Playground playground;
     private final ScreenText screenText;
     private final SimpMessagingTemplate template;
-    private int speed = 10;
-    private SnakeDirection direction1 = SnakeDirection.left;
-    private SnakeDirection direction2 = SnakeDirection.right;
-    private Timer timer;
     private final Random rand = new Random();
+    private Boolean player1active = false;
+    private Boolean player2active = false;
+    private int speed = 500;
+    private SnakeDirection direction1 = SnakeDirection.LEFT;
+    private SnakeDirection direction2 = SnakeDirection.RIGHT;
+    private Timer timer;
 
 
-    public PlaygroundController(Playground playground, ScreenText screenText, SimpMessagingTemplate template) {
+    public GameController(Playground playground, ScreenText screenText, SimpMessagingTemplate template) {
         this.playground = playground;
         this.screenText = screenText;
         this.template = template;
@@ -50,16 +46,14 @@ public class PlaygroundController {
         if (id == 1) player1active = true;
         if (id == 2) player2active = true;
 
+        //todo || auf &&
         if (player1active || player2active) {
             startCounter();
         } else {
             screenText.setPlayerText("waiting for another Player to join");
 
             this.template.convertAndSend("/topic/screenText", screenText);
-
-
         }
-
     }
 
     public void startCounter() throws InterruptedException {
@@ -76,71 +70,73 @@ public class PlaygroundController {
         startRefreshingCanvas();
     }
 
-
-
-    //@MessageMapping("/snake")
     public void startRefreshingCanvas() throws InterruptedException {
         timer = new Timer();
-        timer.scheduleAtFixedRate(new SnakeUpdateTask(), 0, 10000 / (speed));
+        timer.scheduleAtFixedRate(new SnakeUpdateTask(), 0, 100000 / (speed));
+
+//        new AnimationTimer() {
+//            long lastTick = 0;
+//
+//            public void handle(long now) {
+//                if (lastTick == 0) {
+//                    lastTick = now;
+//                    tick(gc);
+//                    return;
+//                }
+//
+//                if (now - lastTick > 1000000000 / speed) {
+//                    lastTick = now;
+//                    tick(gc);
+//                }
+//            }
+
+
     }
 
-    public void updateSnake(Snake snake, SnakeDirection direction, Integer number) {
+    public void updateSnake(Snake snake, SnakeDirection direction) {
         for (int i = snake.getSnakeBody().size() - 1; i >= 1; i--) {
-            snake.getSnakeBody().get(i).setX(snake.getSnakeBody().get(i - 1).getX());
-            snake.getSnakeBody().get(i).setY(snake.getSnakeBody().get(i - 1).getY());
+            snake.getSnakeBody().get(i).setPositionX(snake.getSnakeBody().get(i - 1).getPositionX());
+            snake.getSnakeBody().get(i).setPositionY(snake.getSnakeBody().get(i - 1).getPositionY());
         }
 
-        System.out.println(direction);
         SnakeBodyPart snakeHead = snake.getSnakeBody().get(0);
         switch (direction) {
-            case up:
+            case UP:
                 snakeHead.decreaseY();
 //                if (snake.get(0).y < 0) {
 //                    gameOver = true;
 //                }
                 break;
-            case down:
+            case DOWN:
                 snakeHead.increaseY();
 //                if (snake.get(0).y > height) {
 //                    gameOver = true;
 //                }
                 break;
-            case left:
+            case LEFT:
                 snakeHead.decreaseX();
 //                if (snake.get(0).x < 0) {
 //                    gameOver = true;
 //                }
                 break;
-            case right:
+            case RIGHT:
                 snakeHead.increaseX();
 //                if (snake.get(0).x > width) {
 //                    gameOver = true;
 //                }
                 break;
         }
-        //this.template.convertAndSend("/topic/snake" + number, snake);
     }
 
     public class SnakeUpdateTask extends TimerTask {
-
-
-//        public SnakeUpdateTask(SimpMessagingTemplate template) {
-//            this.template = template;
-//        }
-
         @Override
         public void run() {
-            updateSnake(playground.getSnake1(), direction1, 1);
-            updateSnake(playground.getSnake2(), direction2, 2);
+            updateSnake(playground.getSnake1(), direction1);
+            updateSnake(playground.getSnake2(), direction2);
 
-
-            if (playground.getFood().getFoodX() == playground.getSnake1().getSnakeBody().get(0).getX() &&
-                    playground.getFood().getFoodY() == playground.getSnake1().getSnakeBody().get(0).getY()) {
+            if (playground.getFood().getFoodPositionX() == playground.getSnake1().getSnakeBody().get(0).getPositionX() &&
+                    playground.getFood().getFoodPositionY() == playground.getSnake1().getSnakeBody().get(0).getPositionY()) {
                 playground.getSnake1().getSnakeBody().add(new SnakeBodyPart(-1, -1));
-                int width = 20;
-                int height = 20;
-                //playground.getFood().setFoodX(rand.nextInt(width));
-                //playground.getFood().setFoodY(rand.nextInt(height));
                 try {
                     createNewFood();
                 } catch (InterruptedException e) {
@@ -148,13 +144,9 @@ public class PlaygroundController {
                 }
             }
 
-            if (playground.getFood().getFoodX() == playground.getSnake2().getSnakeBody().get(0).getX() &&
-                    playground.getFood().getFoodY() == playground.getSnake2().getSnakeBody().get(0).getY()) {
+            if (playground.getFood().getFoodPositionX() == playground.getSnake2().getSnakeBody().get(0).getPositionX() &&
+                    playground.getFood().getFoodPositionY() == playground.getSnake2().getSnakeBody().get(0).getPositionY()) {
                 playground.getSnake2().getSnakeBody().add(new SnakeBodyPart(-1, -1));
-                int width = 20;
-                int height = 20;
-                //playground.getFood().setFoodX(rand.nextInt(width));
-                //playground.getFood().setFoodY(rand.nextInt(height));
                 try {
                     createNewFood();
                 } catch (InterruptedException e) {
@@ -163,27 +155,25 @@ public class PlaygroundController {
             }
 
             // self destroy
-        for (int i = 1; i < playground.getSnake1().getSnakeBody().size(); i++) {
-            if (playground.getSnake1().getSnakeBody().get(0).getX() == playground.getSnake1().getSnakeBody().get(i).getX() &&
-                    playground.getSnake1().getSnakeBody().get(0).getY() == playground.getSnake1().getSnakeBody().get(i).getY()) {
-                playground.setGameOver(true);
-                timer.cancel();
+            for (int i = 1; i < playground.getSnake1().getSnakeBody().size(); i++) {
+                if (playground.getSnake1().getSnakeBody().get(0).getPositionX() == playground.getSnake1().getSnakeBody().get(i).getPositionX() &&
+                        playground.getSnake1().getSnakeBody().get(0).getPositionY() == playground.getSnake1().getSnakeBody().get(i).getPositionY()) {
+                    playground.setGameOver(true);
+                    timer.cancel();
+                }
             }
-        }
 
-
-            System.out.println("TEST");
             template.convertAndSend("/topic/playground", playground);
         }
 
         public void createNewFood() throws InterruptedException {
-            Snake totalSnake = new Snake(-1);
-            totalSnake.getSnakeBody().clear();
+            Snake totalSnake = new Snake(0,-1,-1);
+            //totalSnake.getSnakeBody().clear();
 
             totalSnake.getSnakeBody().addAll(playground.getSnake1().getSnakeBody());
             totalSnake.getSnakeBody().addAll(playground.getSnake2().getSnakeBody());
-            int width = 20;
-            int height = 20;
+            int width = playground.getWidth();
+            int height = playground.getHeight();
 
             start:
             while (true) {
@@ -192,7 +182,7 @@ public class PlaygroundController {
 
                 for (SnakeBodyPart sbp : totalSnake.getSnakeBody()) {
 
-                    if (sbp.getX() == foodX && sbp.getY() == foodY) {
+                    if (sbp.getPositionX() == foodX && sbp.getPositionY() == foodY) {
                         continue start;
                     }
                 }
@@ -200,8 +190,8 @@ public class PlaygroundController {
                 timer.cancel();
 
                 playground.getFood().setFoodColor(rand.nextInt(5));
-                playground.getFood().setFoodX(foodX);
-                playground.getFood().setFoodY(foodY);
+                playground.getFood().setFoodPositionX(foodX);
+                playground.getFood().setFoodPositionY(foodY);
                 startRefreshingCanvas();
                 break;
 

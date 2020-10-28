@@ -1,28 +1,33 @@
 package de.snake.server.game;
 
 import java.io.Serializable;
-import java.util.Random;
 
 public class Food implements Serializable {
-    private int foodX = 10;
-    private int foodY = 10;
+    private int foodPositionX;
+    private int foodPositionY;
     private int foodColor = 0;
 
-
-    public int getFoodX() {
-        return foodX;
+    public Food(int foodPositionX, int foodPositionY) {
+        this.foodPositionX = foodPositionX;
+        this.foodPositionY = foodPositionY;
     }
 
-    public void setFoodX(int foodX) {
-        this.foodX = foodX;
+
+
+    public int getFoodPositionX() {
+        return foodPositionX;
     }
 
-    public int getFoodY() {
-        return foodY;
+    public void setFoodPositionX(int foodPositionX) {
+        this.foodPositionX = foodPositionX;
     }
 
-    public void setFoodY(int foodY) {
-        this.foodY = foodY;
+    public int getFoodPositionY() {
+        return foodPositionY;
+    }
+
+    public void setFoodPositionY(int foodPositionY) {
+        this.foodPositionY = foodPositionY;
     }
 
     public int getFoodColor() {

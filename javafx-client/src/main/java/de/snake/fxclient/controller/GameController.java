@@ -1,9 +1,7 @@
 package de.snake.fxclient.controller;
 
 import de.snake.fxclient.domain.User;
-import de.snake.fxclient.game.Playground;
-import de.snake.fxclient.game.ScreenText;
-import de.snake.fxclient.game.SnakeBodyPart;
+import de.snake.fxclient.game.*;
 import de.snake.fxclient.websocket.Message;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -23,13 +21,11 @@ import org.springframework.stereotype.Component;
 @FxmlView("game-stage.fxml")
 public class GameController {
 
-    static int cornersize = 25;
-
-    static Dir direction;
     private final BackgroundController backgroundController;
     private final User user;
     private final Playground playground;
     private final ScreenText screenText;
+    private SnakeDirection direction;
     @FXML
     private Label testMessage;
     @FXML
@@ -51,30 +47,29 @@ public class GameController {
         Scene scene = backgroundController.getViewHolder().getParent().getScene();
         scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             if (key.getCode() == KeyCode.UP) {
-                direction = Dir.up;
+                direction = SnakeDirection.UP;
             }
             if (key.getCode() == KeyCode.LEFT) {
-                direction = Dir.left;
+                direction = SnakeDirection.LEFT;
             }
             if (key.getCode() == KeyCode.DOWN) {
-                direction = Dir.down;
+                direction = SnakeDirection.DOWN;
             }
             if (key.getCode() == KeyCode.RIGHT) {
-                direction = Dir.right;
+                direction = SnakeDirection.RIGHT;
             }
             session.send("/app/direction" + user.getPlayerId(), direction);
 
         });
-
         gc = gameCanvas.getGraphicsContext2D();
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, playground.getWidth() * playground.getSnakeBodySize(), playground.getHeight() * playground.getSnakeBodySize());
-
+        drawBackground();
     }
+
 
     public void initializeGame() {
         session = user.getSession();
-        session.send("/app/playerId", getSampleMessage());
+        //session.send("/app/playerId", getSampleMessage());
+        session.send("/app/playerId", "connect");
     }
 
     public void startGame() {
@@ -90,38 +85,45 @@ public class GameController {
     }
 
     public void updateScreenText() {
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, playground.getWidth() * playground.getSnakeBodySize(), playground.getHeight() * playground.getSnakeBodySize());
-
-
-        gc.setFill(Color.RED);
-        gc.setFont(new Font("", 30));
-        gc.fillText(screenText.getPlayerText(), 100, 250);
+        drawBackground();
+        drawScreenText();
     }
 
     public void updatePlayground() {
-        //    public void update(GraphicsContext gc) {
-        // session.send("/app/snake", getSampleMessage());
         if (playground.isGameOver()) {
             gc.setFill(Color.RED);
             gc.setFont(new Font("", 50));
             gc.fillText("GAME OVER", 100, 250);
             return;
         }
+        drawBackground();
+        drawScore();
+        drawFood();
+        drawSnake(playground.getSnake1(), Color.LIGHTGREEN, Color.GREEN);
+        drawSnake(playground.getSnake2(), Color.LIGHTBLUE, Color.BLUE);
+    }
 
+    public void drawSnake(Snake snake, Color colorBack, Color colorFront) {
+        for (SnakeBodyPart c : snake.getSnakeBody()) {
+            gc.setFill(colorBack);
+            gc.fillRect(c.getPositionX() * playground.getSnakeBodySize(), c.getPositionY() * playground.getSnakeBodySize(), playground.getSnakeBodySize() - 1, playground.getSnakeBodySize() - 1);
+            gc.setFill(colorFront);
+            gc.fillRect(c.getPositionX() * playground.getSnakeBodySize(), c.getPositionY() * playground.getSnakeBodySize(), playground.getSnakeBodySize() - 2, playground.getSnakeBodySize() - 2);
+        }
+    }
 
-//
-//
-
-        // background
+    public void drawBackground() {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, playground.getWidth() * playground.getSnakeBodySize(), playground.getHeight() * playground.getSnakeBodySize());
+    }
 
-        // score
-        gc.setFill(Color.WHITE);
+    public void drawScreenText() {
+        gc.setFill(Color.RED);
         gc.setFont(new Font("", 30));
-        //gc.fillText("Score: " + (speed - 6), 10, 30);
+        gc.fillText(screenText.getPlayerText(), 100, 250);
+    }
 
+    public void drawFood() {
         // random foodcolor
         Color cc = Color.WHITE;
 
@@ -143,24 +145,16 @@ public class GameController {
                 break;
         }
         gc.setFill(cc);
-        gc.fillOval(playground.getFood().getFoodX() * playground.getSnakeBodySize(), playground.getFood().getFoodY() * playground.getSnakeBodySize(), playground.getSnakeBodySize(), playground.getSnakeBodySize());
+        gc.fillOval(playground.getFood().getFoodPositionX() * playground.getSnakeBodySize(), playground.getFood().getFoodPositionY() * playground.getSnakeBodySize(), playground.getSnakeBodySize(), playground.getSnakeBodySize());
 
 
-//        // snake
-        for (SnakeBodyPart c : playground.getSnake1().getSnakeBody()) {
-            gc.setFill(Color.LIGHTGREEN);
-            gc.fillRect(c.getX() * cornersize, c.getY() * cornersize, cornersize - 1, cornersize - 1);
-            gc.setFill(Color.GREEN);
-            gc.fillRect(c.getX() * cornersize, c.getY() * cornersize, cornersize - 2, cornersize - 2);
+    }
 
-        }
-        for (SnakeBodyPart c : playground.getSnake2().getSnakeBody()) {
-            gc.setFill(Color.LIGHTBLUE);
-            gc.fillRect(c.getX() * cornersize, c.getY() * cornersize, cornersize - 1, cornersize - 1);
-            gc.setFill(Color.BLUE);
-            gc.fillRect(c.getX() * cornersize, c.getY() * cornersize, cornersize - 2, cornersize - 2);
-
-        }
+    public void drawScore() {
+        // score
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font("", 30));
+        //gc.fillText("Score: " + (speed - 6), 10, 30);
     }
 
     private Message getSampleMessage() {
@@ -182,7 +176,5 @@ public class GameController {
         session.send("/app/message", getSampleMessage());
     }
 
-    public enum Dir {
-        left, right, up, down
-    }
+
 }

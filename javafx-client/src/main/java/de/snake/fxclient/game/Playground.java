@@ -2,15 +2,14 @@ package de.snake.fxclient.game;
 
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 
 @Component
 public class Playground implements Serializable {
 
-    private int width = 20;
-    private int height = 20;
-    private int snakeBodySize = 25;
+    private int width = 40;
+    private int height = 40;
+    private int snakeBodySize = 20;
     private Snake snake1;
     private Snake snake2;
     private Food food;

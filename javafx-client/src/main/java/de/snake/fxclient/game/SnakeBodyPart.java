@@ -1,30 +1,30 @@
 package de.snake.fxclient.game;
 
 public class SnakeBodyPart {
-    private int x;
-    private int y;
+    private int PositionX;
+    private int PositionY;
 
-    public SnakeBodyPart(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public SnakeBodyPart(int PositionX, int PositionY) {
+        this.PositionX = PositionX;
+        this.PositionY = PositionY;
     }
 
     public SnakeBodyPart() {
     }
 
-    public int getX() {
-        return x;
+    public int getPositionX() {
+        return PositionX;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setPositionX(int positionX) {
+        this.PositionX = positionX;
     }
 
-    public int getY() {
-        return y;
+    public int getPositionY() {
+        return PositionY;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setPositionY(int positionY) {
+        this.PositionY = positionY;
     }
 }

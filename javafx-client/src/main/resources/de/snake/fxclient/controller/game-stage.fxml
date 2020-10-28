@@ -19,7 +19,7 @@
     <TextField fx:id="chatMess" promptText="enter Chat Message" styleClass="input"></TextField>
     <Button onAction="#submitMessage" text="submitMessage" styleClass="button-raised"></Button>
     <Button onAction="#initializeGame" text="start Game" styleClass="button-raised"></Button>
-    <Canvas fx:id="gameCanvas" height="500.0" width="500.0" />
+    <Canvas fx:id="gameCanvas" height="800.0" width="800.0" />
     <Button onAction="#restartGame" text="restart Game" styleClass="button-raised"></Button>
 
 </VBox>

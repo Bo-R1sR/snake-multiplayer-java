@@ -3,24 +3,24 @@ package de.snake.fxclient.game;
 import java.io.Serializable;
 
 public class Food implements Serializable {
-    private int foodX;
-    private int foodY;
+    private int foodPositionX;
+    private int foodPositionY;
     private int foodColor;
 
-    public int getFoodX() {
-        return foodX;
+    public int getFoodPositionX() {
+        return foodPositionX;
     }
 
-    public void setFoodX(int foodX) {
-        this.foodX = foodX;
+    public void setFoodPositionX(int foodPositionX) {
+        this.foodPositionX = foodPositionX;
     }
 
-    public int getFoodY() {
-        return foodY;
+    public int getFoodPositionY() {
+        return foodPositionY;
     }
 
-    public void setFoodY(int foodY) {
-        this.foodY = foodY;
+    public void setFoodPositionY(int foodPositionY) {
+        this.foodPositionY = foodPositionY;
     }
 
     public int getFoodColor() {

@@ -2,46 +2,21 @@ package de.snake.server.game;
 
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 
 @Component
 public class Playground implements Serializable {
-//
-//    private final Snake snake1;
-//    private final Snake snake2;
-//
-//
-//    public Playground(Snake snake1, Snake snake2) {
-//        this.snake1 = snake1;
-//        this.snake2 = snake2;
-//    }
-//
-//    public Snake getSnake1() {
-//        return snake1;
-//    }
-//
-//    public Snake getSnake2() {
-//        return snake2;
-//    }
-private Snake snake1;
 
-    private Snake snake2;
+    private int width = 40;
+    private int height = 40;
+    private int snakeBodySize = 20;
+    private Snake snake1 = new Snake(3, width / 2, height / 2 + 5);
+    private Snake snake2 = new Snake(3, width / 2, height / 2 - 5);
+    private Food food = new Food(width/2, height/2);
+    private boolean gameOver = false;
 
-    private Food food;
+    public Playground() {
 
-    private boolean gameOver;
-
-    public Playground(){
-
-    }
-
-    @PostConstruct
-    public void init() {
-        snake1 = new Snake(11);
-        snake2 = new Snake(9);
-        food = new Food();
-        gameOver = false;
     }
 
     public Snake getSnake1() {
@@ -74,5 +49,29 @@ private Snake snake1;
 
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getSnakeBodySize() {
+        return snakeBodySize;
+    }
+
+    public void setSnakeBodySize(int snakeBodySize) {
+        this.snakeBodySize = snakeBodySize;
     }
 }
