@@ -194,14 +194,14 @@ public class GameController {
             // todo : maybe exclude to own threads per snake
             checkSnakeAgainstFood(playground.getSnake1());
             if (!playground.getSnake1().isImmortal()) {
-                checkSnakeAgainstSelf(playground.getSnake1());
-                checkSnakeAgainstOther(playground.getSnake2(), playground.getSnake1());
+               // checkSnakeAgainstSelf(playground.getSnake1());
+               checkSnakeAgainstOther(playground.getSnake2(), playground.getSnake1());
             }
             // todo : maybe exclude to own threads per snake
             checkSnakeAgainstFood(playground.getSnake2());
             if (!playground.getSnake2().isImmortal()) {
-                checkSnakeAgainstSelf(playground.getSnake2());
-                checkSnakeAgainstOther(playground.getSnake1(), playground.getSnake2());
+               // checkSnakeAgainstSelf(playground.getSnake2());
+               checkSnakeAgainstOther(playground.getSnake1(), playground.getSnake2());
             }
              // send modified playground to client
             template.convertAndSend("/topic/playground", playground);
