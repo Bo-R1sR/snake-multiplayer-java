@@ -5,10 +5,12 @@ import java.io.Serializable;
 public class SnakeBodyPart implements Serializable {
     private int positionX;
     private int PositionY;
+    private int color;
 
-    public SnakeBodyPart(int positionX, int PositionY) {
+    public SnakeBodyPart(int positionX, int PositionY, int color) {
         this.positionX = positionX;
         this.PositionY = PositionY;
+        this.color = color;
     }
 
     public int getPositionX() {
@@ -41,5 +43,13 @@ public class SnakeBodyPart implements Serializable {
 
     public void increaseY() {
         this.PositionY++;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }

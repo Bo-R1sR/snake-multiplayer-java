@@ -1,7 +1,5 @@
 package de.snake.server.game;
 
-import javafx.scene.paint.Color;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +13,7 @@ public class Snake implements Serializable {
 
     public Snake(int numberBodyParts, int positionX, int positionY) {
         for (int i = 1; i <= numberBodyParts; i++) {
-            snakeBody.add(new SnakeBodyPart(positionX, positionY));
+            snakeBody.add(new SnakeBodyPart(positionX, positionY, 0));
         }
     }
 

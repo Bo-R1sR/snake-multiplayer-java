@@ -3,14 +3,7 @@ package de.snake.fxclient.game;
 public class SnakeBodyPart {
     private int PositionX;
     private int PositionY;
-
-    public SnakeBodyPart(int PositionX, int PositionY) {
-        this.PositionX = PositionX;
-        this.PositionY = PositionY;
-    }
-
-    public SnakeBodyPart() {
-    }
+    private int color;
 
     public int getPositionX() {
         return PositionX;
@@ -26,5 +19,13 @@ public class SnakeBodyPart {
 
     public void setPositionY(int positionY) {
         this.PositionY = positionY;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }

@@ -81,6 +81,7 @@ public class GameController {
     }
 
     public void restartGame() {
+        session.send("/app/playerRestart/" + user.getPlayerId(), getSampleMessage());
 
     }
 
@@ -98,10 +99,11 @@ public class GameController {
         }
         drawBackground();
         drawScore();
-        drawFood();
+
 
         drawSnake(playground.getSnake1(), Color.LIGHTGREEN, Color.GREEN);
         drawSnake(playground.getSnake2(), Color.LIGHTBLUE, Color.BLUE);
+        drawFood();
     }
 
     public void drawSnake(Snake snake, Color colorBack, Color colorFront) {
@@ -110,10 +112,14 @@ public class GameController {
             gc.fillRect(c.getPositionX() * playground.getSnakeBodySize(), c.getPositionY() * playground.getSnakeBodySize(), playground.getSnakeBodySize() - 1, playground.getSnakeBodySize() - 1);
             gc.setFill(colorFront);
             gc.fillRect(c.getPositionX() * playground.getSnakeBodySize(), c.getPositionY() * playground.getSnakeBodySize(), playground.getSnakeBodySize() - 2, playground.getSnakeBodySize() - 2);
-            if (snake.isImmortal()) {
+            if (c.getColor() == 1) {
+                gc.setFill(Color.PURPLE);
+                gc.fillOval(c.getPositionX() * playground.getSnakeBodySize(), c.getPositionY() * playground.getSnakeBodySize(), playground.getSnakeBodySize() - 2, playground.getSnakeBodySize() - 2);
+            }
 
+            if (snake.isImmortal()) {
                 gc.setFill(Color.YELLOW);
-                gc.fillOval(c.getPositionX() * playground.getSnakeBodySize(), c.getPositionY() * playground.getSnakeBodySize(), playground.getSnakeBodySize() -2, playground.getSnakeBodySize() - 2);
+                gc.fillOval(c.getPositionX() * playground.getSnakeBodySize(), c.getPositionY() * playground.getSnakeBodySize(), playground.getSnakeBodySize() - 2, playground.getSnakeBodySize() - 2);
             }
 
         }

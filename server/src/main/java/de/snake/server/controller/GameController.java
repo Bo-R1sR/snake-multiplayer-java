@@ -1,11 +1,13 @@
 package de.snake.server.controller;
 
 import de.snake.server.game.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,6 +27,8 @@ public class GameController {
     private int speed = 500;
     private SnakeDirection direction1 = SnakeDirection.LEFT;
     private SnakeDirection direction2 = SnakeDirection.RIGHT;
+
+    private int counter;
 
 
     public GameController(Playground playground, ScreenText screenText, SimpMessagingTemplate template) {
@@ -50,9 +54,38 @@ public class GameController {
 
         //todo || auf &&
         if (player1active || player2active) {
+
+
             startCounter();
         } else {
             screenText.setPlayerText("waiting for another Player to join");
+
+            this.template.convertAndSend("/topic/screenText", screenText);
+        }
+    }
+
+    @MessageMapping("/playerRestart/{id}")
+    public void waitForAllPlayers2(@DestinationVariable int id) throws InterruptedException {
+        if (id == 1) player1active = true;
+        if (id == 2) player2active = true;
+
+        //todo || auf &&
+        if (player1active || player2active) {
+            speed = 500;
+            direction1 = SnakeDirection.LEFT;
+            direction2 = SnakeDirection.RIGHT;
+            counter = 0;
+            int width = playground.getWidth();
+            int height = playground.getHeight();
+            playground.setGameOver(false);
+            playground.setSnake1(new Snake(30, width / 2, height / 2 + 5));
+            playground.setSnake2(new Snake(30, width / 2, height / 2 - 5));
+            playground.setFood(new Food(width / 2, height / 2));
+
+
+            startCounter();
+        } else {
+            screenText.setPlayerText("waiting for other Player to restart");
 
             this.template.convertAndSend("/topic/screenText", screenText);
         }
@@ -105,63 +138,92 @@ public class GameController {
         switch (direction) {
             case UP:
                 snakeHead.decreaseY();
-//                if (snake.get(0).y < 0) {
-//                    gameOver = true;
-//                }
+                if (snakeHead.getPositionY() < 0) {
+                    setGameOver();
+                }
                 break;
             case DOWN:
                 snakeHead.increaseY();
-//                if (snake.get(0).y > height) {
-//                    gameOver = true;
-//                }
+                if (snakeHead.getPositionY() > playground.getHeight() - 1) {
+                    setGameOver();
+                }
                 break;
             case LEFT:
                 snakeHead.decreaseX();
-//                if (snake.get(0).x < 0) {
-//                    gameOver = true;
-//                }
+                if (snakeHead.getPositionX() < 0) {
+                    setGameOver();
+                }
                 break;
             case RIGHT:
                 snakeHead.increaseX();
-//                if (snake.get(0).x > width) {
-//                    gameOver = true;
-//                }
+                if (snakeHead.getPositionX() > playground.getWidth() - 1) {
+                    setGameOver();
+                }
                 break;
         }
     }
 
-//    public class ImmortalResetTask(Snake snake) extends TimerTask {
-//
-//        @Override
-//        public void run() {
-//              = false;
-//        }
-//    }
+    public void setGameOver() {
+        playground.setGameOver(true);
+        refreshTimer.cancel();
+    }
 
     public class SnakeUpdateTask extends TimerTask {
 
         @Override
         public void run() {
+
+
             updateSnake(playground.getSnake1(), direction1);
+
+            counter++;
+            if (counter < 10) {
+                direction2 = SnakeDirection.RIGHT;
+            } else if (counter < 20) {
+                direction2 = SnakeDirection.UP;
+            } else if (counter < 30) {
+                direction2 = SnakeDirection.LEFT;
+            } else if (counter < 40) {
+                direction2 = SnakeDirection.DOWN;
+            } else {
+                counter = 0;
+            }
+
+
             updateSnake(playground.getSnake2(), direction2);
 
             checkSnakeAgainstFood(playground.getSnake1());
             checkSnakeAgainstFood(playground.getSnake2());
 
-            if(!playground.getSnake1().isImmortal()) {
+            if (!playground.getSnake1().isImmortal()) {
                 checkSnakeAgainstSelf(playground.getSnake1());
             }
-            if(!playground.getSnake2().isImmortal()) {
+            if (!playground.getSnake2().isImmortal()) {
                 checkSnakeAgainstSelf(playground.getSnake2());
             }
+            if (!playground.getSnake2().isImmortal()) {
+                checkSnakeAgainstOther(playground.getSnake1(), playground.getSnake2());
+            }
+            if (!playground.getSnake1().isImmortal()) {
+                checkSnakeAgainstOther(playground.getSnake2(), playground.getSnake1());
+            }
+
 
             template.convertAndSend("/topic/playground", playground);
         }
 
         public void checkSnakeAgainstFood(Snake snake) {
-            if (playground.getFood().getFoodPositionX() == snake.getSnakeBody().get(0).getPositionX() &&
-                    playground.getFood().getFoodPositionY() == snake.getSnakeBody().get(0).getPositionY()) {
-                snake.getSnakeBody().add(new SnakeBodyPart(-1, -1));
+            if (playground.getFood().getFoodPositionX() == snake.getSnakeBody().get(snake.getSnakeBody().size() - 1).getPositionX() &&
+                    playground.getFood().getFoodPositionY() == snake.getSnakeBody().get(snake.getSnakeBody().size() - 1).getPositionY()) {
+
+
+                if (playground.getFood().getFoodColor() == 0) {
+                    snake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 1));
+                } else {
+                    snake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 0));
+                }
+
+
                 snake.setLastFoodColor(playground.getFood().getFoodColor());
                 if (snake.getLastFoodColor() == 2) {
 
@@ -186,10 +248,44 @@ public class GameController {
                     e.printStackTrace();
                 }
 
+            }
+        }
 
+        // snake 2 is target
+        public void checkSnakeAgainstOther(Snake hittingSnake, Snake targetSnake) {
+            Snake snakeFrontTargetSnake = new Snake(0, -1, -1);
+            //Snake snakeBackTargetSnake = new Snake(0, -1, -1);
+            //Snake snakeFrontHittingSnake = new Snake(0, -1, -1);
+            //Snake snakeBackHittingSnake = new Snake(0, -1, -1);
+
+            int lastIndexTargetSnake = targetSnake.getSnakeBody().size();
+            //int lastIndexHittingSnake = hittingSnake.getSnakeBody().size();
+
+            for (int i = 0; i < targetSnake.getSnakeBody().size(); i++) {
+                if (hittingSnake.getSnakeBody().get(0).getPositionX() == targetSnake.getSnakeBody().get(i).getPositionX() &&
+                        hittingSnake.getSnakeBody().get(0).getPositionY() == targetSnake.getSnakeBody().get(i).getPositionY()) {
+                    //   if (snake.getSnakeBody().get(i).getColor() == 1) {
+                    if (true) {
+
+                        List<SnakeBodyPart> sbp_tf = targetSnake.getSnakeBody().subList(0, i - 1);
+                        List<SnakeBodyPart> sbp_tb = targetSnake.getSnakeBody().subList(i, lastIndexTargetSnake);
+                        //List<SnakeBodyPart> sbp_hf = hittingSnake.getSnakeBody().subList(0, 1);
+                        //List<SnakeBodyPart> sbp_hb = hittingSnake.getSnakeBody().subList(1, lastIndexHittingSnake);
+
+                        //snakeFrontHittingSnake.setSnakeBody(sbp_hf);
+                        //snakeBackHittingSnake.setSnakeBody(sbp_hb);
+                        snakeFrontTargetSnake.setSnakeBody(sbp_tf);
+                        //snakeBackTargetSnake.setSnakeBody(sbp_tb);
+                        BeanUtils.copyProperties(snakeFrontTargetSnake, targetSnake);
+                        hittingSnake.getSnakeBody().addAll(1, sbp_tb);
+
+
+                    } else {
+                        setGameOver();
+                    }
+                }
             }
 
-            //playground.getFood().getFoodColor();
 
         }
 
@@ -197,11 +293,11 @@ public class GameController {
             for (int i = 1; i < snake.getSnakeBody().size(); i++) {
                 if (snake.getSnakeBody().get(0).getPositionX() == snake.getSnakeBody().get(i).getPositionX() &&
                         snake.getSnakeBody().get(0).getPositionY() == snake.getSnakeBody().get(i).getPositionY()) {
-                    playground.setGameOver(true);
-                    refreshTimer.cancel();
+                    setGameOver();
                 }
             }
         }
+
 
         public void createNewFood() throws InterruptedException {
             Snake totalSnake = new Snake(0, -1, -1);
@@ -223,7 +319,7 @@ public class GameController {
                 speed += 10;
                 refreshTimer.cancel();
 
-                playground.getFood().setFoodColor(rand.nextInt(3));
+                playground.getFood().setFoodColor(rand.nextInt(2));
                 playground.getFood().setFoodPositionX(foodX);
                 playground.getFood().setFoodPositionY(foodY);
                 startRefreshingCanvas();

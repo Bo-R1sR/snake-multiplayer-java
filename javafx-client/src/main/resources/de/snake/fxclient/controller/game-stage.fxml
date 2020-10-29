@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
 <?import javafx.scene.canvas.Canvas?>
-<VBox fx:id="dialog" xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:id="dialog"
+      xmlns="http://javafx.com/javafx"
       fx:controller="de.snake.fxclient.controller.GameController">
 
     <HBox>
@@ -13,13 +13,12 @@
     </HBox>
 
 
-
     <Label fx:id="testMessage" visible="true">test</Label>
     <Button onAction="#back" text="back" styleClass="button-raised"></Button>
     <TextField fx:id="chatMess" promptText="enter Chat Message" styleClass="input"></TextField>
     <Button onAction="#submitMessage" text="submitMessage" styleClass="button-raised"></Button>
     <Button onAction="#initializeGame" text="start Game" styleClass="button-raised"></Button>
-    <Canvas fx:id="gameCanvas" height="800.0" width="800.0" />
+    <Canvas fx:id="gameCanvas" height="800.0" width="800.0"/>
     <Button onAction="#restartGame" text="restart Game" styleClass="button-raised"></Button>
 
 </VBox>
