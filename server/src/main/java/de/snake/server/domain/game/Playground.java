@@ -1,4 +1,4 @@
-package de.snake.server.game;
+package de.snake.server.domain.game;
 
 import org.springframework.stereotype.Component;
 
@@ -10,14 +10,10 @@ public class Playground implements Serializable {
     private int width = 40;
     private int height = 40;
     private int snakeBodySize = 20;
-    private Snake snake1 = new Snake(30, width / 2, height / 2 + 5);
-    private Snake snake2 = new Snake(15, width / 2, height / 2 - 5);
-    private Food food = new Food(width / 2, height / 2);
-    private boolean gameOver = false;
-
-    public Playground() {
-
-    }
+    private Snake snake1;
+    private Snake snake2;
+    private Food food;
+    private boolean gameOver;
 
     public Snake getSnake1() {
         return snake1;

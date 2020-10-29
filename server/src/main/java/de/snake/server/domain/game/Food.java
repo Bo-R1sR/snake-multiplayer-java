@@ -1,8 +1,13 @@
-package de.snake.server.game;
+package de.snake.server.domain.game;
 
 import java.io.Serializable;
+import java.util.Random;
+
 
 public class Food implements Serializable {
+    Random rand = new Random();
+    private final int numberOfColors = 2;
+
     private int foodPositionX;
     private int foodPositionY;
     private int foodColor = 0;
@@ -10,6 +15,7 @@ public class Food implements Serializable {
     public Food(int foodPositionX, int foodPositionY) {
         this.foodPositionX = foodPositionX;
         this.foodPositionY = foodPositionY;
+        this.foodColor = rand.nextInt(numberOfColors);
     }
 
 

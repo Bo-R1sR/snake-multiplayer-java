@@ -1,4 +1,4 @@
-package de.snake.server.domain;
+package de.snake.server.domain.entity;
 
 import org.hibernate.annotations.Nationalized;
 import org.springframework.data.annotation.CreatedDate;

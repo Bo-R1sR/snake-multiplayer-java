@@ -1,16 +1,14 @@
 package de.snake.server.controller;
 
 import de.snake.server.domain.CreateUserRequest;
-import de.snake.server.domain.User;
+import de.snake.server.domain.entity.User;
 import de.snake.server.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
@@ -19,10 +17,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/create")
+    // handle post request to create new user
+    @PostMapping("/api/user/create")
     public ResponseEntity<User> createUser(@RequestBody CreateUserRequest createUserRequest) {
         return userService.createUser(createUserRequest);
     }
-
-
 }

@@ -1,7 +1,7 @@
 package de.snake.server.security;
 
 
-import de.snake.server.domain.User;
+import de.snake.server.domain.entity.User;
 import de.snake.server.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

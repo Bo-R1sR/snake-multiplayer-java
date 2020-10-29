@@ -1,4 +1,4 @@
-package de.snake.server.domain;
+package de.snake.server.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -10,11 +10,9 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty
     private long id;
 
     @Column(nullable = false, unique = true)
-    @JsonProperty
     private String username;
 
     @JsonProperty(access = Access.WRITE_ONLY)

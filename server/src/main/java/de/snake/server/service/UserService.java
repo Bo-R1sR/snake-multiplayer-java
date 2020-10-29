@@ -1,7 +1,7 @@
 package de.snake.server.service;
 
 import de.snake.server.domain.CreateUserRequest;
-import de.snake.server.domain.User;
+import de.snake.server.domain.entity.User;
 import de.snake.server.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

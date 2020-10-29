@@ -15,9 +15,7 @@ import java.util.Date;
 @Controller
 public class ChatController {
 
-    private int numberOfConnections = 0;
-
-
+    // todo: how to include chat
     @MessageMapping("/message")
     @SendTo("/topic/messages")
     public OutputMessage send(Message message, SimpMessageHeaderAccessor headerAccessor) {
@@ -25,11 +23,4 @@ public class ChatController {
         final String time = new SimpleDateFormat("HH:mm").format(new Date());
         return new OutputMessage(sender.getName(), message.getText(), time);
     }
-
-    @MessageMapping("/playerId")
-    @SendToUser(destinations = "/queue/playerId", broadcast = false)
-    public Integer sendID() {
-        return ++numberOfConnections;
-    }
-
 }

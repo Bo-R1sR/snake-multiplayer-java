@@ -1,4 +1,4 @@
-package de.snake.server.game;
+package de.snake.server.domain.game;
 
 import java.io.Serializable;
 import java.util.ArrayList;

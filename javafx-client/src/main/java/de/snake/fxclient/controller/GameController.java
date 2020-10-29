@@ -35,11 +35,11 @@ public class GameController {
     private GraphicsContext gc;
     private StompSession session;
 
-    public GameController(BackgroundController backgroundController, User user, Playground playground, ScreenText screenText) {
+    public GameController(BackgroundController backgroundController, User user, Playground playground, ScreenText screenText, de.snake.fxclient.game.Playground playground1, de.snake.fxclient.game.ScreenText screenText1) {
         this.backgroundController = backgroundController;
         this.user = user;
-        this.playground = playground;
-        this.screenText = screenText;
+        this.playground = playground1;
+        this.screenText = screenText1;
     }
 
     @FXML
@@ -65,24 +65,21 @@ public class GameController {
         drawBackground();
     }
 
-
-    public void initializeGame() {
-        session = user.getSession();
-        //session.send("/app/playerId", getSampleMessage());
-        session.send("/app/playerId", "connect");
-    }
-
-    public void startGame() {
-        session.send("/app/playerActive/" + user.getPlayerId(), getSampleMessage());
-    }
-
     public void back() {
         backgroundController.changeView(MainController.class);
     }
 
-    public void restartGame() {
-        session.send("/app/playerRestart/" + user.getPlayerId(), getSampleMessage());
+    public void initializeGame() {
+        session = user.getSession();
+        session.send("/app/playerId", "connect");
+    }
 
+    public void startGame() {
+        session.send("/app/playerActive/" + user.getPlayerId(), "connect");
+    }
+
+    public void restartGame() {
+        session.send("/app/playerRestart/" + user.getPlayerId(), "connect");
     }
 
     public void updateScreenText() {
@@ -99,8 +96,6 @@ public class GameController {
         }
         drawBackground();
         drawScore();
-
-
         drawSnake(playground.getSnake1(), Color.LIGHTGREEN, Color.GREEN);
         drawSnake(playground.getSnake2(), Color.LIGHTBLUE, Color.BLUE);
         drawFood();
@@ -170,6 +165,7 @@ public class GameController {
         //gc.fillText("Score: " + (speed - 6), 10, 30);
     }
 
+    // todo chat functionality
     private Message getSampleMessage() {
         Message msg = new Message();
         msg.setText(chatMess.getText());

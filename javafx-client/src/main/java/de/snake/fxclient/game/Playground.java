@@ -18,6 +18,30 @@ public class Playground implements Serializable {
     public Playground() {
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getSnakeBodySize() {
+        return snakeBodySize;
+    }
+
+    public void setSnakeBodySize(int snakeBodySize) {
+        this.snakeBodySize = snakeBodySize;
+    }
+
     public Snake getSnake1() {
         return snake1;
     }
@@ -48,29 +72,5 @@ public class Playground implements Serializable {
 
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public int getSnakeBodySize() {
-        return snakeBodySize;
-    }
-
-    public void setSnakeBodySize(int snakeBodySize) {
-        this.snakeBodySize = snakeBodySize;
     }
 }

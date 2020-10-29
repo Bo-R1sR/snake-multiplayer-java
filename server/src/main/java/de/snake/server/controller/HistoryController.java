@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/history")
 public class HistoryController {
 
+    //todo History Features
+
     private final HistoryService historyService;
 
     public HistoryController(HistoryService historyService) {

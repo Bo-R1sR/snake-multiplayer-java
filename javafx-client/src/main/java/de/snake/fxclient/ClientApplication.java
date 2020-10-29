@@ -14,16 +14,6 @@ public class ClientApplication {
         Application.launch(JavaFxApplication.class, args);
     }
 
-//    @Bean
-//    public Snake snake1() {
-//        return new Snake();
-//    }
-//
-//    @Bean
-//    public Snake snake2() {
-//        return new Snake();
-//    }
-
     @Bean
     public WebSocketStompClient webSocketStompClient() {
         return new WebSocketStompClient(new StandardWebSocketClient());
