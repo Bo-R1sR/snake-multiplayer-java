@@ -29,7 +29,9 @@ public class JavaFxApplication extends Application {
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(BackgroundController.class);
         Scene scene = new Scene(root, 1000, 1000);
-        stage.setTitle("Snake the GAME");
+        stage.setTitle("Snake Multiplayer");
+        stage.setMinHeight(700);
+        stage.setMinWidth(700);
         stage.setScene(scene);
         stage.show();
     }

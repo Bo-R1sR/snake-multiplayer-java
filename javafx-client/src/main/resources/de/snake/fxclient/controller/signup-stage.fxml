@@ -1,24 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.HBox?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns:fx="http://javafx.com/fxml" fx:id="dialog"
-      xmlns="http://javafx.com/javafx"
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="dialog" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="de.snake.fxclient.controller.SignupController">
-
-    <HBox>
-        <Label>Sign up</Label>
-    </HBox>
-    <TextField fx:id="username" promptText="Username" styleClass="input"></TextField>
-    <PasswordField fx:id="password" promptText="Passwort" styleClass="input"></PasswordField>
-    <PasswordField fx:id="confirmPassword" promptText="Passwort Confirmation" styleClass="input"></PasswordField>
-
-    <Button onAction="#signupAction" text="SIGNUP" styleClass="button-raised"></Button>
-
-    <Label fx:id="signupFailure" visible="false">signup error</Label>
-
-    <Button onAction="#backToLoginPage" text="back to Login Page" styleClass="button-raised"></Button>
-
-
+   <padding>
+      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
+   </padding>
+   <Label alignment="CENTER" text="Registrieren" textAlignment="CENTER">
+      <font>
+         <Font name="System Bold" size="24.0"/>
+      </font>
+   </Label>
+   <JFXTextField fx:id="username" focusColor="#3fa849" prefWidth="345.0" promptText="Username">
+      <VBox.margin>
+         <Insets top="25.0"/>
+      </VBox.margin>
+   </JFXTextField>
+   <JFXPasswordField fx:id="password" focusColor="#3fa849" promptText="Passwort">
+      <VBox.margin>
+         <Insets top="10.0"/>
+      </VBox.margin>
+   </JFXPasswordField>
+   <JFXPasswordField fx:id="confirmPassword" focusColor="#3fa849" promptText="Passwort bestätigen">
+      <VBox.margin>
+         <Insets top="10.0"/>
+      </VBox.margin>
+   </JFXPasswordField>
+   <JFXButton onAction="#signupAction" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Registrieren">
+      <VBox.margin>
+         <Insets top="25.0"/>
+      </VBox.margin>
+   </JFXButton>
+   <Label fx:id="signupFailure" text="Fehler bei der Registrierung" textFill="RED" visible="false">
+      <VBox.margin>
+         <Insets top="10.0"/>
+      </VBox.margin>
+   </Label>
+   <JFXButton onAction="#backToLoginPage" prefWidth="111.0" style="-fx-background-color: gainsboro;"
+              text="Zurück zum Login">
+      <VBox.margin>
+         <Insets top="40.0"/>
+      </VBox.margin>
+   </JFXButton>
 </VBox>

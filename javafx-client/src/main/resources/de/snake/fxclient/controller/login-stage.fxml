@@ -1,21 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.HBox?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns:fx="http://javafx.com/fxml" fx:id="dialog"
-      xmlns="http://javafx.com/javafx"
-      fx:controller="de.snake.fxclient.controller.LoginController">
+<?import javafx.scene.text.Font?>
 
-    <HBox>
-        <Label>Anmelden</Label>
-    </HBox>
-    <TextField fx:id="username" promptText="Username" styleClass="input"></TextField>
-    <PasswordField fx:id="password" promptText="Passwort" styleClass="input"></PasswordField>
+<VBox fx:id="dialog" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.snake.fxclient.controller.LoginController">
+     <Label text="Anmelden">
+      <font>
+         <Font name="System Bold" size="24.0" />
+      </font>
+   </Label>
+   <JFXTextField fx:id="username" focusColor="#3fa849" promptText="Username">
+      <VBox.margin>
+         <Insets top="25.0" />
+      </VBox.margin>
+   </JFXTextField>
+   <JFXPasswordField fx:id="password" focusColor="#3fa849" promptText="Passwort">
+      <VBox.margin>
+         <Insets top="10.0" />
+      </VBox.margin>
+   </JFXPasswordField>
+   <JFXButton onAction="#loginAction" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Einloggen">
+      <VBox.margin>
+         <Insets top="25.0" />
+      </VBox.margin>
+   </JFXButton>
 
-    <Button onAction="#loginAction" text="LOGIN" styleClass="button-raised"></Button>
-
-    <Label fx:id="loginFailure" visible="false">login fehlgeschlagen!</Label>
-
-    <Button onAction="#goToSignup" text="Signup first" styleClass="button-raised"></Button>
+    <Label fx:id="loginFailure" text="Login fehlgeschlagen" textFill="RED" visible="false">login fehlgeschlagen!</Label>
+   <JFXButton onAction="#goToSignup" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Registrieren">
+      <VBox.margin>
+         <Insets top="10.0" />
+      </VBox.margin>
+   </JFXButton>
+   <padding>
+      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+   </padding>
 </VBox>
