@@ -44,26 +44,6 @@ public class GameController {
 
     @FXML
     public void initialize() {
-//        Scene scene = backgroundController.getViewHolder().getParent().getScene();
-//        List<Node> stackPane = backgroundController.getViewHolder().getChildren();
-//        Node erg = stackPane.get(0);
-//        scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-//        //stackPane.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-//            if (key.getCode() == KeyCode.UP) {
-//                direction = SnakeDirection.UP;
-//            }
-//            if (key.getCode() == KeyCode.LEFT) {
-//                direction = SnakeDirection.LEFT;
-//            }
-//            if (key.getCode() == KeyCode.DOWN) {
-//                direction = SnakeDirection.DOWN;
-//            }
-//            if (key.getCode() == KeyCode.RIGHT) {
-//                direction = SnakeDirection.RIGHT;
-//            }
-//            session.send("/app/direction" + user.getPlayerId(), direction);
-//
-//        });
         gc = gameCanvas.getGraphicsContext2D();
         drawBackground();
     }

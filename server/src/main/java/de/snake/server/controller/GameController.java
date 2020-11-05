@@ -36,6 +36,15 @@ public class GameController {
         this.screenText = screenText;
         this.template = template;
     }
+
+    public int getNumberOfConnections() {
+        return numberOfConnections;
+    }
+
+    public void setNumberOfConnections(int numberOfConnections) {
+        this.numberOfConnections = numberOfConnections;
+    }
+
     // count players and assign id 1 or 2 to player and send this id to client
     @MessageMapping("/playerId")
     @SendToUser(destinations = "/queue/playerId", broadcast = false)
