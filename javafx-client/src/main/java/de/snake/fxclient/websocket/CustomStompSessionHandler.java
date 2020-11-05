@@ -34,7 +34,6 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
     public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
         user.setSession(session);
         logger.info("New session established : " + session.getSessionId());
-
         session.subscribe("/user/queue/playerId", new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
@@ -43,7 +42,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                //logger.info("PlayerId " + payload);
+                logger.info("PlayerId " + payload);
 
                 Platform.runLater(() -> {
                     user.setPlayerId((Integer) payload);

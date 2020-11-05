@@ -33,4 +33,6 @@ public class CustomStompClient {
         handshakeHeaders.add("Authorization", user.getJsonWebToken());
         webSocketStompClient.connect("ws://" + serverIp + ":8080/game", handshakeHeaders, sessionHandler);
     }
+
+
 }

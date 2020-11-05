@@ -3,11 +3,11 @@ package de.snake.fxclient.controller;
 import de.snake.fxclient.domain.User;
 import de.snake.fxclient.game.*;
 import de.snake.fxclient.game.Message;
+import de.snake.fxclient.websocket.CustomStompClient;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -26,6 +26,7 @@ public class GameController {
     private final User user;
     private final Playground playground;
     private final ScreenText screenText;
+
     private SnakeDirection direction;
 //    @FXML
 //    private Label testMessage;
@@ -40,11 +41,13 @@ public class GameController {
     private GraphicsContext gc;
     private StompSession session;
 
-    public GameController(BackgroundController backgroundController, User user, Playground playground, ScreenText screenText, de.snake.fxclient.game.Playground playground1, de.snake.fxclient.game.ScreenText screenText1) {
+
+    public GameController(BackgroundController backgroundController, User user, Playground playground, ScreenText screenText, Playground playground1, ScreenText screenText1) {
         this.backgroundController = backgroundController;
         this.user = user;
         this.playground = playground1;
         this.screenText = screenText1;
+
     }
 
     @FXML
@@ -54,6 +57,9 @@ public class GameController {
     }
 
     public void back() {
+        if(user.getSession() != null) {
+            user.getSession().disconnect();
+        }
         backgroundController.changeView(MainController.class);
     }
 
@@ -79,6 +85,7 @@ public class GameController {
                 direction = SnakeDirection.RIGHT;
                 session.send("/app/direction" + user.getPlayerId(), direction);
             }
+            key.consume();
 
 
         });
@@ -90,7 +97,7 @@ public class GameController {
         session = user.getSession();
         initializeArrowKeys();
 
-        session.send("/app/playerId", "connect");
+        session.send("/app/playerId/" + user.getName(), "connect");
     }
 
     public void startGame() {

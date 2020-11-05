@@ -1,5 +1,6 @@
 package de.snake.server.controller;
 
+import de.snake.server.config.WebSocketEventListener;
 import de.snake.server.domain.game.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -7,11 +8,9 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.List;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 @Controller
 public class GameController {
@@ -20,6 +19,8 @@ public class GameController {
     private final ScreenText screenText;
     private final SimpMessagingTemplate template;
     private final Random rand = new Random();
+    private final WebSocketEventListener webSocketEventListener;
+
     private Timer refreshTimer;
     private Timer immortalTimer;
     private Boolean player1active = false;
@@ -27,14 +28,17 @@ public class GameController {
     private int speed;
     private SnakeDirection direction1;
     private SnakeDirection direction2;
+    // todo check for number not only counting
     private int numberOfConnections = 0;
     // todo delete after testing
     private int counter;
 
-    public GameController(Playground playground, ScreenText screenText, SimpMessagingTemplate template) {
+    public GameController(Playground playground, ScreenText screenText, SimpMessagingTemplate template, WebSocketEventListener webSocketEventListener) {
         this.playground = playground;
         this.screenText = screenText;
         this.template = template;
+
+        this.webSocketEventListener = webSocketEventListener;
     }
 
     public int getNumberOfConnections() {
@@ -46,10 +50,12 @@ public class GameController {
     }
 
     // count players and assign id 1 or 2 to player and send this id to client
-    @MessageMapping("/playerId")
+    @MessageMapping("/playerId/{username}")
     @SendToUser(destinations = "/queue/playerId", broadcast = false)
-    public Integer sendID() {
-        return ++numberOfConnections;
+    public Integer sendID(@DestinationVariable String username) {
+        HashMap<String, Integer> players = webSocketEventListener.getPlayers();
+        return players.get(username);
+//        return ++numberOfConnections;
     }
 
     // receive directions from player1
