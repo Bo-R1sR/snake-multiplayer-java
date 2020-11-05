@@ -49,17 +49,17 @@ public class LoginController {
             Integer response = loginTask.getValue();
 
             if (response == -2) {
-                loginFailure.setText("username and/or password can not be empty");
+                loginFailure.setText("Username und/oder Passwort kann nicht leer sein.");
                 loginFailure.setVisible(true);
             } else if (response == 200) {
                 backgroundController.changeView(MainController.class);
             } else if (response == 403) {
-                loginFailure.setText("username and/or password wrong");
+                loginFailure.setText("Username und/oder Passwort sind falsch.");
                 username.setText("");
                 password.setText("");
                 loginFailure.setVisible(true);
             } else {
-                loginFailure.setText("there was an unexpected error, please try again");
+                loginFailure.setText("Es gab einen unvorhersehbaren Fehler, bitte nochmal versuchen.");
                 username.setText("");
                 password.setText("");
                 loginFailure.setVisible(true);

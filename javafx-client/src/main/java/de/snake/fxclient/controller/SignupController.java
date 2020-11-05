@@ -50,22 +50,22 @@ public class SignupController {
             Integer response = signupTask.getValue();
 
             if (response == -2) {
-                signupFailure.setText("username and/or password can not be empty");
+                signupFailure.setText("Username und/oder Passwort können nicht leer sein.");
                 signupFailure.setVisible(true);
             } else if (response == -1) {
-                signupFailure.setText("passwords do not match");
+                signupFailure.setText("Passwörter stimmen nicht überein");
                 password.setText("");
                 confirmPassword.setText("");
                 signupFailure.setVisible(true);
             } else if (response == 400) {
-                signupFailure.setText("username " + user.getName() + " already taken");
+                signupFailure.setText("Username " + user.getName() + " schon vergeben.");
                 username.setText("");
                 signupFailure.setVisible(true);
             } else if (response == 200) {
                 user.reset();
                 backgroundController.changeView(LoginController.class);
             } else {
-                signupFailure.setText("there was an unexpected error, please try again");
+                signupFailure.setText("Es gab einen unvorhersehbaren Fehler, bitte nochmal versuchen.");
                 username.setText("");
                 password.setText("");
                 confirmPassword.setText("");
