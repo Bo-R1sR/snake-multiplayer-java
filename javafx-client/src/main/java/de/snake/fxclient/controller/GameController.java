@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -26,8 +27,12 @@ public class GameController {
     private final Playground playground;
     private final ScreenText screenText;
     private SnakeDirection direction;
+//    @FXML
+//    private Label testMessage;
+
     @FXML
-    private Label testMessage;
+    private TextArea chatArea;
+
     @FXML
     private TextField chatMess;
     @FXML
@@ -186,17 +191,23 @@ public class GameController {
         return msg;
     }
 
-    public Label getTestMessage() {
-        return testMessage;
-    }
+//    public Label getTestMessage() {
+//        return testMessage;
+//    }
+//
+//    public void setTestMessage(Label testMessage) {
+//        this.testMessage = testMessage;
+//    }
 
-    public void setTestMessage(Label testMessage) {
-        this.testMessage = testMessage;
+    public void appendChatMessage(String message) {
+        chatArea.appendText(message);
     }
 
     public void submitMessage() {
+
         session = user.getSession();
         session.send("/app/message", getNewMessage());
+        chatMess.setText("");
     }
 
 

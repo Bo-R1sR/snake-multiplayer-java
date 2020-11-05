@@ -90,9 +90,10 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
             public void handleFrame(StompHeaders headers, Object payload) {
                 InputMessage msg = (InputMessage) payload;
 
-                String outputFormat = "<" + msg.getTime() + " " + msg.getFrom() + "> " + msg.getText();
+                String outputFormat = System.lineSeparator() + "<" + msg.getTime() + " " + msg.getFrom() + "> " + msg.getText();
                 logger.info("Received message");
-                Platform.runLater(() -> gameController.getTestMessage().setText(outputFormat));
+                //Platform.runLater(() -> gameController.getTestMessage().setText(outputFormat));
+                Platform.runLater(() -> gameController.appendChatMessage(outputFormat));
             }
         });
     }

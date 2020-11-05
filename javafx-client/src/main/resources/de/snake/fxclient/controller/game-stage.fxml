@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import com.jfoenix.controls.JFXTextArea?>
 <VBox fx:id="dialog" alignment="TOP_CENTER" prefWidth="1600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.snake.fxclient.controller.GameController">
      <Label text="Snake Multiplayer">
       <font>
@@ -34,12 +35,15 @@
                <Insets top="10.0" />
             </VBox.margin></JFXButton>
 
-
+         <JFXTextArea fx:id="chatArea"/>
+         <!--
          <Label fx:id="testMessage" text="Test" visible="true">
+
             <VBox.margin>
                <Insets top="25.0" />
             </VBox.margin>
          </Label>
+   -->
       </VBox>
       <Canvas fx:id="gameCanvas" height="800.0" width="800.0">
          <HBox.margin>
