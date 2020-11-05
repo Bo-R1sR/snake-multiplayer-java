@@ -6,13 +6,17 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import de.snake.fxclient.domain.User;
 import javafx.concurrent.Task;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 public class LoginTask extends Task<Integer> {
 
     private final User user;
+    private final String serverIp;
 
-    public LoginTask(User user) {
+    public LoginTask(User user, String serverIp) {
         this.user = user;
+        this.serverIp = serverIp;
     }
 
     @Override
@@ -21,7 +25,7 @@ public class LoginTask extends Task<Integer> {
             return -2;
         }
 
-        String url = "http://localhost:8080" + "/login";
+        String url = "http://" + serverIp + ":8080" + "/login";
 
         JSONObject json = new JSONObject();
         json.put("username", user.getName());

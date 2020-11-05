@@ -10,9 +10,11 @@ import org.json.JSONObject;
 public class SignupTask extends Task<Integer> {
 
     private final User user;
+    private final String serverIp;
 
-    public SignupTask(User user) {
+    public SignupTask(User user, String serverIp) {
         this.user = user;
+        this.serverIp = serverIp;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class SignupTask extends Task<Integer> {
             return -1;
         }
 
-        String url = "http://localhost:8080" + "/api/user/create";
+        String url = "http://" + serverIp + ":8080" + "/api/user/create";
 
         JSONObject json = new JSONObject();
         json.put("username", user.getName());

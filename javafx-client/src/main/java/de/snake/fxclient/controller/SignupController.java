@@ -8,11 +8,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 @FxmlView("signup-stage.fxml")
 public class SignupController {
+
+    @Value("${server.ip}")
+    private String serverIp;
 
     private final User user;
     private final BackgroundController backgroundController;
@@ -36,7 +40,7 @@ public class SignupController {
         user.setPassword(password.getText());
         user.setConfirmPassword(confirmPassword.getText());
 
-        SignupTask signupTask = new SignupTask(user);
+        SignupTask signupTask = new SignupTask(user,serverIp);
         new Thread(signupTask).start();
 
         signupTask.setOnSucceeded((WorkerStateEvent e2) -> {

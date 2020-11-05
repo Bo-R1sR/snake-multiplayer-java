@@ -1,6 +1,7 @@
 package de.snake.fxclient.websocket;
 
 import de.snake.fxclient.domain.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHttpHeaders;
@@ -13,7 +14,9 @@ import java.net.URISyntaxException;
 @Component
 public class CustomStompClient {
 
-    private static final String URL = "ws://localhost:8080/game";
+    @Value("${server.ip}")
+    private String serverIp;
+
     private final WebSocketStompClient webSocketStompClient;
     private final CustomStompSessionHandler sessionHandler;
     private final User user;
@@ -28,6 +31,6 @@ public class CustomStompClient {
         webSocketStompClient.setMessageConverter(new MappingJackson2MessageConverter());
         WebSocketHttpHeaders handshakeHeaders = new WebSocketHttpHeaders();
         handshakeHeaders.add("Authorization", user.getJsonWebToken());
-        webSocketStompClient.connect(URL, handshakeHeaders, sessionHandler);
+        webSocketStompClient.connect("ws://" + serverIp + ":8080/game", handshakeHeaders, sessionHandler);
     }
 }
