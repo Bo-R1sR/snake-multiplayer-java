@@ -2,6 +2,7 @@ package de.snake.fxclient.websocket;
 
 import de.snake.fxclient.controller.GameController;
 import de.snake.fxclient.domain.User;
+import de.snake.fxclient.game.InputMessage;
 import de.snake.fxclient.game.Playground;
 import de.snake.fxclient.game.ScreenText;
 import javafx.application.Platform;
@@ -82,14 +83,16 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
         session.subscribe("/topic/messages", new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
-                return Message.class;
+                return InputMessage.class;
             }
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                Message msg = (Message) payload;
+                InputMessage msg = (InputMessage) payload;
+
+                String outputFormat = "<" + msg.getTime() + " " + msg.getFrom() + "> " + msg.getText();
                 logger.info("Received message");
-                Platform.runLater(() -> gameController.getTestMessage().setText(msg.getText()));
+                Platform.runLater(() -> gameController.getTestMessage().setText(outputFormat));
             }
         });
     }

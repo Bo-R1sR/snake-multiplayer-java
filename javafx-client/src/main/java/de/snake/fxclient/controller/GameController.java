@@ -2,7 +2,7 @@ package de.snake.fxclient.controller;
 
 import de.snake.fxclient.domain.User;
 import de.snake.fxclient.game.*;
-import de.snake.fxclient.websocket.Message;
+import de.snake.fxclient.game.Message;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -44,23 +44,26 @@ public class GameController {
 
     @FXML
     public void initialize() {
-        Scene scene = backgroundController.getViewHolder().getParent().getScene();
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-            if (key.getCode() == KeyCode.UP) {
-                direction = SnakeDirection.UP;
-            }
-            if (key.getCode() == KeyCode.LEFT) {
-                direction = SnakeDirection.LEFT;
-            }
-            if (key.getCode() == KeyCode.DOWN) {
-                direction = SnakeDirection.DOWN;
-            }
-            if (key.getCode() == KeyCode.RIGHT) {
-                direction = SnakeDirection.RIGHT;
-            }
-            session.send("/app/direction" + user.getPlayerId(), direction);
-
-        });
+//        Scene scene = backgroundController.getViewHolder().getParent().getScene();
+//        List<Node> stackPane = backgroundController.getViewHolder().getChildren();
+//        Node erg = stackPane.get(0);
+//        scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
+//        //stackPane.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
+//            if (key.getCode() == KeyCode.UP) {
+//                direction = SnakeDirection.UP;
+//            }
+//            if (key.getCode() == KeyCode.LEFT) {
+//                direction = SnakeDirection.LEFT;
+//            }
+//            if (key.getCode() == KeyCode.DOWN) {
+//                direction = SnakeDirection.DOWN;
+//            }
+//            if (key.getCode() == KeyCode.RIGHT) {
+//                direction = SnakeDirection.RIGHT;
+//            }
+//            session.send("/app/direction" + user.getPlayerId(), direction);
+//
+//        });
         gc = gameCanvas.getGraphicsContext2D();
         drawBackground();
     }
@@ -69,8 +72,39 @@ public class GameController {
         backgroundController.changeView(MainController.class);
     }
 
+    public void initializeArrowKeys() {
+        Scene scene = backgroundController.getViewHolder().getParent().getScene();
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
+            //stackPane.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
+
+            // only send key if it is arrow
+            if (key.getCode() == KeyCode.UP) {
+                direction = SnakeDirection.UP;
+                session.send("/app/direction" + user.getPlayerId(), direction);
+            }
+            if (key.getCode() == KeyCode.LEFT) {
+                direction = SnakeDirection.LEFT;
+                session.send("/app/direction" + user.getPlayerId(), direction);
+            }
+            if (key.getCode() == KeyCode.DOWN) {
+                direction = SnakeDirection.DOWN;
+                session.send("/app/direction" + user.getPlayerId(), direction);
+            }
+            if (key.getCode() == KeyCode.RIGHT) {
+                direction = SnakeDirection.RIGHT;
+                session.send("/app/direction" + user.getPlayerId(), direction);
+            }
+
+
+        });
+
+    }
+
     public void initializeGame() {
+
         session = user.getSession();
+        initializeArrowKeys();
+
         session.send("/app/playerId", "connect");
     }
 
@@ -165,9 +199,9 @@ public class GameController {
         //gc.fillText("Score: " + (speed - 6), 10, 30);
     }
 
-    // todo chat functionality
-    private Message getSampleMessage() {
+    private Message getNewMessage() {
         Message msg = new Message();
+        msg.setFrom(user.getName());
         msg.setText(chatMess.getText());
         return msg;
     }
@@ -182,7 +216,7 @@ public class GameController {
 
     public void submitMessage() {
         session = user.getSession();
-        session.send("/app/message", getSampleMessage());
+        session.send("/app/message", getNewMessage());
     }
 
 

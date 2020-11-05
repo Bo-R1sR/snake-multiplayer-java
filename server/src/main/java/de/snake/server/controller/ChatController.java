@@ -15,12 +15,10 @@ import java.util.Date;
 @Controller
 public class ChatController {
 
-    // todo: how to include chat
     @MessageMapping("/message")
     @SendTo("/topic/messages")
-    public OutputMessage send(Message message, SimpMessageHeaderAccessor headerAccessor) {
-        Principal sender = headerAccessor.getUser();
-        final String time = new SimpleDateFormat("HH:mm").format(new Date());
-        return new OutputMessage(sender.getName(), message.getText(), time);
+    public OutputMessage send(Message message) {
+        String time = new SimpleDateFormat("HH:mm").format(new Date());
+        return new OutputMessage(message.getFrom(), message.getText(), time);
     }
 }

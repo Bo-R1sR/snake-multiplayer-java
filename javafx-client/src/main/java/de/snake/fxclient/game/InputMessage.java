@@ -1,16 +1,10 @@
-package de.snake.server.domain;
+package de.snake.fxclient.game;
 
-public class OutputMessage {
+public class InputMessage {
 
     private String from;
     private String text;
     private String time;
-
-    public OutputMessage(String from, String text, String time) {
-        this.from = from;
-        this.text = text;
-        this.time = time;
-    }
 
     public String getFrom() {
         return from;

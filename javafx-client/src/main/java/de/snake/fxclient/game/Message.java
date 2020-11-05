@@ -1,4 +1,4 @@
-package de.snake.fxclient.websocket;
+package de.snake.fxclient.game;
 
 public class Message {
 
