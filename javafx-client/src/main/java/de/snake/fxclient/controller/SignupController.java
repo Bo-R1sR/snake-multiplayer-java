@@ -15,12 +15,10 @@ import org.springframework.stereotype.Component;
 @FxmlView("signup-stage.fxml")
 public class SignupController {
 
-    @Value("${server.ip}")
-    private String serverIp;
-
     private final User user;
     private final BackgroundController backgroundController;
-
+    @Value("${server.ip}")
+    private String serverIp;
     @FXML
     private TextField username;
     @FXML
@@ -40,7 +38,7 @@ public class SignupController {
         user.setPassword(password.getText());
         user.setConfirmPassword(confirmPassword.getText());
 
-        SignupTask signupTask = new SignupTask(user,serverIp);
+        SignupTask signupTask = new SignupTask(user, serverIp);
         new Thread(signupTask).start();
 
         signupTask.setOnSucceeded((WorkerStateEvent e2) -> {

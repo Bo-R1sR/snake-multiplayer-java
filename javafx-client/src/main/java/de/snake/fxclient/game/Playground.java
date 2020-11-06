@@ -7,8 +7,8 @@ import java.io.Serializable;
 @Component
 public class Playground implements Serializable {
 
-    private int width = 40;
-    private int height = 40;
+    private int width = 25;
+    private int height = 25;
     private int snakeBodySize = 20;
     private Snake snake1;
     private Snake snake2;

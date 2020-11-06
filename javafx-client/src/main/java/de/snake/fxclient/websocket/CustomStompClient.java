@@ -14,12 +14,11 @@ import java.net.URISyntaxException;
 @Component
 public class CustomStompClient {
 
-    @Value("${server.ip}")
-    private String serverIp;
-
     private final WebSocketStompClient webSocketStompClient;
     private final CustomStompSessionHandler sessionHandler;
     private final User user;
+    @Value("${server.ip}")
+    private String serverIp;
 
     public CustomStompClient(WebSocketStompClient webSocketStompClient, CustomStompSessionHandler sessionHandler, User user) {
         this.webSocketStompClient = webSocketStompClient;

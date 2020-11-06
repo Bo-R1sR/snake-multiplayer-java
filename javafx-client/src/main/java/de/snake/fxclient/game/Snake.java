@@ -8,6 +8,7 @@ public class Snake {
 
     private int lastFoodColor;
     private boolean immortal;
+    private int speed;
 
     private List<SnakeBodyPart> snakeBody = new ArrayList<>();
 
@@ -33,5 +34,13 @@ public class Snake {
 
     public void setImmortal(boolean immortal) {
         this.immortal = immortal;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

@@ -8,6 +8,8 @@ public class Snake implements Serializable {
 
     private int lastFoodColor = 0;
     private boolean immortal = false;
+    private int counter = 0;
+    private int speed = 10;
 
     private List<SnakeBodyPart> snakeBody = new ArrayList<>();
 
@@ -39,5 +41,21 @@ public class Snake implements Serializable {
 
     public void setImmortal(boolean immortal) {
         this.immortal = immortal;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

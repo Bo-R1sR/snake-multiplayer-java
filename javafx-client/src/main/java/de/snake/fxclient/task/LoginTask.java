@@ -6,8 +6,6 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import de.snake.fxclient.domain.User;
 import javafx.concurrent.Task;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 public class LoginTask extends Task<Integer> {
 

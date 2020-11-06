@@ -15,12 +15,10 @@ import org.springframework.stereotype.Component;
 @FxmlView("login-stage.fxml")
 public class LoginController {
 
-    @Value("${server.ip}")
-    private String serverIp;
-
     private final User user;
     private final BackgroundController backgroundController;
-
+    @Value("${server.ip}")
+    private String serverIp;
     @FXML
     private TextField username;
 
@@ -39,7 +37,7 @@ public class LoginController {
         user.setName(username.getText());
         user.setPassword(password.getText());
 
-         LoginTask loginTask = new LoginTask(user, serverIp);
+        LoginTask loginTask = new LoginTask(user, serverIp);
         new Thread(loginTask).start();
 
         loginTask.setOnSucceeded((WorkerStateEvent e2) -> {

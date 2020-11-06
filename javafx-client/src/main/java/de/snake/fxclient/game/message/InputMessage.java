@@ -1,4 +1,4 @@
-package de.snake.fxclient.game;
+package de.snake.fxclient.game.message;
 
 public class InputMessage {
 

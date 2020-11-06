@@ -2,7 +2,7 @@ package de.snake.fxclient.websocket;
 
 import de.snake.fxclient.controller.GameController;
 import de.snake.fxclient.domain.User;
-import de.snake.fxclient.game.InputMessage;
+import de.snake.fxclient.game.message.InputMessage;
 import de.snake.fxclient.game.Playground;
 import de.snake.fxclient.game.ScreenText;
 import javafx.application.Platform;

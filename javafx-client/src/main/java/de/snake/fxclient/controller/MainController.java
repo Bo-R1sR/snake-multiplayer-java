@@ -4,7 +4,6 @@ import de.snake.fxclient.domain.User;
 import de.snake.fxclient.task.HistoryTask;
 import de.snake.fxclient.websocket.CustomStompClient;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.fxml.FXML;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +24,6 @@ public class MainController {
         this.user = user;
         this.customStompClient = customStompClient;
     }
-
 
 
     public void showHistory() {
