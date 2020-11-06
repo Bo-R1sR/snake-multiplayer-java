@@ -11,7 +11,6 @@
 <?import javafx.scene.text.Font?>
 
 <VBox fx:id="dialog" alignment="TOP_CENTER" prefWidth="1600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.snake.fxclient.controller.GameController">
-<<<<<<< HEAD
     <Label text="Snake Multiplayer">
         <font>
             <Font name="System Bold" size="24.0" />
@@ -35,66 +34,6 @@
                 <VBox.margin>
                     <Insets top="10.0" />
                 </VBox.margin></JFXButton>
-||||||| 6e0b35d
-     <Label text="Snake Multiplayer">
-      <font>
-         <Font name="System Bold" size="24.0" />
-      </font>
-   </Label>
-   <JFXButton onAction="#initializeGame" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Spiel starten">
-      <VBox.margin>
-         <Insets top="25.0" />
-      </VBox.margin>
-   </JFXButton>
-   <HBox alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT">
-      <VBox.margin>
-         <Insets top="25.0" />
-      </VBox.margin>
-      <VBox prefWidth="800.0">
-         <HBox.margin>
-            <Insets right="25.0" />
-         </HBox.margin>
-         <JFXTextField fx:id="chatMess" focusColor="#3fa849" promptText="Chatten..." />
-         <JFXButton onAction="#submitMessage" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Nachricht senden">
-            <VBox.margin>
-               <Insets top="10.0" />
-            </VBox.margin></JFXButton>
-
-         <JFXTextArea fx:id="chatArea"/>
-         <!--
-         <Label fx:id="testMessage" text="Test" visible="true">
-=======
-     <Label text="Snake Multiplayer">
-      <font>
-         <Font name="System Bold" size="24.0" />
-      </font>
-   </Label>
-   <JFXButton onAction="#initializeGame" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Spiel starten">
-      <VBox.margin>
-         <Insets top="25.0" />
-      </VBox.margin>
-   </JFXButton>
-   <HBox alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT">
-      <VBox.margin>
-         <Insets top="25.0" />
-      </VBox.margin>
-      <VBox minWidth="250.0" prefWidth="800.0">
-         <HBox.margin>
-            <Insets right="25.0" />
-         </HBox.margin>
-         <JFXTextField fx:id="chatMess" focusColor="#3fa849" promptText="Chatten..." />
-         <JFXButton onAction="#submitMessage" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Nachricht senden">
-            <VBox.margin>
-               <Insets top="10.0" />
-            </VBox.margin></JFXButton>
-
-         <JFXTextArea fx:id="chatArea" editable="false" focusColor="#f4f4f4" unFocusColor="#f4f4f4">
-            <VBox.margin>
-               <Insets top="10.0" />
-            </VBox.margin></JFXTextArea>
-         <!--
-         <Label fx:id="testMessage" text="Test" visible="true">
->>>>>>> 0d1d255c0dbfe52146ae17a3ac3fa3a5b194c3e0
 
             <JFXTextArea fx:id="chatArea" editable="false" focusColor="#f4f4f4" unFocusColor="#f4f4f4">
                 <VBox.margin>

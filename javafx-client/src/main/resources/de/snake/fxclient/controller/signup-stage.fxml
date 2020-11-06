@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<<<<<<< HEAD
 <VBox fx:id="dialog" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.snake.fxclient.controller.SignupController">
     <padding>
         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
@@ -49,88 +48,3 @@
         </VBox.margin>
     </Label>
 </VBox>
-||||||| 6e0b35d
-<VBox fx:id="dialog" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="de.snake.fxclient.controller.SignupController">
-   <padding>
-      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
-   </padding>
-   <Label alignment="CENTER" text="Registrieren" textAlignment="CENTER">
-      <font>
-         <Font name="System Bold" size="24.0"/>
-      </font>
-   </Label>
-   <JFXTextField fx:id="username" focusColor="#3fa849" prefWidth="345.0" promptText="Username">
-      <VBox.margin>
-         <Insets top="25.0"/>
-      </VBox.margin>
-   </JFXTextField>
-   <JFXPasswordField fx:id="password" focusColor="#3fa849" promptText="Passwort">
-      <VBox.margin>
-         <Insets top="10.0"/>
-      </VBox.margin>
-   </JFXPasswordField>
-   <JFXPasswordField fx:id="confirmPassword" focusColor="#3fa849" promptText="Passwort bestätigen">
-      <VBox.margin>
-         <Insets top="10.0"/>
-      </VBox.margin>
-   </JFXPasswordField>
-   <JFXButton onAction="#signupAction" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Registrieren">
-      <VBox.margin>
-         <Insets top="25.0"/>
-      </VBox.margin>
-   </JFXButton>
-   <Label fx:id="signupFailure" text="Fehler bei der Registrierung" textFill="RED" visible="false">
-      <VBox.margin>
-         <Insets top="10.0"/>
-      </VBox.margin>
-   </Label>
-   <JFXButton onAction="#backToLoginPage" prefWidth="111.0" style="-fx-background-color: gainsboro;"
-              text="Zurück zum Login">
-      <VBox.margin>
-         <Insets top="40.0"/>
-      </VBox.margin>
-   </JFXButton>
-</VBox>
-=======
-<VBox fx:id="dialog" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.snake.fxclient.controller.SignupController">
-   <padding>
-      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-   </padding>
-   <Label alignment="CENTER" text="Registrieren" textAlignment="CENTER">
-      <font>
-         <Font name="System Bold" size="24.0" />
-      </font>
-   </Label>
-   <JFXTextField fx:id="username" focusColor="#3fa849" maxWidth="222.0" prefWidth="222.0" promptText="Username">
-      <VBox.margin>
-         <Insets top="25.0" />
-      </VBox.margin>
-   </JFXTextField>
-   <JFXPasswordField fx:id="password" focusColor="#3fa849" maxWidth="222.0" prefWidth="222.0" promptText="Passwort">
-      <VBox.margin>
-         <Insets top="10.0" />
-      </VBox.margin>
-   </JFXPasswordField>
-   <JFXPasswordField fx:id="confirmPassword" focusColor="#3fa849" maxWidth="222.0" prefWidth="222.0" promptText="Passwort bestätigen">
-      <VBox.margin>
-         <Insets top="10.0" />
-      </VBox.margin>
-   </JFXPasswordField>
-   <JFXButton onAction="#signupAction" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Registrieren">
-      <VBox.margin>
-         <Insets top="25.0" />
-      </VBox.margin>
-   </JFXButton>
-   <JFXButton onAction="#backToLoginPage" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Zurück zum Login">
-      <VBox.margin>
-         <Insets top="10.0" />
-      </VBox.margin>
-   </JFXButton>
-   <Label fx:id="signupFailure" text="Fehler bei der Registrierung" textFill="RED" visible="false">
-      <VBox.margin>
-         <Insets top="10.0" />
-      </VBox.margin>
-   </Label>
-</VBox>
->>>>>>> 0d1d255c0dbfe52146ae17a3ac3fa3a5b194c3e0
