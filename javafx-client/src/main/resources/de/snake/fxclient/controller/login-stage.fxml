@@ -14,12 +14,12 @@
          <Font name="System Bold" size="24.0" />
       </font>
    </Label>
-   <JFXTextField fx:id="username" focusColor="#3fa849" promptText="Username">
+   <JFXTextField fx:id="username" focusColor="#3fa849" maxWidth="222.0" prefWidth="222.0" promptText="Username">
       <VBox.margin>
          <Insets top="25.0" />
       </VBox.margin>
    </JFXTextField>
-   <JFXPasswordField fx:id="password" focusColor="#3fa849" promptText="Passwort">
+   <JFXPasswordField fx:id="password" focusColor="#3fa849" maxWidth="222.0" prefWidth="222.0" promptText="Passwort">
       <VBox.margin>
          <Insets top="10.0" />
       </VBox.margin>
@@ -29,13 +29,16 @@
          <Insets top="25.0" />
       </VBox.margin>
    </JFXButton>
-
-    <Label fx:id="loginFailure" text="Login fehlgeschlagen" textFill="RED" visible="false">login fehlgeschlagen!</Label>
    <JFXButton onAction="#goToSignup" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Registrieren">
       <VBox.margin>
          <Insets top="10.0" />
       </VBox.margin>
    </JFXButton>
+
+    <Label fx:id="loginFailure" text="Login fehlgeschlagen" textFill="RED" visible="false">
+      <VBox.margin>
+         <Insets top="10.0" />
+      </VBox.margin></Label>
    <padding>
       <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
    </padding>
