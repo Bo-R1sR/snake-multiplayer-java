@@ -112,7 +112,7 @@ public class GameController {
 
     public void updatePlayground() {
         if (playground.isGameOver()) {
-            Shape gameOverText = new Text(gc, new Point2D(100, 250), "GAME OVER", Color.RED);
+            Shape gameOverText = new Text(gc, new Point2D(100, 250), "GAME OVER", Color.RED, true);
             gameOverText.draw();
             return;
         }
@@ -133,8 +133,8 @@ public class GameController {
 //        Shape score1 = new Text(gc, new Point2D(100, 250), "Speed " + (20 - playground.getSnake1().getSpeed())/2, Color.GREEN);
 //        Shape score2 = new Text(gc, new Point2D(300, 250), "Speed " + (20 - playground.getSnake2().getSpeed())/2, Color.BLUE);
 
-        Shape score1 = new Text(gc, new Point2D(100, 50), "Score ", Color.GREEN);
-        Shape score2 = new Text(gc, new Point2D(300, 50), "Score ", Color.BLUE);
+        Shape score1 = new Text(gc, new Point2D(100, 50), "Score ", Color.GREEN, false);
+        Shape score2 = new Text(gc, new Point2D(300, 50), "Score ", Color.BLUE, false);
 
         Shape playground = new CompositeShape(gc, List.of(background, level, snakes, food, score1, score2));
         playground.draw();
@@ -146,7 +146,7 @@ public class GameController {
     }
 
     public void drawScreenText() {
-        Shape screenT = new Text(gc, new Point2D(100, 250), screenText.getPlayerText(), Color.RED);
+        Shape screenT = new Text(gc, new Point2D(100, 250), screenText.getPlayerText(), Color.RED, true);
         screenT.draw();
     }
 
