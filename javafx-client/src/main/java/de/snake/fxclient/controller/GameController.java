@@ -67,21 +67,25 @@ public class GameController {
             // only send key if it is arrow
             if (key.getCode() == KeyCode.UP) {
                 direction = SnakeDirection.UP;
+                key.consume();
                 session.send("/app/direction" + user.getPlayerId(), direction);
             }
             if (key.getCode() == KeyCode.LEFT) {
                 direction = SnakeDirection.LEFT;
+                key.consume();
                 session.send("/app/direction" + user.getPlayerId(), direction);
             }
             if (key.getCode() == KeyCode.DOWN) {
                 direction = SnakeDirection.DOWN;
+                key.consume();
                 session.send("/app/direction" + user.getPlayerId(), direction);
             }
             if (key.getCode() == KeyCode.RIGHT) {
                 direction = SnakeDirection.RIGHT;
+                key.consume();
                 session.send("/app/direction" + user.getPlayerId(), direction);
             }
-            key.consume();
+
         });
     }
 
