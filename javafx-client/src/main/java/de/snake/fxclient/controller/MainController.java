@@ -39,7 +39,7 @@ public class MainController {
 
     public void logout() {
         user.reset();
-        backgroundController.changeView(LogoutController.class);
+        backgroundController.changeView(LoginController.class);
     }
 
     public void showGame() throws DeploymentException, IOException, URISyntaxException {
