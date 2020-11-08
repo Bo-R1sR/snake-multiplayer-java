@@ -12,16 +12,6 @@ public class ServerApplication {
         SpringApplication.run(ServerApplication.class, args);
     }
 
-//	@Bean
-//	public Snake snake1() {
-//		return new Snake();
-//	}
-//
-//	@Bean
-//	public Snake snake2() {
-//		return new Snake();
-//	}
-
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

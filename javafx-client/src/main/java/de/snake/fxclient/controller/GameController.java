@@ -29,6 +29,7 @@ public class GameController {
     private final User user;
     private final Playground playground;
     private final ScreenText screenText;
+    private final Level level;
 
     private SnakeDirection direction;
     private GraphicsContext gc;
@@ -41,11 +42,12 @@ public class GameController {
     @FXML
     private Canvas gameCanvas;
 
-    public GameController(BackgroundController backgroundController, User user, Playground playground, ScreenText screenText) {
+    public GameController(BackgroundController backgroundController, User user, Playground playground, ScreenText screenText, Level level) {
         this.backgroundController = backgroundController;
         this.user = user;
         this.playground = playground;
         this.screenText = screenText;
+        this.level = level;
     }
 
     @FXML
@@ -117,8 +119,13 @@ public class GameController {
 
         Shape background = new Square(gc, Color.BLACK, new Point2D(0, 0), playground.getWidth() * playground.getSnakeBodySize(), playground.getHeight() * playground.getSnakeBodySize());
 
+        Shape level = new CompositeShape(gc, createLevel(playground.getLevelNumber(), Color.WHITE, Color.LIGHTGREY));
+
         Shape snake1 = new CompositeShape(gc, createSnake(playground.getSnake1(), Color.LIGHTGREEN, Color.GREEN));
         Shape snake2 = new CompositeShape(gc, createSnake(playground.getSnake2(), Color.LIGHTBLUE, Color.BLUE));
+
+
+
         Shape snakes = new CompositeShape(gc, List.of(snake1, snake2));
 
         Shape food = new Circle(gc, playground.getFood().getFoodColor(), new Point2D(playground.getFood().getFoodPositionX() * playground.getSnakeBodySize(), playground.getFood().getFoodPositionY() * playground.getSnakeBodySize()), playground.getSnakeBodySize());
@@ -129,7 +136,7 @@ public class GameController {
         Shape score1 = new Text(gc, new Point2D(100, 50), "Score ", Color.GREEN);
         Shape score2 = new Text(gc, new Point2D(300, 50), "Score ", Color.BLUE);
 
-        Shape playground = new CompositeShape(gc, List.of(background, snakes, food, score1, score2));
+        Shape playground = new CompositeShape(gc, List.of(background, level, snakes, food, score1, score2));
         playground.draw();
     }
 
@@ -170,6 +177,22 @@ public class GameController {
             }
         }
         return snakeList;
+    }
+
+    public List<Shape> createLevel(int levelNumber, Color colorBack, Color colorFront) {
+        List<Shape> levelList = new ArrayList<>();
+        for (SnakeBodyPart levelPart : level.getAllLevels().get(levelNumber)) {
+            Shape squareBack = new Square(gc, colorBack,
+                    new Point2D(levelPart.getPositionX() * playground.getSnakeBodySize(), levelPart.getPositionY() * playground.getSnakeBodySize()),
+                    playground.getSnakeBodySize() - 1, playground.getSnakeBodySize() - 1);
+            levelList.add(squareBack);
+
+            Shape squareFront = new Square(gc, colorFront,
+                    new Point2D(levelPart.getPositionX() * playground.getSnakeBodySize(), levelPart.getPositionY() * playground.getSnakeBodySize()),
+                    playground.getSnakeBodySize() - 2, playground.getSnakeBodySize() - 2);
+            levelList.add(squareFront);
+        }
+        return levelList;
     }
 
     private Message getNewMessage() {

@@ -3,22 +3,22 @@ package de.snake.server.domain.game;
 import java.io.Serializable;
 
 public class SnakeBodyPart implements Serializable {
-    private int positionX;
+    private int PositionX;
     private int PositionY;
     private int color;
 
     public SnakeBodyPart(int positionX, int PositionY, int color) {
-        this.positionX = positionX;
+        this.PositionX = positionX;
         this.PositionY = PositionY;
         this.color = color;
     }
 
     public int getPositionX() {
-        return positionX;
+        return PositionX;
     }
 
     public void setPositionX(int positionX) {
-        this.positionX = positionX;
+        this.PositionX = positionX;
     }
 
     public int getPositionY() {
@@ -30,11 +30,11 @@ public class SnakeBodyPart implements Serializable {
     }
 
     public void decreaseX() {
-        this.positionX--;
+        this.PositionX--;
     }
 
     public void increaseX() {
-        this.positionX++;
+        this.PositionX++;
     }
 
     public void decreaseY() {

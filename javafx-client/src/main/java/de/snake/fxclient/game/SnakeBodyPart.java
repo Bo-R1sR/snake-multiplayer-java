@@ -5,12 +5,22 @@ public class SnakeBodyPart {
     private int PositionY;
     private int color;
 
+    public SnakeBodyPart(int PositionX, int PositionY, int color) {
+        this.PositionX = PositionX;
+        this.PositionY = PositionY;
+        this.color = color;
+    }
+
+    public SnakeBodyPart() {
+
+    }
+
     public int getPositionX() {
         return PositionX;
     }
 
     public void setPositionX(int positionX) {
-        this.PositionX = positionX;
+        PositionX = positionX;
     }
 
     public int getPositionY() {
@@ -18,7 +28,7 @@ public class SnakeBodyPart {
     }
 
     public void setPositionY(int positionY) {
-        this.PositionY = positionY;
+        PositionY = positionY;
     }
 
     public int getColor() {

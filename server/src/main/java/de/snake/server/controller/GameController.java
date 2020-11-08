@@ -24,7 +24,6 @@ public class GameController {
     private Timer immortalTimer;
     private Boolean player1active = false;
     private Boolean player2active = false;
-    private int speed;
     private SnakeDirection direction1;
     private SnakeDirection direction2;
     // todo check for number not only counting
@@ -35,7 +34,6 @@ public class GameController {
         this.playground = playground;
         this.screenText = screenText;
         this.template = template;
-
         this.webSocketEventListener = webSocketEventListener;
     }
 
@@ -97,7 +95,6 @@ public class GameController {
         // values for game start
         playground.setGameOver(false);
         // refreshing speed
-        speed = 500;
         // initial movement direction for snakes
         direction1 = SnakeDirection.LEFT;
         direction2 = SnakeDirection.RIGHT;

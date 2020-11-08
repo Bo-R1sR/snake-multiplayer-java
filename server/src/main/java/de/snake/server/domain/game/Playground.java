@@ -12,6 +12,7 @@ public class Playground implements Serializable {
     private int snakeBodySize = 20;
     private Snake snake1;
     private Snake snake2;
+    private int levelNumber = 1;
     private Food food;
     private boolean gameOver;
 
@@ -69,5 +70,13 @@ public class Playground implements Serializable {
 
     public void setSnakeBodySize(int snakeBodySize) {
         this.snakeBodySize = snakeBodySize;
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
+    }
+
+    public void setLevelNumber(int levelNumber) {
+        this.levelNumber = levelNumber;
     }
 }
