@@ -2,9 +2,9 @@ package de.snake.fxclient.websocket;
 
 import de.snake.fxclient.controller.GameController;
 import de.snake.fxclient.domain.User;
-import de.snake.fxclient.game.message.InputMessage;
 import de.snake.fxclient.game.Playground;
 import de.snake.fxclient.game.ScreenText;
+import de.snake.fxclient.game.message.InputMessage;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,6 +61,9 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
             public void handleFrame(StompHeaders headers, Object payload) {
                 //logger.info("Received : screenText");
                 BeanUtils.copyProperties(payload, screenText);
+                if (!user.isReadyToPlay()) {
+                    screenText.setPlayerText("other player is ready");
+                }
                 gameController.updateScreenText();
             }
         });

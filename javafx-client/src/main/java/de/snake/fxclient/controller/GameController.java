@@ -99,6 +99,7 @@ public class GameController {
 
     public void startGame() {
         session.send("/app/playerActive/" + user.getPlayerId(), "connect");
+        user.setReadyToPlay(true);
     }
 
     public void restartGame() {
@@ -114,6 +115,7 @@ public class GameController {
         if (playground.isGameOver()) {
             Shape gameOverText = new Text(gc, new Point2D(100, 250), "GAME OVER", Color.RED, true);
             gameOverText.draw();
+            user.setReadyToPlay(false);
             return;
         }
 

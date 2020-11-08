@@ -12,6 +12,7 @@ public class User {
     private String confirmPassword;
     private String jsonWebToken;
     private Integer playerId;
+    private boolean readyToPlay = false;
 
     private StompSession session;
 
@@ -71,12 +72,21 @@ public class User {
         this.jsonWebToken = jsonWebToken;
     }
 
+    public boolean isReadyToPlay() {
+        return readyToPlay;
+    }
+
+    public void setReadyToPlay(boolean readyToPlay) {
+        this.readyToPlay = readyToPlay;
+    }
+
     public void reset() {
         this.setId(null);
         this.setName(null);
         this.setPassword(null);
         this.setConfirmPassword(null);
         this.setJsonWebToken(null);
+        this.setReadyToPlay(false);
     }
 }
 

@@ -72,6 +72,7 @@ public class GameController {
             // send screen text to client
             this.template.convertAndSend("/topic/screenText", screenText);
         }
+
     }
 
     // if clients request restart and continuing
@@ -172,6 +173,8 @@ public class GameController {
     // in case of game over stop refreshing
     public void setGameOver() {
         playground.setGameOver(true);
+        player1active = false;
+        player2active = false;
         refreshTimer.cancel();
     }
 
