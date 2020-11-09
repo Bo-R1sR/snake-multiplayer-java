@@ -5,6 +5,7 @@ import de.snake.fxclient.domain.User;
 import de.snake.fxclient.game.Playground;
 import de.snake.fxclient.game.ScreenText;
 import de.snake.fxclient.game.message.InputMessage;
+import de.snake.fxclient.game.message.Message;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,7 +63,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
                 //logger.info("Received : screenText");
                 BeanUtils.copyProperties(payload, screenText);
                 if (!user.isReadyToPlay()) {
-                    screenText.setPlayerText("other player is ready");
+                    screenText.setPlayerText("der andere Spieler ist bereit");
                 }
                 gameController.updateScreenText();
             }
@@ -95,9 +96,15 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
                 String outputFormat = System.lineSeparator() + "<" + msg.getTime() + " " + msg.getFrom() + "> " + msg.getText();
                 logger.info("Received message");
                 //Platform.runLater(() -> gameController.getTestMessage().setText(outputFormat));
-                Platform.runLater(() -> gameController.appendChatMessage(outputFormat));
+                Platform.runLater(() -> gameController.appendChatMessage(outputFormat, msg.getColor()));
             }
         });
+
+        Message joinMessage = new Message();
+        joinMessage.setFrom("SYSTEM");
+        joinMessage.setText("Spieler " + user.getName() + " ist hinzugekommen");
+        joinMessage.setColor(1);
+        session.send("/app/message", joinMessage);
     }
 
     @Override

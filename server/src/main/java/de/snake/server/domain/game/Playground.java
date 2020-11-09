@@ -12,9 +12,10 @@ public class Playground implements Serializable {
     private int snakeBodySize = 20;
     private Snake snake1;
     private Snake snake2;
-    private int levelNumber = 1;
+    private int levelNumber;
     private Food food;
     private boolean gameOver;
+    private boolean isRunning;
 
     public Snake getSnake1() {
         return snake1;
@@ -78,5 +79,13 @@ public class Playground implements Serializable {
 
     public void setLevelNumber(int levelNumber) {
         this.levelNumber = levelNumber;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void setRunning(boolean running) {
+        isRunning = running;
     }
 }

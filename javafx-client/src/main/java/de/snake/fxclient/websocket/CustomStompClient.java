@@ -1,8 +1,10 @@
 package de.snake.fxclient.websocket;
 
 import de.snake.fxclient.domain.User;
+import de.snake.fxclient.game.message.Message;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.messaging.WebSocketStompClient;

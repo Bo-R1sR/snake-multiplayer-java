@@ -4,6 +4,7 @@ public class Message {
 
     private String from;
     private String text;
+    private int color;
 
     public String getText() {
         return text;
@@ -21,4 +22,11 @@ public class Message {
         this.from = from;
     }
 
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
 }

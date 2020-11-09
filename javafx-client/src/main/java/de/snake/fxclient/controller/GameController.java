@@ -102,10 +102,6 @@ public class GameController {
         user.setReadyToPlay(true);
     }
 
-    public void restartGame() {
-        session.send("/app/playerRestart/" + user.getPlayerId(), "connect");
-    }
-
     public void updateScreenText() {
         drawBackground();
         drawScreenText();
@@ -113,32 +109,25 @@ public class GameController {
 
     public void updatePlayground() {
         if (playground.isGameOver()) {
-            Shape gameOverText = new Text(gc, new Point2D(100, 250), "GAME OVER", Color.RED, true);
-            gameOverText.draw();
+            Shape background = new Square(gc, Color.BLACK, new Point2D(0, 0), playground.getWidth() * playground.getSnakeBodySize(), playground.getHeight() * playground.getSnakeBodySize());
+            Shape gameOverText = new Text(gc, new Point2D(100, 250), "GAME OVER", Color.WHITE, true);
+            Shape score1 = new Text(gc, new Point2D(200, 100), "" + playground.getSnake2().getPoints(), Color.GREEN, false);
+            Shape space = new Text(gc, new Point2D(250, 100), " : ", Color.WHITE, false);
+            Shape score2 = new Text(gc, new Point2D(300, 100), "" + playground.getSnake1().getPoints(), Color.BLUE, false);
+            Shape gameOverScreen = new CompositeShape(gc, List.of(background, gameOverText, score1, space, score2));
+            gameOverScreen.draw();
             user.setReadyToPlay(false);
             return;
         }
 
         Shape background = new Square(gc, Color.BLACK, new Point2D(0, 0), playground.getWidth() * playground.getSnakeBodySize(), playground.getHeight() * playground.getSnakeBodySize());
-
         Shape level = new CompositeShape(gc, createLevel(playground.getLevelNumber(), Color.WHITE, Color.LIGHTGREY));
-
         Shape snake1 = new CompositeShape(gc, createSnake(playground.getSnake1(), Color.LIGHTGREEN, Color.GREEN));
         Shape snake2 = new CompositeShape(gc, createSnake(playground.getSnake2(), Color.LIGHTBLUE, Color.BLUE));
-
-
-
         Shape snakes = new CompositeShape(gc, List.of(snake1, snake2));
-
         Shape food = new Circle(gc, playground.getFood().getFoodColor(), new Point2D(playground.getFood().getFoodPositionX() * playground.getSnakeBodySize(), playground.getFood().getFoodPositionY() * playground.getSnakeBodySize()), playground.getSnakeBodySize());
 
-//        Shape score1 = new Text(gc, new Point2D(100, 250), "Speed " + (20 - playground.getSnake1().getSpeed())/2, Color.GREEN);
-//        Shape score2 = new Text(gc, new Point2D(300, 250), "Speed " + (20 - playground.getSnake2().getSpeed())/2, Color.BLUE);
-
-        Shape score1 = new Text(gc, new Point2D(100, 50), "Score ", Color.GREEN, false);
-        Shape score2 = new Text(gc, new Point2D(300, 50), "Score ", Color.BLUE, false);
-
-        Shape playground = new CompositeShape(gc, List.of(background, level, snakes, food, score1, score2));
+        Shape playground = new CompositeShape(gc, List.of(background, level, snakes, food));
         playground.draw();
     }
 
@@ -148,7 +137,7 @@ public class GameController {
     }
 
     public void drawScreenText() {
-        Shape screenT = new Text(gc, new Point2D(100, 250), screenText.getPlayerText(), Color.RED, true);
+        Shape screenT = new Text(gc, new Point2D(100, 250), screenText.getPlayerText(), Color.WHITE, true);
         screenT.draw();
     }
 
@@ -204,7 +193,14 @@ public class GameController {
         return msg;
     }
 
-    public void appendChatMessage(String message) {
+    public void appendChatMessage(String message, int color) {
+        if (color == 0) {
+            chatArea.setStyle("-fx-text-fill: black;");
+        } else if (color == 1) {
+            chatArea.setStyle("-fx-text-fill: green;");
+        } else {
+            chatArea.setStyle("-fx-text-fill: red;");
+        }
         chatArea.appendText(message);
     }
 

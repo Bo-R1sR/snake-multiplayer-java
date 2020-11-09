@@ -19,6 +19,7 @@ public class GameController {
     private final SimpMessagingTemplate template;
     private final Random rand = new Random();
     private final WebSocketEventListener webSocketEventListener;
+    private final Level level;
 
     private Timer refreshTimer;
     private Timer immortalTimer;
@@ -26,18 +27,17 @@ public class GameController {
     private Boolean player2active = false;
     private SnakeDirection direction1;
     private SnakeDirection direction2;
-    // todo check for number not only counting
-    // todo delete after testing
     private int counter;
 
-    public GameController(Playground playground, ScreenText screenText, SimpMessagingTemplate template, WebSocketEventListener webSocketEventListener) {
+    public GameController(Playground playground, ScreenText screenText, SimpMessagingTemplate template, WebSocketEventListener webSocketEventListener, Level level) {
         this.playground = playground;
         this.screenText = screenText;
         this.template = template;
         this.webSocketEventListener = webSocketEventListener;
+        this.level = level;
     }
 
-    // count players and assign id 1 or 2 to player and send this id to client
+    // assign id 1 or 2 to player and send this id to client
     @MessageMapping("/playerId/{username}")
     @SendToUser(destinations = "/queue/playerId", broadcast = false)
     public Integer sendID(@DestinationVariable String username) {
@@ -59,37 +59,41 @@ public class GameController {
 
     // if clients request start of game
     // method has to be called by both players
-    // todo: check if it can be combined with restarting
     @MessageMapping("/playerActive/{id}")
     public void waitForAllPlayers(@DestinationVariable int id) throws InterruptedException {
         if (id == 1) player1active = true;
         if (id == 2) player2active = true;
         //todo || auf &&
         if (player1active || player2active) {
-            startCounter();
+            if (!playground.isRunning()) {
+                playground.setRunning(true);
+                startCounter();
+            }
+
         } else {
-            screenText.setPlayerText("waiting for another Player to join");
+            screenText.setPlayerText("auf anderen Spieler warten");
             // send screen text to client
             this.template.convertAndSend("/topic/screenText", screenText);
         }
 
     }
 
-    // if clients request restart and continuing
-    // method has to be called by both players
-    // todo actual levels after restart
-    @MessageMapping("/playerRestart/{id}")
-    public void waitForAllPlayers2(@DestinationVariable int id) throws InterruptedException {
-        if (id == 1) player1active = true;
-        if (id == 2) player2active = true;
-        //todo || auf &&
-        if (player1active || player2active) {
-            startCounter();
-        } else {
-            screenText.setPlayerText("waiting for other Player to restart");
-            // send screen text to client
+    // counter at the beginning of each game
+    public void startCounter() throws InterruptedException {
+        initializePlayground();
+        // countdown from 3 to zero and send to client
+        for (int i = 3; i > 0; i--) {
+            screenText.setPlayerText("" + i);
             this.template.convertAndSend("/topic/screenText", screenText);
+            Thread.sleep(1000);
         }
+        screenText.setPlayerText("LOS GEHTS");
+        this.template.convertAndSend("/topic/screenText", screenText);
+        Thread.sleep(1000);
+        screenText.setPlayerText("");
+        this.template.convertAndSend("/topic/screenText", screenText);
+        playground.setLevelNumber(rand.nextInt(5));
+        startRefreshingCanvas();
     }
 
     public void initializePlayground() {
@@ -102,31 +106,30 @@ public class GameController {
         // initialize snakes and food
         int width = playground.getWidth();
         int height = playground.getHeight();
+        // todo points in history auslagern
+        int points1;
+        int points2;
+        if (playground.getSnake1() != null) {
+            points1 = playground.getSnake1().getPoints();
+        } else {
+            points1 = 0;
+        }
+        if (playground.getSnake1() != null) {
+            points2 = playground.getSnake2().getPoints();
+        } else {
+            points2 = 0;
+        }
         playground.setSnake1(new Snake(5, width / 2, height / 2 + 5));
         playground.setSnake2(new Snake(5, width / 2, height / 2 - 5));
         playground.setFood(new Food(width / 2, height / 2));
+        playground.getSnake1().setPoints(points1);
+        playground.getSnake2().setPoints(points2);
         // always same color at start, during game random
         playground.getFood().setFoodColor(0);
         // todo remove counter
         counter = 0;
     }
 
-    // counter at the beginning of each game
-    public void startCounter() throws InterruptedException {
-        initializePlayground();
-        // countdown from 3 to zero and send to client
-        for (int i = 3; i > 0; i--) {
-            screenText.setPlayerText("" + i);
-            this.template.convertAndSend("/topic/screenText", screenText);
-            Thread.sleep(1000);
-        }
-        screenText.setPlayerText("GO");
-        this.template.convertAndSend("/topic/screenText", screenText);
-        Thread.sleep(1000);
-        screenText.setPlayerText("");
-        this.template.convertAndSend("/topic/screenText", screenText);
-        startRefreshingCanvas();
-    }
 
     public void startRefreshingCanvas() throws InterruptedException {
         refreshTimer = new Timer();
@@ -146,24 +149,28 @@ public class GameController {
             case UP:
                 snakeHead.decreaseY();
                 if (snakeHead.getPositionY() < 0) {
+                    snake.setPoints(snake.getPoints() + 1);
                     setGameOver();
                 }
                 break;
             case DOWN:
                 snakeHead.increaseY();
                 if (snakeHead.getPositionY() > playground.getHeight() - 1) {
+                    snake.setPoints(snake.getPoints() + 1);
                     setGameOver();
                 }
                 break;
             case LEFT:
                 snakeHead.decreaseX();
                 if (snakeHead.getPositionX() < 0) {
+                    snake.setPoints(snake.getPoints() + 1);
                     setGameOver();
                 }
                 break;
             case RIGHT:
                 snakeHead.increaseX();
                 if (snakeHead.getPositionX() > playground.getWidth() - 1) {
+                    snake.setPoints(snake.getPoints() + 1);
                     setGameOver();
                 }
                 break;
@@ -176,6 +183,8 @@ public class GameController {
         player1active = false;
         player2active = false;
         refreshTimer.cancel();
+        playground.setRunning(false);
+        //todo hier die history speichern bzw. updaten
     }
 
     // check if snake bites other snake
@@ -198,7 +207,8 @@ public class GameController {
                     // add remaining body to biting snake
                     bitingSnake.getSnakeBody().addAll(1, sbp_tb);
                 } else {
-                    //setGameOver();
+                    bitingSnake.setPoints(bitingSnake.getPoints() + 1);
+                    setGameOver();
                 }
             }
         }
@@ -210,10 +220,23 @@ public class GameController {
             // check if snakeHead is on same position as a body part
             if (snake.getSnakeBody().get(0).getPositionX() == snake.getSnakeBody().get(i).getPositionX() &&
                     snake.getSnakeBody().get(0).getPositionY() == snake.getSnakeBody().get(i).getPositionY()) {
+                snake.setPoints(snake.getPoints() + 1);
                 setGameOver();
             }
         }
     }
+
+    public void checkSnakeAgainstWall(Snake snake) {
+        for (int i = 0; i < level.getAllLevels().get(playground.getLevelNumber()).size(); i++) {
+            if (snake.getSnakeBody().get(0).getPositionX() == level.getAllLevels().get(playground.getLevelNumber()).get(i).getPositionX() &&
+                    snake.getSnakeBody().get(0).getPositionY() == level.getAllLevels().get(playground.getLevelNumber()).get(i).getPositionY()) {
+                snake.setPoints(snake.getPoints() + 1);
+                setGameOver();
+            }
+
+        }
+    }
+
 
     public void createNewFood() throws InterruptedException {
         // create new snake to store body of snake1 and snake2
@@ -234,10 +257,6 @@ public class GameController {
             }
             // set food at free position
             playground.setFood(new Food(foodX, foodY));
-            // increase speed and restart timer with new speed
-            //speed += 10;
-//            refreshTimer.cancel();
-//            startRefreshingCanvas();
             break;
         }
     }
@@ -248,13 +267,11 @@ public class GameController {
 
 
             // todo : remove counter: just for movement of second snake
-
-
             // every 20 frames
             if (playground.getSnake1().getCounter() % playground.getSnake1().getSpeed() == 0) {
                 playground.getSnake1().setCounter(0);
                 updateSnake(playground.getSnake1(), direction1);
-            };
+            }
             if (playground.getSnake2().getCounter() % playground.getSnake2().getSpeed() == 0) {
                 playground.getSnake2().setCounter(0);
                 counter++;
@@ -270,27 +287,41 @@ public class GameController {
                     counter = 0;
                 }
                 updateSnake(playground.getSnake2(), direction2);
-            };
+            }
 
+            checkSnakeAgainstWall(playground.getSnake1());
+            checkSnakeAgainstWall(playground.getSnake2());
+
+            checkSnakeLength(playground.getSnake1(), playground.getSnake2());
 
 
             // todo : maybe exclude to own threads per snake
             checkSnakeAgainstFood(playground.getSnake1());
             if (!playground.getSnake1().isImmortal()) {
-                // checkSnakeAgainstSelf(playground.getSnake1());
+                checkSnakeAgainstSelf(playground.getSnake1());
                 checkSnakeAgainstOther(playground.getSnake2(), playground.getSnake1());
             }
             // todo : maybe exclude to own threads per snake
             checkSnakeAgainstFood(playground.getSnake2());
             if (!playground.getSnake2().isImmortal()) {
-                // checkSnakeAgainstSelf(playground.getSnake2());
+                checkSnakeAgainstSelf(playground.getSnake2());
                 checkSnakeAgainstOther(playground.getSnake1(), playground.getSnake2());
             }
             // update speed counter
-            playground.getSnake1().setCounter(playground.getSnake1().getCounter()+1);
-            playground.getSnake2().setCounter(playground.getSnake2().getCounter()+1);
+            playground.getSnake1().setCounter(playground.getSnake1().getCounter() + 1);
+            playground.getSnake2().setCounter(playground.getSnake2().getCounter() + 1);
             // send modified playground to client
             template.convertAndSend("/topic/playground", playground);
+        }
+
+        public void checkSnakeLength(Snake snake1, Snake snake2) {
+            if (snake1.getSnakeBody().size() >= 2 * snake2.getSnakeBody().size()){
+                snake2.setPoints(snake2.getPoints() + 1);
+                setGameOver();
+            } else if (snake2.getSnakeBody().size() >= 2 * snake1.getSnakeBody().size()) {
+                snake1.setPoints(snake1.getPoints() + 1);
+                setGameOver();
+            }
         }
 
         // check if snake eats food
@@ -328,18 +359,19 @@ public class GameController {
                     snake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 3));
                 } // Color.PINK - snake faster
                 else if (playground.getFood().getFoodColor() == 4) {
-                    if (snake.getSpeed()> 4) {
+                    if (snake.getSpeed() > 4) {
                         snake.setSpeed(snake.getSpeed() - 2);
                         snake.setCounter(0);
                     }
                 } // Color.GREEN - snake slower
                 else if (playground.getFood().getFoodColor() == 5) {
-                    if (snake.getSpeed()<16) {
+                    if (snake.getSpeed() < 16) {
                         snake.setSpeed(snake.getSpeed() + 2);
                         snake.setCounter(0);
                     }
                 }
                 try {
+                    // todo eigener Thread wegen Zufall
                     createNewFood();
                 } catch (InterruptedException e) {
                     e.printStackTrace();

@@ -15,6 +15,7 @@ public class Playground implements Serializable {
     private int levelNumber;
     private Food food;
     private boolean gameOver;
+    private boolean isRunning;
 
     public Playground() {
     }
@@ -81,5 +82,13 @@ public class Playground implements Serializable {
 
     public void setLevelNumber(int levelNumber) {
         this.levelNumber = levelNumber;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void setRunning(boolean running) {
+        isRunning = running;
     }
 }

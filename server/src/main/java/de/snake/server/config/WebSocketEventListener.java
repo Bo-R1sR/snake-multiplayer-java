@@ -1,21 +1,23 @@
 package de.snake.server.config;
 
-import de.snake.server.controller.GameController;
+import de.snake.server.domain.Message;
+import de.snake.server.domain.OutputMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
 public class WebSocketEventListener {
 
    // private final GameController gameController;
-
+   private final SimpMessagingTemplate template;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketEventListener.class);
 
@@ -23,6 +25,10 @@ public class WebSocketEventListener {
 
     List<Integer> ids = new ArrayList<>(Arrays.asList(1,2));
     HashMap<String, Integer> players = new HashMap<>();
+
+    public WebSocketEventListener(SimpMessagingTemplate template) {
+        this.template = template;
+    }
 
     public HashMap<String, Integer> getPlayers() {
         return players;
@@ -44,7 +50,9 @@ public class WebSocketEventListener {
         LOGGER.info(Objects.requireNonNull(event.getUser()).getName() + " has disconnected");
         ids.add(players.get(event.getUser().getName()));
         players.remove(event.getUser().getName());
-        //gameController.setNumberOfConnections(gameController.getNumberOfConnections()-1);
+        String time = new SimpleDateFormat("HH:mm").format(new Date());
+        OutputMessage leavePlayer =  new OutputMessage("SYSTEM", "Spieler " + event.getUser().getName() + " ist gegangen", time, 0);
+        this.template.convertAndSend("/topic/messages", leavePlayer);
     }
 
 }

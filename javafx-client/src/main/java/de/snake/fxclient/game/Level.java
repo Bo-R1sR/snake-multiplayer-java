@@ -12,10 +12,16 @@ public class Level {
     private List<SnakeBodyPart> level1 = new ArrayList<>();
     private List<SnakeBodyPart> level2 = new ArrayList<>();
     private List<SnakeBodyPart> level3 = new ArrayList<>();
+    private List<SnakeBodyPart> level4 = new ArrayList<>();
+    private List<SnakeBodyPart> level5 = new ArrayList<>();
 
     private List<List<SnakeBodyPart>> allLevels = new ArrayList<>();
 
     public Level() {
+        level1.add(new SnakeBodyPart(14, 5, 0));
+        level1.add(new SnakeBodyPart(14, 6, 0));
+        level1.add(new SnakeBodyPart(13, 5, 0));
+
         level2.add(new SnakeBodyPart(20, 5, 0));
         level2.add(new SnakeBodyPart(20, 6, 0));
         level2.add(new SnakeBodyPart(21, 5, 0));
@@ -24,9 +30,19 @@ public class Level {
         level3.add(new SnakeBodyPart(14, 6, 0));
         level3.add(new SnakeBodyPart(13, 5, 0));
 
+        level4.add(new SnakeBodyPart(20, 5, 0));
+        level4.add(new SnakeBodyPart(20, 6, 0));
+        level4.add(new SnakeBodyPart(21, 5, 0));
+
+        level5.add(new SnakeBodyPart(14, 5, 0));
+        level5.add(new SnakeBodyPart(14, 6, 0));
+        level5.add(new SnakeBodyPart(13, 5, 0));
+
         allLevels.add(level1);
         allLevels.add(level2);
         allLevels.add(level3);
+        allLevels.add(level4);
+        allLevels.add(level5);
 
     }
 
@@ -60,6 +76,14 @@ public class Level {
 
     public void setAllLevels(List<List<SnakeBodyPart>> allLevels) {
         this.allLevels = allLevels;
+    }
+
+    public List<SnakeBodyPart> getLevel4() {
+        return level4;
+    }
+
+    public void setLevel4(List<SnakeBodyPart> level4) {
+        this.level4 = level4;
     }
 }
 

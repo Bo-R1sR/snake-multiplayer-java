@@ -9,6 +9,7 @@ public class Snake {
     private int lastFoodColor;
     private boolean immortal;
     private int speed;
+    private int points;
 
     private List<SnakeBodyPart> snakeBody = new ArrayList<>();
 
@@ -42,5 +43,13 @@ public class Snake {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

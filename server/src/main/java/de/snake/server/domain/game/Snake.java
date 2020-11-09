@@ -10,6 +10,7 @@ public class Snake implements Serializable {
     private boolean immortal = false;
     private int counter = 0;
     private int speed = 10;
+    private int points = 0;
 
     private List<SnakeBodyPart> snakeBody = new ArrayList<>();
 
@@ -57,5 +58,13 @@ public class Snake implements Serializable {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }
