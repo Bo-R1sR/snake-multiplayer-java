@@ -1,6 +1,5 @@
 package de.snake.server.config;
 
-import de.snake.server.domain.Message;
 import de.snake.server.domain.OutputMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,14 +15,10 @@ import java.util.*;
 @Component
 public class WebSocketEventListener {
 
-   // private final GameController gameController;
-   private final SimpMessagingTemplate template;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketEventListener.class);
-
-
-
-    List<Integer> ids = new ArrayList<>(Arrays.asList(1,2));
+    // private final GameController gameController;
+    private final SimpMessagingTemplate template;
+    List<Integer> ids = new ArrayList<>(Arrays.asList(1, 2));
     HashMap<String, Integer> players = new HashMap<>();
 
     public WebSocketEventListener(SimpMessagingTemplate template) {
@@ -51,7 +46,7 @@ public class WebSocketEventListener {
         ids.add(players.get(event.getUser().getName()));
         players.remove(event.getUser().getName());
         String time = new SimpleDateFormat("HH:mm").format(new Date());
-        OutputMessage leavePlayer =  new OutputMessage("SYSTEM", "Spieler " + event.getUser().getName() + " ist gegangen", time, 0);
+        OutputMessage leavePlayer = new OutputMessage("SYSTEM", "Spieler " + event.getUser().getName() + " ist gegangen", time, 0);
         this.template.convertAndSend("/topic/messages", leavePlayer);
     }
 

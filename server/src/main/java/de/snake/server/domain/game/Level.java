@@ -2,7 +2,6 @@ package de.snake.server.domain.game;
 
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

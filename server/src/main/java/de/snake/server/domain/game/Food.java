@@ -5,9 +5,8 @@ import java.util.Random;
 
 
 public class Food implements Serializable {
-    Random rand = new Random();
     private final int numberOfColors = 6;
-
+    Random rand = new Random();
     private int foodPositionX;
     private int foodPositionY;
     private int foodColor = 0;

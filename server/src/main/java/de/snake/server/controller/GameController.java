@@ -69,7 +69,6 @@ public class GameController {
                 playground.setRunning(true);
                 startCounter();
             }
-
         } else {
             screenText.setPlayerText("auf anderen Spieler warten");
             // send screen text to client
@@ -315,7 +314,7 @@ public class GameController {
         }
 
         public void checkSnakeLength(Snake snake1, Snake snake2) {
-            if (snake1.getSnakeBody().size() >= 2 * snake2.getSnakeBody().size()){
+            if (snake1.getSnakeBody().size() >= 2 * snake2.getSnakeBody().size()) {
                 snake2.setPoints(snake2.getPoints() + 1);
                 setGameOver();
             } else if (snake2.getSnakeBody().size() >= 2 * snake1.getSnakeBody().size()) {

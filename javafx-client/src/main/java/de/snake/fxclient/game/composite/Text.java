@@ -28,9 +28,8 @@ public class Text extends Shape {
         if (center) {
             gc.setTextAlign(TextAlignment.CENTER);
             gc.setTextBaseline(VPos.CENTER);
-            gc.fillText(value, Math.round(gc.getCanvas().getWidth()  / 2), Math.round(gc.getCanvas().getHeight() / 2));
-        }
-        else {
+            gc.fillText(value, Math.round(gc.getCanvas().getWidth() / 2), Math.round(gc.getCanvas().getHeight() / 2));
+        } else {
             gc.fillText(value, startPoint.getX(), startPoint.getY());
         }
 
