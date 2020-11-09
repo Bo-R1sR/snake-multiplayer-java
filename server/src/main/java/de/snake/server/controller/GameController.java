@@ -264,7 +264,6 @@ public class GameController {
         @Override
         public void run() {
 
-
             // todo : remove counter: just for movement of second snake
             // every 20 frames
             if (playground.getSnake1().getCounter() % playground.getSnake1().getSpeed() == 0) {
