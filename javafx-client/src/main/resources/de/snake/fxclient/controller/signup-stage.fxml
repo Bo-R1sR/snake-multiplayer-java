@@ -12,39 +12,57 @@
     <padding>
         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
     </padding>
-    <Label alignment="CENTER" text="Registrieren" textAlignment="CENTER">
+    <Label alignment="CENTER" text="Registrierung" textAlignment="CENTER">
         <font>
-            <Font name="System Bold" size="24.0" />
+            <Font name="Segoe UI Bold" size="24.0" />
         </font>
     </Label>
     <JFXTextField fx:id="username" focusColor="#3fa849" maxWidth="222.0" prefWidth="222.0" promptText="Username">
         <VBox.margin>
             <Insets top="25.0" />
         </VBox.margin>
+      <font>
+         <Font name="Segoe UI" size="12.0" />
+      </font>
     </JFXTextField>
     <JFXPasswordField fx:id="password" focusColor="#3fa849" maxWidth="222.0" prefWidth="222.0" promptText="Passwort">
         <VBox.margin>
             <Insets top="10.0" />
         </VBox.margin>
+      <font>
+         <Font name="Segoe UI" size="12.0" />
+      </font>
     </JFXPasswordField>
     <JFXPasswordField fx:id="confirmPassword" focusColor="#3fa849" maxWidth="222.0" prefWidth="222.0" promptText="Passwort bestätigen">
         <VBox.margin>
             <Insets top="10.0" />
         </VBox.margin>
+      <font>
+         <Font name="Segoe UI" size="12.0" />
+      </font>
     </JFXPasswordField>
     <JFXButton onAction="#signupAction" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Registrieren">
         <VBox.margin>
             <Insets top="25.0" />
         </VBox.margin>
+      <font>
+         <Font name="Segoe UI" size="12.0" />
+      </font>
     </JFXButton>
     <JFXButton onAction="#backToLoginPage" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Zurück zum Login">
         <VBox.margin>
-            <Insets top="10.0" />
+            <Insets top="50.0" />
         </VBox.margin>
+      <font>
+         <Font name="Segoe UI" size="12.0" />
+      </font>
     </JFXButton>
     <Label fx:id="signupFailure" text="Fehler bei der Registrierung" textFill="RED" visible="false">
         <VBox.margin>
             <Insets top="10.0" />
         </VBox.margin>
+      <font>
+         <Font name="Segoe UI" size="12.0" />
+      </font>
     </Label>
 </VBox>
