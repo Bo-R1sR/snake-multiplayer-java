@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.geometry.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXSlider?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="dialog" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1"
-      fx:controller="de.snake.fxclient.controller.GameController">
+
+<VBox fx:id="dialog" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.snake.fxclient.controller.GameController">
     <Label text="Snake Multiplayer">
         <font>
-<<<<<<< HEAD
-            <Font name="System Bold" size="24.0"/>
-||||||| 651e87d
-            <Font name="System Bold" size="24.0" />
-=======
             <Font name="Segoe UI Bold" size="24.0" />
->>>>>>> 8cc699d084adb6632a5eb743182371ba2a042a65
         </font>
     </Label>
     <HBox alignment="TOP_CENTER">
@@ -24,76 +24,48 @@
             <Insets top="25.0" />
         </VBox.margin>
         <JFXButton onAction="#initializeGame" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Spiel starten">
-         <font>
-            <Font name="Segoe UI" size="12.0" />
-         </font>
-         <HBox.margin>
-            <Insets right="5.0" />
-         </HBox.margin></JFXButton>
+            <font>
+                <Font name="Segoe UI" size="12.0" />
+            </font>
+            <HBox.margin>
+                <Insets right="5.0" />
+            </HBox.margin></JFXButton>
         <JFXButton onAction="#back" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Hauptmenü">
             <HBox.margin>
                 <Insets left="5.0" />
             </HBox.margin>
-         <font>
-            <Font name="Segoe UI" size="12.0" />
-         </font>
+            <font>
+                <Font name="Segoe UI" size="12.0" />
+            </font>
         </JFXButton>
     </HBox>
     <HBox alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT">
         <VBox.margin>
-            <Insets top="25.0"/>
+            <Insets top="25.0" />
         </VBox.margin>
         <VBox maxWidth="250.0" minWidth="250.0" prefWidth="250.0">
             <HBox.margin>
-                <Insets/>
+                <Insets />
             </HBox.margin>
-<<<<<<< HEAD
-            <JFXTextField fx:id="chatMess" focusColor="#3fa849" promptText="Chatten..."/>
-            <JFXButton onAction="#submitMessage" prefWidth="111.0" style="-fx-background-color: gainsboro;"
-                       text="Nachricht senden">
-||||||| 651e87d
-            <JFXTextField fx:id="chatMess" focusColor="#3fa849" promptText="Chatten..." />
-            <JFXButton onAction="#submitMessage" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Nachricht senden">
-=======
             <JFXTextField fx:id="chatMess" focusColor="#3fa849" promptText="Chatten...">
-            <font>
-               <Font name="Segoe UI" size="12.0" />
-            </font></JFXTextField>
+                <font>
+                    <Font name="Segoe UI" size="12.0" />
+                </font></JFXTextField>
             <JFXButton onAction="#submitMessage" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Nachricht senden">
->>>>>>> 8cc699d084adb6632a5eb743182371ba2a042a65
                 <VBox.margin>
-<<<<<<< HEAD
-                    <Insets top="10.0"/>
-                </VBox.margin>
-            </JFXButton>
-||||||| 651e87d
-                    <Insets top="10.0" />
-                </VBox.margin></JFXButton>
-=======
                     <Insets top="10.0" />
                 </VBox.margin>
-            <font>
-               <Font name="Segoe UI" size="12.0" />
-            </font></JFXButton>
->>>>>>> 8cc699d084adb6632a5eb743182371ba2a042a65
+                <font>
+                    <Font name="Segoe UI" size="12.0" />
+                </font></JFXButton>
 
-            <JFXTextArea fx:id="chatArea" editable="false" focusColor="#f4f4f4" prefHeight="429.0" prefWidth="250.0"
-                         unFocusColor="#f4f4f4">
+            <JFXTextArea fx:id="chatArea" editable="false" focusColor="#f4f4f4" prefHeight="429.0" prefWidth="250.0" unFocusColor="#f4f4f4">
                 <VBox.margin>
-<<<<<<< HEAD
-                    <Insets top="10.0"/>
-                </VBox.margin>
-            </JFXTextArea>
-||||||| 651e87d
-                    <Insets top="10.0" />
-                </VBox.margin></JFXTextArea>
-=======
                     <Insets top="10.0" />
                 </VBox.margin>
-            <font>
-               <Font name="Segoe UI" size="12.0" />
-            </font></JFXTextArea>
->>>>>>> 8cc699d084adb6632a5eb743182371ba2a042a65
+                <font>
+                    <Font name="Segoe UI" size="12.0" />
+                </font></JFXTextArea>
             <!--
             <Label fx:id="testMessage" text="Test" visible="true">
                <VBox.margin>
@@ -104,7 +76,7 @@
         </VBox>
         <Canvas fx:id="gameCanvas" height="500.0" width="500.0">
             <HBox.margin>
-                <Insets left="25.0" right="25.0"/>
+                <Insets left="25.0" right="25.0" />
             </HBox.margin>
         </Canvas>
         <VBox maxWidth="250.0" minWidth="250.0" prefWidth="250.0">
@@ -119,9 +91,9 @@
                 </font>
             </Label>
             <JFXToggleButton text="Aus/An" toggleColor="#3fa849" toggleLineColor="#a2dca8">
-            <font>
-               <Font name="Segoe UI" size="12.0" />
-            </font></JFXToggleButton>
+                <font>
+                    <Font name="Segoe UI" size="12.0" />
+                </font></JFXToggleButton>
             <JFXSlider />
             <Label text="Grafik">
                 <font>
@@ -139,7 +111,7 @@
         </VBox>
     </HBox>
     <padding>
-        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
     </padding>
 
 </VBox>
