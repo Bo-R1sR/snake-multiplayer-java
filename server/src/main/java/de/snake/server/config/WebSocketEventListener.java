@@ -1,6 +1,7 @@
 package de.snake.server.config;
 
 import de.snake.server.domain.OutputMessage;
+import de.snake.server.domain.game.Playground;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
@@ -16,13 +17,14 @@ import java.util.*;
 public class WebSocketEventListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketEventListener.class);
-    // private final GameController gameController;
     private final SimpMessagingTemplate template;
+    private final Playground playground;
     List<Integer> ids = new ArrayList<>(Arrays.asList(1, 2));
     HashMap<String, Integer> players = new HashMap<>();
 
-    public WebSocketEventListener(SimpMessagingTemplate template) {
+    public WebSocketEventListener(SimpMessagingTemplate template, Playground playground) {
         this.template = template;
+        this.playground = playground;
     }
 
     public HashMap<String, Integer> getPlayers() {
@@ -45,8 +47,10 @@ public class WebSocketEventListener {
         LOGGER.info(Objects.requireNonNull(event.getUser()).getName() + " has disconnected");
         ids.add(players.get(event.getUser().getName()));
         players.remove(event.getUser().getName());
+        playground.setPlayer1active(false);
+        playground.setPlayer2active(false);
         String time = new SimpleDateFormat("HH:mm").format(new Date());
-        OutputMessage leavePlayer = new OutputMessage("SYSTEM", "Spieler " + event.getUser().getName() + " ist gegangen", time, 0);
+        OutputMessage leavePlayer = new OutputMessage("SYSTEM", "Spieler " + event.getUser().getName() + " ist gegangen", time);
         this.template.convertAndSend("/topic/messages", leavePlayer);
     }
 

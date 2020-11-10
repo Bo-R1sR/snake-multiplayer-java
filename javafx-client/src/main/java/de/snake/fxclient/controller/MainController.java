@@ -7,10 +7,6 @@ import javafx.concurrent.WorkerStateEvent;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
-import javax.websocket.DeploymentException;
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 @Component
 @FxmlView("main-stage.fxml")
 public class MainController {
@@ -42,7 +38,7 @@ public class MainController {
         backgroundController.changeView(LoginController.class);
     }
 
-    public void showGame() throws DeploymentException, IOException, URISyntaxException {
+    public void showGame() {
         backgroundController.changeView(GameController.class);
         customStompClient.connectToServerWS();
     }

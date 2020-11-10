@@ -16,6 +16,6 @@ public class ChatController {
     @SendTo("/topic/messages")
     public OutputMessage send(Message message) {
         String time = new SimpleDateFormat("HH:mm").format(new Date());
-        return new OutputMessage(message.getFrom(), message.getText(), time, 0);
+        return new OutputMessage(message.getFrom(), message.getText(), time);
     }
 }

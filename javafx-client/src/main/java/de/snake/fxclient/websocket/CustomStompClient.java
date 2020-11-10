@@ -7,10 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
-import javax.websocket.DeploymentException;
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 @Component
 public class CustomStompClient {
 
@@ -26,7 +22,7 @@ public class CustomStompClient {
         this.user = user;
     }
 
-    public void connectToServerWS() throws DeploymentException, IOException, URISyntaxException {
+    public void connectToServerWS() {
         webSocketStompClient.setMessageConverter(new MappingJackson2MessageConverter());
         WebSocketHttpHeaders handshakeHeaders = new WebSocketHttpHeaders();
         handshakeHeaders.add("Authorization", user.getJsonWebToken());

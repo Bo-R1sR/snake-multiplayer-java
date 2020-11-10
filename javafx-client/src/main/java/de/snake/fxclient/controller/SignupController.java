@@ -17,16 +17,21 @@ public class SignupController {
 
     private final User user;
     private final BackgroundController backgroundController;
-    @Value("${server.ip}")
-    private String serverIp;
+
     @FXML
     private TextField username;
+
     @FXML
     private PasswordField password;
+
     @FXML
     private PasswordField confirmPassword;
+
     @FXML
     private Label signupFailure;
+
+    @Value("${server.ip}")
+    private String serverIp;
 
     public SignupController(User user, BackgroundController backgroundController) {
         this.user = user;

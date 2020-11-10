@@ -17,8 +17,7 @@ public class LoginController {
 
     private final User user;
     private final BackgroundController backgroundController;
-    @Value("${server.ip}")
-    private String serverIp;
+
     @FXML
     private TextField username;
 
@@ -27,6 +26,9 @@ public class LoginController {
 
     @FXML
     private Label loginFailure;
+
+    @Value("${server.ip}")
+    private String serverIp;
 
     public LoginController(User user, BackgroundController backgroundController) {
         this.user = user;

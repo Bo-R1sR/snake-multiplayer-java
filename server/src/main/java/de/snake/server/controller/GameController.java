@@ -23,8 +23,6 @@ public class GameController {
 
     private Timer refreshTimer;
     private Timer immortalTimer;
-    private Boolean player1active = false;
-    private Boolean player2active = false;
     private SnakeDirection direction1;
     private SnakeDirection direction2;
     private int counter;
@@ -61,10 +59,10 @@ public class GameController {
     // method has to be called by both players
     @MessageMapping("/playerActive/{id}")
     public void waitForAllPlayers(@DestinationVariable int id) throws InterruptedException {
-        if (id == 1) player1active = true;
-        if (id == 2) player2active = true;
-        //todo || auf &&
-        if (player1active || player2active) {
+
+        if (id == 1) playground.setPlayer1active(true);
+        if (id == 2) playground.setPlayer2active(true);
+        if (playground.getPlayer1active() && playground.getPlayer2active()) {
             if (!playground.isRunning()) {
                 playground.setRunning(true);
                 startCounter();
@@ -74,7 +72,6 @@ public class GameController {
             // send screen text to client
             this.template.convertAndSend("/topic/screenText", screenText);
         }
-
     }
 
     // counter at the beginning of each game
@@ -179,8 +176,8 @@ public class GameController {
     // in case of game over stop refreshing
     public void setGameOver() {
         playground.setGameOver(true);
-        player1active = false;
-        player2active = false;
+        playground.setPlayer1active(false);
+        playground.setPlayer2active(false);
         refreshTimer.cancel();
         playground.setRunning(false);
         //todo hier die history speichern bzw. updaten
@@ -237,7 +234,8 @@ public class GameController {
     }
 
 
-    public void createNewFood() throws InterruptedException {
+    public void createNewFood() {
+
         // create new snake to store body of snake1 and snake2
         Snake totalSnake = new Snake(0, -1, -1);
         // add bodies
@@ -292,14 +290,12 @@ public class GameController {
 
             checkSnakeLength(playground.getSnake1(), playground.getSnake2());
 
-
-            // todo : maybe exclude to own threads per snake
             checkSnakeAgainstFood(playground.getSnake1());
             if (!playground.getSnake1().isImmortal()) {
                 checkSnakeAgainstSelf(playground.getSnake1());
                 checkSnakeAgainstOther(playground.getSnake2(), playground.getSnake1());
             }
-            // todo : maybe exclude to own threads per snake
+
             checkSnakeAgainstFood(playground.getSnake2());
             if (!playground.getSnake2().isImmortal()) {
                 checkSnakeAgainstSelf(playground.getSnake2());
@@ -339,7 +335,7 @@ public class GameController {
                 else if (playground.getFood().getFoodColor() == 2) {
                     try {
                         immortalTimer.cancel();
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
 
                     snake.setImmortal(true);
@@ -368,14 +364,15 @@ public class GameController {
                         snake.setCounter(0);
                     }
                 }
-                try {
-                    // todo eigener Thread wegen Zufall
-                    createNewFood();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
 
+                // if method not quick enough, create food for sending so client
+                playground.setFood(new Food(-1, -1));
+                // create Food in own Thread because it can take awhile when screen is already full
+                Runnable runnable =
+                        GameController.this::createNewFood;
+                Thread thread = new Thread(runnable);
+                thread.start();
+            }
         }
     }
 }

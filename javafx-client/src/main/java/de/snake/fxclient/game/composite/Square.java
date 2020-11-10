@@ -5,10 +5,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
 
 public class Square extends Shape {
-    private Paint backgroundColor;
-    private Point2D startPoint;
-    private double width;
-    private double height;
+    private final Paint backgroundColor;
+    private final Point2D startPoint;
+    private final double width;
+    private final double height;
 
     public Square(GraphicsContext gc, Paint backgroundColor, Point2D startPoint, double width, double height) {
         super(gc);

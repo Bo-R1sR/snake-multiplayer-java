@@ -8,10 +8,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 public class Text extends Shape {
-    private Point2D startPoint;
-    private String value;
-    private Paint color;
-    private boolean center;
+    private final Point2D startPoint;
+    private final String value;
+    private final Paint color;
+    private final boolean center;
 
     public Text(GraphicsContext gc, Point2D startPoint, String value, Paint color, boolean center) {
         super(gc);

@@ -5,13 +5,11 @@ public class OutputMessage {
     private String from;
     private String text;
     private String time;
-    private int color;
 
-    public OutputMessage(String from, String text, String time, int color) {
+    public OutputMessage(String from, String text, String time) {
         this.from = from;
         this.text = text;
         this.time = time;
-        this.color = color;
     }
 
     public String getFrom() {
@@ -38,11 +36,4 @@ public class OutputMessage {
         this.time = time;
     }
 
-    public int getColor() {
-        return color;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
-    }
 }

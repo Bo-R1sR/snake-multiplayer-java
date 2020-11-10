@@ -6,21 +6,6 @@
       xmlns="http://javafx.com/javafx"
       fx:controller="de.snake.fxclient.controller.BackgroundController">
 
-    <!--
-    <VBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="de.snake.fxclient.MainController"
-            prefHeight="600.0" prefWidth="600.0" spacing="10" alignment="CENTER">
-
-
-
-    <HBox fx:id="header" alignment="CENTER_LEFT">
-        <Label fx:id="title" HBox.hgrow="ALWAYS"></Label>
-    </HBox>
-    -->
-
     <StackPane fx:id="viewHolder">
-
-
     </StackPane>
 </VBox>

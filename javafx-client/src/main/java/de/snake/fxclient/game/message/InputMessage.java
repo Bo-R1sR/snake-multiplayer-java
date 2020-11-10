@@ -5,7 +5,6 @@ public class InputMessage {
     private String from;
     private String text;
     private String time;
-    private int color;
 
     public String getFrom() {
         return from;
@@ -31,11 +30,4 @@ public class InputMessage {
         this.time = time;
     }
 
-    public int getColor() {
-        return color;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
-    }
 }

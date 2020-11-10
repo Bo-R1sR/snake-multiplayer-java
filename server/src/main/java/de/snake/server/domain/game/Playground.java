@@ -16,6 +16,8 @@ public class Playground implements Serializable {
     private Food food;
     private boolean gameOver;
     private boolean isRunning;
+    private Boolean player1active = false;
+    private Boolean player2active = false;
 
     public Snake getSnake1() {
         return snake1;
@@ -87,5 +89,21 @@ public class Playground implements Serializable {
 
     public void setRunning(boolean running) {
         isRunning = running;
+    }
+
+    public Boolean getPlayer1active() {
+        return player1active;
+    }
+
+    public void setPlayer1active(Boolean player1active) {
+        this.player1active = player1active;
+    }
+
+    public Boolean getPlayer2active() {
+        return player2active;
+    }
+
+    public void setPlayer2active(Boolean player2active) {
+        this.player2active = player2active;
     }
 }

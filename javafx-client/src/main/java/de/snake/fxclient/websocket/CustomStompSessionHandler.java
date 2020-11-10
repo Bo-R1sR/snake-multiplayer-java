@@ -91,19 +91,23 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
+                // if player quits early
+                if (!playground.isRunning()) {
+                    screenText.setPlayerText("");
+                    gameController.updateScreenText();
+                }
                 InputMessage msg = (InputMessage) payload;
 
                 String outputFormat = System.lineSeparator() + "<" + msg.getTime() + " " + msg.getFrom() + "> " + msg.getText();
                 logger.info("Received message");
-                //Platform.runLater(() -> gameController.getTestMessage().setText(outputFormat));
-                Platform.runLater(() -> gameController.appendChatMessage(outputFormat, msg.getColor()));
+                Platform.runLater(() -> gameController.appendChatMessage(outputFormat));
             }
         });
 
+        // show new player in chat
         Message joinMessage = new Message();
         joinMessage.setFrom("SYSTEM");
         joinMessage.setText("Spieler " + user.getName() + " ist hinzugekommen");
-        joinMessage.setColor(1);
         session.send("/app/message", joinMessage);
     }
 
