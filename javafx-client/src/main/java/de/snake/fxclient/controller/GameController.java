@@ -1,5 +1,8 @@
 package de.snake.fxclient.controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXSlider;
+import com.jfoenix.controls.JFXToggleButton;
 import de.snake.fxclient.domain.User;
 import de.snake.fxclient.game.*;
 import de.snake.fxclient.game.composite.*;
@@ -16,6 +19,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
+import java.io.File;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +38,38 @@ public class GameController {
 
     private SnakeDirection direction;
     private GraphicsContext gc;
+    private Color Snake1;
+    private Color Snake2;
+    private Boolean isSoundMuted;
+    // Musik
+    private final String musicPath = "src/main/resources/sounds/test.mp3";
+    Media musicMedia = new Media(new File(musicPath).toURI().toString());
+    MediaPlayer musicPlayer = new MediaPlayer(musicMedia);
+
+    // Essen
+    private final String eatPath = "src/main/resources/sounds/test.mp3";
+    Media eatMedia = new Media(new File(eatPath).toURI().toString());
+    MediaPlayer eatPlayer = new MediaPlayer(eatMedia);
+
+    // Runde gewonnen
+    private final String roundWinPath = "src/main/resources/sounds/test.mp3";
+    Media roundWinMedia = new Media(new File(roundWinPath).toURI().toString());
+    MediaPlayer roundWinPlayer = new MediaPlayer(roundWinMedia);
+
+    // Runde gewonnen
+    private final String roundLostPath = "src/main/resources/sounds/test.mp3";
+    Media roundLostMedia = new Media(new File(roundLostPath).toURI().toString());
+    MediaPlayer roundLostPlayer = new MediaPlayer(roundLostMedia);
+
+    // Spiel gewonnen
+    private final String gameWinPath = "src/main/resources/sounds/test.mp3";
+    Media gameWinMedia = new Media(new File(gameWinPath).toURI().toString());
+    MediaPlayer gameWinPlayer = new MediaPlayer(gameWinMedia);
+
+    // Spiel gewonnen
+    private final String gameLostPath = "src/main/resources/sounds/test.mp3";
+    Media gameLostMedia = new Media(new File(gameLostPath).toURI().toString());
+    MediaPlayer gameLostPlayer = new MediaPlayer(gameLostMedia);
 
     @FXML
     private TextArea chatArea;
@@ -39,6 +77,14 @@ public class GameController {
     private TextField chatMess;
     @FXML
     private Canvas gameCanvas;
+    @FXML
+    private JFXToggleButton musicSwitch;
+    @FXML
+    private JFXToggleButton soundSwitch;
+    @FXML
+    private JFXSlider volumeSlider;
+    @FXML
+    private JFXComboBox colorPicker;
 
     public GameController(BackgroundController backgroundController, User user, Playground playground, ScreenText screenText, Level level) {
         this.backgroundController = backgroundController;
@@ -51,6 +97,7 @@ public class GameController {
     @FXML
     public void initialize() {
         gc = gameCanvas.getGraphicsContext2D();
+        initializeColorList();
         Shape background = new Square(gc, Color.BLACK, new Point2D(0, 0), playground.getWidth() * playground.getSnakeBodySize(), playground.getHeight() * playground.getSnakeBodySize());
         background.draw();
     }
@@ -194,5 +241,37 @@ public class GameController {
     public void submitMessage() {
         user.getSession().send("/app/message", getNewMessage());
         chatMess.setText("");
+    }
+
+    public void toggleMusic(){
+        if (musicSwitch.isSelected()){
+            musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            musicPlayer.play();
+        }
+        else{
+            musicPlayer.pause();
+        }
+    }
+
+    public void toggleSounds(){
+        if (soundSwitch.isSelected()){
+            System.out.println("Sounds an");
+            isSoundMuted = Boolean.FALSE;
+        }
+        else{
+            System.out.println("Sounds aus");
+            isSoundMuted = Boolean.TRUE;
+        }
+    }
+
+    public void changeVolume(){
+        musicPlayer.setVolume(volumeSlider.getValue());
+        System.out.println("Volume: " + volumeSlider.getValue());
+    }
+
+    private void initializeColorList(){
+        colorPicker.getItems().clear();
+        colorPicker.getItems().addAll("1 Blau und 2 Grün", "1 Rot und 2 Gelb", "1 Weiß und 2 Blau");
+        colorPicker.getSelectionModel().select("1 Blau und 2 Grün");
     }
 }
