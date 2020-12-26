@@ -13,16 +13,11 @@ public class GameService {
     private final SimpMessagingTemplate template;
     private final Playground playground;
     private final Random rand = new Random();
-    private final SnakeDirections snakeDirections;
 
-    private int counter;
-
-    public GameService(ScreenText screenText, SimpMessagingTemplate template, Playground playground, SnakeDirections snakeDirections) {
-
+    public GameService(ScreenText screenText, SimpMessagingTemplate template, Playground playground) {
         this.screenText = screenText;
         this.template = template;
         this.playground = playground;
-        this.snakeDirections = snakeDirections;
     }
 
 
@@ -73,7 +68,5 @@ public class GameService {
         playground.getSnake2().setSnakeDirectionEnum(SnakeDirectionEnum.RIGHT);//direction2 = SnakeDirection.RIGHT;
         // always same color at start, during game random
         playground.getFood().setFoodColor(0);
-        // todo remove counter
-        counter = 0;
     }
 }

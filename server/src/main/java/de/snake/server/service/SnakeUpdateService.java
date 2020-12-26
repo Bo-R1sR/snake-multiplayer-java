@@ -21,54 +21,6 @@ public class SnakeUpdateService {
         this.level = level;
     }
 
-    public boolean updateSnakeOld(Snake snake, SnakeDirectionEnum direction) {
-        for (int i = snake.getSnakeBody().size() - 1; i >= 1; i--) {
-            snake.getSnakeBody().get(i).setPositionX(snake.getSnakeBody().get(i - 1).getPositionX());
-            snake.getSnakeBody().get(i).setPositionY(snake.getSnakeBody().get(i - 1).getPositionY());
-        }
-        // move snake head to new position and check if head is outside playground
-        SnakeBodyPart snakeHead = snake.getSnakeBody().get(0);
-        switch (direction) {
-            case UP:
-                snakeHead.decreaseY();
-                if (snakeHead.getPositionY() < 0) {
-                    snake.setPoints(snake.getPoints() + 1);
-                    return true;
-                    //setGameOver();
-                }
-                return false;
-            //break;
-            case DOWN:
-                snakeHead.increaseY();
-                if (snakeHead.getPositionY() > playground.getHeight() - 1) {
-                    snake.setPoints(snake.getPoints() + 1);
-                    return true;
-                    //setGameOver();
-                }
-                return false;
-            //break;
-            case LEFT:
-                snakeHead.decreaseX();
-                if (snakeHead.getPositionX() < 0) {
-                    snake.setPoints(snake.getPoints() + 1);
-                    return true;
-                    //setGameOver();
-                }
-                return false;
-            //break;
-            case RIGHT:
-                snakeHead.increaseX();
-                if (snakeHead.getPositionX() > playground.getWidth() - 1) {
-                    snake.setPoints(snake.getPoints() + 1);
-                    return true;
-                    //setGameOver();
-                }
-                return false;
-            //break;
-        }
-        return false;
-    }
-
     public void updateSnakePosition(Snake snake, SnakeDirectionEnum direction) {
         for (int i = snake.getSnakeBody().size() - 1; i >= 1; i--) {
             snake.getSnakeBody().get(i).setPositionX(snake.getSnakeBody().get(i - 1).getPositionX());
@@ -100,16 +52,13 @@ public class SnakeUpdateService {
         } else return false;
     }
 
-
     public boolean checkSnakeAgainstWall(Snake snake) {
         for (int i = 0; i < level.getAllLevels().get(playground.getLevelNumber()).size(); i++) {
             if (snake.getSnakeBody().get(0).getPositionX() == level.getAllLevels().get(playground.getLevelNumber()).get(i).getPositionX() &&
                     snake.getSnakeBody().get(0).getPositionY() == level.getAllLevels().get(playground.getLevelNumber()).get(i).getPositionY()) {
                 snake.setPoints(snake.getPoints() + 1);
                 return true;
-                //setGameOver();
             }
-
         }
         return false;
     }
@@ -125,11 +74,10 @@ public class SnakeUpdateService {
         return false;
     }
 
-
     public void checkSnakeAgainstFood(Snake snake) {
         // check if snake head is on same position as food
-        if (playground.getFood().getFoodPositionX() == snake.getSnakeBody().get(0).getPositionX() &&
-                playground.getFood().getFoodPositionY() == snake.getSnakeBody().get(0).getPositionY()) {
+        if (playground.getFood().getFoodPositionX() == snake.getHead().getPositionX() &&
+                playground.getFood().getFoodPositionY() == snake.getHead().getPositionY()) {
             // Color.PURPLE - add part
             if (playground.getFood().getFoodColor() == 0) {
                 snake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 0));
@@ -141,11 +89,6 @@ public class SnakeUpdateService {
                         snake.getSnakeBody().get(snake.getSnakeBody().size() - 1).setColor(3);
                         break;
                     }
-//                    for (int i = snake.getSnakeBody().size()-2; i>= 3; i--) {
-//                        if (snake.getSnakeBody().get(i).getColor() == 3) {
-//                            snake.getSnakeBody().get(i).setColor(0);
-//                            snake.getSnakeBody().get(i+1).setColor(3);
-//                        }
                 }
             } // Color.LIGHTBLUE - remove last part
             else if (playground.getFood().getFoodColor() == 1) {
@@ -218,7 +161,6 @@ public class SnakeUpdateService {
     }
 
     public void createNewFood() {
-
         // create new snake to store body of snake1 and snake2
         Snake totalSnake = new Snake(0, -1, -1);
         // add bodies
@@ -226,7 +168,7 @@ public class SnakeUpdateService {
         totalSnake.getSnakeBody().addAll(playground.getSnake2().getSnakeBody());
         start:
         while (true) {
-            // create random food position - but not directly at border
+            // create random food position
             int foodX = rand.nextInt(playground.getWidth() - 5);
             int foodY = rand.nextInt(playground.getHeight() - 5);
             // check if food position is inside snake
@@ -241,16 +183,14 @@ public class SnakeUpdateService {
         }
     }
 
-
     // check if snake bites itself
     public boolean checkSnakeAgainstSelf(Snake snake) {
         for (int i = 1; i < snake.getSnakeBody().size(); i++) {
             // check if snakeHead is on same position as a body part
-            if (snake.getSnakeBody().get(0).getPositionX() == snake.getSnakeBody().get(i).getPositionX() &&
-                    snake.getSnakeBody().get(0).getPositionY() == snake.getSnakeBody().get(i).getPositionY()) {
-                snake.setPoints(snake.getPoints() + 1);
+            if (snake.getHead().getPositionX() == snake.getSnakeBody().get(i).getPositionX() &&
+                    snake.getHead().getPositionY() == snake.getSnakeBody().get(i).getPositionY()) {
+                snake.increasePoints();
                 return true;
-                //setGameOver();
             }
         }
         return false;
@@ -260,8 +200,8 @@ public class SnakeUpdateService {
     public boolean checkSnakeAgainstOther(Snake bitingSnake, Snake targetSnake) {
         for (int i = 0; i < targetSnake.getSnakeBody().size(); i++) {
             // check if snake head is on same position as other snake body
-            if (bitingSnake.getSnakeBody().get(0).getPositionX() == targetSnake.getSnakeBody().get(i).getPositionX() &&
-                    bitingSnake.getSnakeBody().get(0).getPositionY() == targetSnake.getSnakeBody().get(i).getPositionY()) {
+            if (bitingSnake.getHead().getPositionX() == targetSnake.getSnakeBody().get(i).getPositionX() &&
+                    bitingSnake.getHead().getPositionY() == targetSnake.getSnakeBody().get(i).getPositionY()) {
                 // only bite at red fields
                 if (targetSnake.getSnakeBody().get(i).getColor() == 3) {
                     //divide target snake a bite point
@@ -276,14 +216,11 @@ public class SnakeUpdateService {
                     // add remaining body to biting snake
                     bitingSnake.getSnakeBody().addAll(1, sbp_tb);
                 } else {
-                    bitingSnake.setPoints(bitingSnake.getPoints() + 1);
+                    bitingSnake.increasePoints();
                     return true;
-                    //setGameOver();
                 }
             }
         }
         return false;
     }
-
-
 }

@@ -3,7 +3,6 @@ package de.snake.server.controller.websocket;
 import de.snake.server.domain.game.Playground;
 import de.snake.server.domain.game.Snake;
 import de.snake.server.domain.game.SnakeDirectionEnum;
-import de.snake.server.domain.game.SnakeDirections;
 import de.snake.server.service.GameService;
 import de.snake.server.service.SnakeUpdateService;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -19,22 +18,19 @@ public class GameController {
 
     private final Playground playground;
     private final SimpMessagingTemplate template;
-    private final SnakeDirections snakeDirections;
     private final GameService gameService;
     private final SnakeUpdateService snakeUpdateService;
     private Timer refreshTimer;
     private int counter;
 
-    public GameController(Playground playground, SimpMessagingTemplate template, SnakeDirections snakeDirections, GameService gameService, SnakeUpdateService snakeUpdateService) {
+    public GameController(Playground playground, SimpMessagingTemplate template, GameService gameService, SnakeUpdateService snakeUpdateService) {
         this.playground = playground;
         this.template = template;
-        this.snakeDirections = snakeDirections;
         this.gameService = gameService;
         this.snakeUpdateService = snakeUpdateService;
     }
 
-    // counter at the beginning of each game
-    // entry point
+    // entry point for each game
     public void startCounter() throws InterruptedException {
         gameService.initializePlayground();
         gameService.startCountdown();
@@ -61,9 +57,6 @@ public class GameController {
             Snake snake2 = playground.getSnake2();
             bothSnakes.add(snake1);
             bothSnakes.add(snake2);
-
-
-
             // speed control: counter starts with 0 and is increased every time this task is executed
             // speed starts with 10
             // when counter equals speed execute
@@ -84,7 +77,6 @@ public class GameController {
                             counter = 0;
                         }
                     }
-
                     snake.resetCounter();
                     // move snake head forward
                     //snakeUpdateService.updateSnakePosition(snake, snakeDirections.getDirection1());
@@ -107,7 +99,6 @@ public class GameController {
                     snakeUpdateService.checkSnakeAgainstFood(snake);
                 } else snake.increaseCounter();
             }
-
             // wait for both snakes to update position before checking against each other
             if (!snake1.isImmortal()) {
                 if (snakeUpdateService.checkSnakeAgainstOther(snake2, snake1)) {
@@ -119,11 +110,9 @@ public class GameController {
                     setGameOver();
                 }
             }
-
             if (snakeUpdateService.checkSnakeLength(snake1, snake2)) {
                 setGameOver();
             }
-
             template.convertAndSend("/topic/playground", playground);
         }
     }
