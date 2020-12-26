@@ -30,7 +30,7 @@ public class GameController {
     private final ScreenText screenText;
     private final Level level;
 
-    private SnakeDirection direction;
+    private SnakeDirectionEnum direction;
     private GraphicsContext gc;
 
     @FXML
@@ -72,22 +72,22 @@ public class GameController {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             // only send key if it is arrow
             if (key.getCode() == KeyCode.UP) {
-                direction = SnakeDirection.UP;
+                direction = SnakeDirectionEnum.UP;
                 key.consume();
                 user.getSession().send("/app/direction" + user.getPlayerId(), direction);
             }
             if (key.getCode() == KeyCode.LEFT) {
-                direction = SnakeDirection.LEFT;
+                direction = SnakeDirectionEnum.LEFT;
                 key.consume();
                 user.getSession().send("/app/direction" + user.getPlayerId(), direction);
             }
             if (key.getCode() == KeyCode.DOWN) {
-                direction = SnakeDirection.DOWN;
+                direction = SnakeDirectionEnum.DOWN;
                 key.consume();
                 user.getSession().send("/app/direction" + user.getPlayerId(), direction);
             }
             if (key.getCode() == KeyCode.RIGHT) {
-                direction = SnakeDirection.RIGHT;
+                direction = SnakeDirectionEnum.RIGHT;
                 key.consume();
                 user.getSession().send("/app/direction" + user.getPlayerId(), direction);
             }

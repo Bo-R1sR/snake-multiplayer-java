@@ -1,15 +1,14 @@
 package de.snake.server.controller;
 
-import de.snake.server.config.WebSocketEventListener;
 import de.snake.server.domain.game.*;
 import org.springframework.beans.BeanUtils;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Controller
 public class GameController {
@@ -18,60 +17,19 @@ public class GameController {
     private final ScreenText screenText;
     private final SimpMessagingTemplate template;
     private final Random rand = new Random();
-    private final WebSocketEventListener webSocketEventListener;
+    private final SnakeDirections snakeDirections;
     private final Level level;
-
     private Timer refreshTimer;
     private Timer immortalTimer;
-    private SnakeDirection direction1;
-    private SnakeDirection direction2;
+
     private int counter;
 
-    public GameController(Playground playground, ScreenText screenText, SimpMessagingTemplate template, WebSocketEventListener webSocketEventListener, Level level) {
+    public GameController(Playground playground, ScreenText screenText, SimpMessagingTemplate template, SnakeDirections snakeDirections, Level level) {
         this.playground = playground;
         this.screenText = screenText;
         this.template = template;
-        this.webSocketEventListener = webSocketEventListener;
+        this.snakeDirections = snakeDirections;
         this.level = level;
-    }
-
-    // assign id 1 or 2 to player and send this id to client
-    @MessageMapping("/playerId/{username}")
-    @SendToUser(destinations = "/queue/playerId", broadcast = false)
-    public Integer sendID(@DestinationVariable String username) {
-        HashMap<String, Integer> players = webSocketEventListener.getPlayers();
-        return players.get(username);
-    }
-
-    // receive directions from player1
-    @MessageMapping("/direction1")
-    public void changeDirection1(SnakeDirection direction) {
-        this.direction1 = direction;
-    }
-
-    // receive directions from player2
-    @MessageMapping("/direction2")
-    public void changeDirection2(SnakeDirection direction) {
-        this.direction2 = direction;
-    }
-
-    // if clients request start of game
-    // method has to be called by both players
-    @MessageMapping("/playerActive/{id}")
-    public void waitForAllPlayers(@DestinationVariable int id) throws InterruptedException {
-
-        if (id == 1) playground.setPlayer1active(true);
-        if (id == 2) playground.setPlayer2active(true);
-        if (playground.getPlayer1active() && playground.getPlayer2active()) {
-            if (!playground.isRunning()) {
-                playground.setRunning(true);
-                startCounter();
-            }
-        } else {
-            screenText.setPlayerText("auf anderen Spieler warten");
-            // send screen text to client
-            this.template.convertAndSend("/topic/screenText", screenText);
-        }
     }
 
     // counter at the beginning of each game
@@ -97,12 +55,13 @@ public class GameController {
         playground.setGameOver(false);
         // refreshing speed
         // initial movement direction for snakes
-        direction1 = SnakeDirection.LEFT;
-        direction2 = SnakeDirection.RIGHT;
+        snakeDirections.setDirection1(SnakeDirectionEnum.LEFT); //direction1 = SnakeDirection.LEFT;
+        snakeDirections.setDirection2(SnakeDirectionEnum.RIGHT);//direction2 = SnakeDirection.RIGHT;
         // initialize snakes and food
         int width = playground.getWidth();
         int height = playground.getHeight();
         // todo points in history auslagern
+        // todo make sure after restart snake is correctly assigned depending who clicks first
         int points1;
         int points2;
         if (playground.getSnake1() != null) {
@@ -115,8 +74,8 @@ public class GameController {
         } else {
             points2 = 0;
         }
-        playground.setSnake1(new Snake(5, width / 2, height / 2 + 5));
-        playground.setSnake2(new Snake(5, width / 2, height / 2 - 5));
+        playground.setSnake1(new Snake(3, width / 2, height / 2 + 5));
+        playground.setSnake2(new Snake(3, width / 2, height / 2 - 5));
         playground.setFood(new Food(width / 2, height / 2));
         playground.getSnake1().setPoints(points1);
         playground.getSnake2().setPoints(points2);
@@ -134,7 +93,7 @@ public class GameController {
     }
 
     // update snake position
-    public void updateSnake(Snake snake, SnakeDirection direction) {
+    public void updateSnake(Snake snake, SnakeDirectionEnum direction) {
         for (int i = snake.getSnakeBody().size() - 1; i >= 1; i--) {
             snake.getSnakeBody().get(i).setPositionX(snake.getSnakeBody().get(i - 1).getPositionX());
             snake.getSnakeBody().get(i).setPositionY(snake.getSnakeBody().get(i - 1).getPositionY());
@@ -266,23 +225,23 @@ public class GameController {
             // every 20 frames
             if (playground.getSnake1().getCounter() % playground.getSnake1().getSpeed() == 0) {
                 playground.getSnake1().setCounter(0);
-                updateSnake(playground.getSnake1(), direction1);
+                updateSnake(playground.getSnake1(), snakeDirections.getDirection1());
             }
             if (playground.getSnake2().getCounter() % playground.getSnake2().getSpeed() == 0) {
                 playground.getSnake2().setCounter(0);
                 counter++;
                 if (counter < 5) {
-                    direction2 = SnakeDirection.RIGHT;
+                    snakeDirections.setDirection2(SnakeDirectionEnum.RIGHT);
                 } else if (counter < 10) {
-                    direction2 = SnakeDirection.UP;
+                    snakeDirections.setDirection2(SnakeDirectionEnum.UP);
                 } else if (counter < 15) {
-                    direction2 = SnakeDirection.LEFT;
+                    snakeDirections.setDirection2(SnakeDirectionEnum.LEFT);
                 } else if (counter < 20) {
-                    direction2 = SnakeDirection.DOWN;
+                    snakeDirections.setDirection2(SnakeDirectionEnum.DOWN);
                 } else {
                     counter = 0;
                 }
-                updateSnake(playground.getSnake2(), direction2);
+                updateSnake(playground.getSnake2(), snakeDirections.getDirection2());
             }
 
             checkSnakeAgainstWall(playground.getSnake1());
@@ -309,10 +268,11 @@ public class GameController {
         }
 
         public void checkSnakeLength(Snake snake1, Snake snake2) {
-            if (snake1.getSnakeBody().size() >= 2 * snake2.getSnakeBody().size()) {
+            // todo
+            if (snake1.getSnakeBody().size() >= 5 * snake2.getSnakeBody().size()) {
                 snake2.setPoints(snake2.getPoints() + 1);
                 setGameOver();
-            } else if (snake2.getSnakeBody().size() >= 2 * snake1.getSnakeBody().size()) {
+            } else if (snake2.getSnakeBody().size() >= 5 * snake1.getSnakeBody().size()) {
                 snake1.setPoints(snake1.getPoints() + 1);
                 setGameOver();
             }
@@ -326,6 +286,20 @@ public class GameController {
                 // Color.PURPLE - add part
                 if (playground.getFood().getFoodColor() == 0) {
                     snake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 0));
+                    // shift biting mark backwards
+                    for (SnakeBodyPart sbp : snake.getSnakeBody()) {
+                        // find first red part, set it to default, set last part
+                        if (sbp.getColor() == 3) {
+                            sbp.setColor(0);
+                            snake.getSnakeBody().get(snake.getSnakeBody().size() - 1).setColor(3);
+                            break;
+                        }
+//                    for (int i = snake.getSnakeBody().size()-2; i>= 3; i--) {
+//                        if (snake.getSnakeBody().get(i).getColor() == 3) {
+//                            snake.getSnakeBody().get(i).setColor(0);
+//                            snake.getSnakeBody().get(i+1).setColor(3);
+//                        }
+                    }
                 } // Color.LIGHTBLUE - remove last part
                 else if (playground.getFood().getFoodColor() == 1) {
                     if (snake.getSnakeBody().size() > 5) {
@@ -350,6 +324,27 @@ public class GameController {
                     }, 20000);
                 } // Color.RED - position for biting
                 else if (playground.getFood().getFoodColor() == 3) {
+                    // first set color back to default
+                    for (SnakeBodyPart sbp : snake.getSnakeBody()) {
+                        sbp.setColor(0);
+                    }
+                    // assign red color according to length of snake
+                    int sizeSnake = snake.getSnakeBody().size();
+                    if (sizeSnake == 5 || sizeSnake == 6) {
+                        snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
+                    } else if (sizeSnake > 5 && sizeSnake < 9) {
+                        snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
+                        snake.getSnakeBody().get(sizeSnake - 2).setColor(3);
+                    } else if (sizeSnake > 5 && sizeSnake < 14) {
+                        snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
+                        snake.getSnakeBody().get(sizeSnake - 2).setColor(3);
+                        snake.getSnakeBody().get(sizeSnake - 3).setColor(3);
+                    } else if (sizeSnake > 5) {
+                        snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
+                        snake.getSnakeBody().get(sizeSnake - 2).setColor(3);
+                        snake.getSnakeBody().get(sizeSnake - 3).setColor(3);
+                        snake.getSnakeBody().get(sizeSnake - 4).setColor(3);
+                    }
                     snake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 3));
                 } // Color.PINK - snake faster
                 else if (playground.getFood().getFoodColor() == 4) {
