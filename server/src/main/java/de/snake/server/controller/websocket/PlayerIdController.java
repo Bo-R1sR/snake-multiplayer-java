@@ -1,4 +1,4 @@
-package de.snake.server.controller;
+package de.snake.server.controller.websocket;
 
 import de.snake.server.config.WebSocketEventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

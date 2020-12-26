@@ -1,4 +1,4 @@
-package de.snake.server.controller;
+package de.snake.server.controller.api;
 
 import de.snake.server.domain.CreateUserRequest;
 import de.snake.server.domain.entity.User;

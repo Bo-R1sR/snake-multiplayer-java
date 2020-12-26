@@ -1,4 +1,4 @@
-package de.snake.server.controller;
+package de.snake.server.controller.websocket;
 
 import de.snake.server.domain.game.Playground;
 import de.snake.server.service.PlayerService;
