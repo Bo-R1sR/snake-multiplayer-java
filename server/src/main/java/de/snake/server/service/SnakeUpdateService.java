@@ -2,6 +2,7 @@ package de.snake.server.service;
 
 import de.snake.server.domain.game.*;
 import org.springframework.beans.BeanUtils;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +16,14 @@ public class SnakeUpdateService {
     private final Level level;
     private final Random rand = new Random();
     private Timer immortalTimer;
+    private final SimpMessagingTemplate template;
+    private final ServerSounds serverSounds;
 
-    public SnakeUpdateService(Playground playground, Level level) {
+    public SnakeUpdateService(Playground playground, Level level, SimpMessagingTemplate template, ServerSounds serverSounds) {
         this.playground = playground;
         this.level = level;
+        this.template = template;
+        this.serverSounds = serverSounds;
     }
 
     public void updateSnakePosition(Snake snake, SnakeDirectionEnum direction) {
@@ -78,6 +83,8 @@ public class SnakeUpdateService {
         // check if snake head is on same position as food
         if (playground.getFood().getFoodPositionX() == snake.getHead().getPositionX() &&
                 playground.getFood().getFoodPositionY() == snake.getHead().getPositionY()) {
+            serverSounds.setText("Food");
+            template.convertAndSend("/topic/serverSounds", serverSounds);
             // Color.PURPLE - add part
             if (playground.getFood().getFoodColor() == 0) {
                 snake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 0));

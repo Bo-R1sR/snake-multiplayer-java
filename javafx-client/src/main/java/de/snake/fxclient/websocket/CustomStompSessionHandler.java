@@ -4,6 +4,7 @@ import de.snake.fxclient.controller.GameController;
 import de.snake.fxclient.domain.User;
 import de.snake.fxclient.game.Playground;
 import de.snake.fxclient.game.ScreenText;
+import de.snake.fxclient.game.ServerSounds;
 import de.snake.fxclient.game.message.InputMessage;
 import de.snake.fxclient.game.message.Message;
 import javafx.application.Platform;
@@ -23,12 +24,14 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
     private final User user;
     private final Logger logger = LogManager.getLogger(CustomStompSessionHandler.class);
     private final Playground playground;
+    private final ServerSounds serverSounds;
 
-    public CustomStompSessionHandler(GameController gameController, ScreenText screenText, User user, Playground playground) {
+    public CustomStompSessionHandler(GameController gameController, ScreenText screenText, User user, Playground playground, ServerSounds serverSounds) {
         this.gameController = gameController;
         this.screenText = screenText;
         this.user = user;
         this.playground = playground;
+        this.serverSounds = serverSounds;
     }
 
     @Override
@@ -66,6 +69,19 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
                     screenText.setPlayerText("der andere Spieler ist bereit");
                 }
                 gameController.updateScreenText();
+            }
+        });
+
+        session.subscribe("/topic/serverSounds", new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders stompHeaders) {
+                return ServerSounds.class;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                BeanUtils.copyProperties(payload, serverSounds);
+                System.out.println(serverSounds.getText());
             }
         });
 
