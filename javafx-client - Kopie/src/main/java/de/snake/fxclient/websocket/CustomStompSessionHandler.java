@@ -7,6 +7,8 @@ import de.snake.fxclient.game.ScreenText;
 import de.snake.fxclient.game.ServerSounds;
 import de.snake.fxclient.game.message.InputMessage;
 import de.snake.fxclient.game.message.Message;
+import de.snake.fxclient.service.DrawingService;
+import de.snake.fxclient.service.PlayerActiveService;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,20 +21,25 @@ import java.lang.reflect.Type;
 @Component
 public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
+    private final PlayerActiveService playerActiveService;
     private final GameController gameController;
     private final ScreenText screenText;
     private final User user;
     private final Logger logger = LogManager.getLogger(CustomStompSessionHandler.class);
     private final Playground playground;
     private final ServerSounds serverSounds;
+    private final DrawingService drawingService;
 
-    public CustomStompSessionHandler(GameController gameController, ScreenText screenText, User user, Playground playground, ServerSounds serverSounds) {
+    public CustomStompSessionHandler(PlayerActiveService playerActiveService, GameController gameController, ScreenText screenText, User user, Playground playground, ServerSounds serverSounds, DrawingService drawingService) {
+        this.playerActiveService = playerActiveService;
         this.gameController = gameController;
         this.screenText = screenText;
         this.user = user;
         this.playground = playground;
         this.serverSounds = serverSounds;
+        this.drawingService = drawingService;
     }
+
 
     @Override
     public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
@@ -50,7 +57,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
                 Platform.runLater(() -> {
                     user.setPlayerId((Integer) payload);
-                    gameController.startGame();
+                    playerActiveService.sendReadyToServer();
                 });
             }
         });
@@ -63,12 +70,18 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                //logger.info("Received : screenText");
+                logger.info("Received : screenText");
                 BeanUtils.copyProperties(payload, screenText);
-                if (!user.isReadyToPlay()) {
+                if (screenText.getPlayerText() == null) {
+                    screenText.setPlayerText("Bitte Spiel starten ");
+                }
+                if (user.isReadyToPlay() && screenText.getPlayerText().equals("Bitte Spiel starten")) {
+                    user.setReadyToPlay(false);
+                }
+                if (!user.isReadyToPlay() && screenText.getPlayerText().equals("auf anderen Spieler warten")) {
                     screenText.setPlayerText("der andere Spieler ist bereit");
                 }
-                gameController.updateScreenText();
+                drawingService.updateScreenText();
             }
         });
 
@@ -95,7 +108,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
             public void handleFrame(StompHeaders headers, Object payload) {
                 //logger.info("Playground arrived");
                 BeanUtils.copyProperties(payload, playground);
-                gameController.updatePlayground();
+                drawingService.updatePlayground();
             }
         });
 
@@ -108,10 +121,10 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
                 // if player quits early
-                if (!playground.isRunning()) {
-                    screenText.setPlayerText("");
-                    gameController.updateScreenText();
-                }
+//                if (!playground.isRunning())  {
+//                    screenText.setPlayerText("");
+//                    drawingService.updateScreenText();
+//                }
                 InputMessage msg = (InputMessage) payload;
 
                 String outputFormat = System.lineSeparator() + "<" + msg.getTime() + " " + msg.getFrom() + "> " + msg.getText();

@@ -2,6 +2,7 @@ package de.snake.server.config;
 
 import de.snake.server.domain.OutputMessage;
 import de.snake.server.domain.game.Playground;
+import de.snake.server.domain.game.ScreenText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
@@ -19,13 +20,15 @@ public class WebSocketEventListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketEventListener.class);
     private final SimpMessagingTemplate template;
     private final Playground playground;
+    private final ScreenText screenText;
 
     List<Integer> ids = new ArrayList<>(Arrays.asList(1, 2));
     HashMap<String, Integer> connectedPlayers = new HashMap<>();
 
-    public WebSocketEventListener(SimpMessagingTemplate template, Playground playground) {
+    public WebSocketEventListener(SimpMessagingTemplate template, Playground playground, ScreenText screenText) {
         this.template = template;
         this.playground = playground;
+        this.screenText = screenText;
     }
 
     public HashMap<String, Integer> getConnectedPlayers() {
@@ -61,7 +64,13 @@ public class WebSocketEventListener {
         // send disconnection to chat window
         String time = new SimpleDateFormat("HH:mm").format(new Date());
         OutputMessage leavePlayer = new OutputMessage("SYSTEM", "Spieler " + event.getUser().getName() + " ist gegangen", time);
-        this.template.convertAndSend("/topic/messages", leavePlayer);
+        template.convertAndSend("/topic/messages", leavePlayer);
+
+        screenText.setPlayerText("Bitte Spiel starten");
+        if(!playground.isRunning()) {
+            template.convertAndSend("/topic/screenText", screenText);
+        }
+
     }
 
 }

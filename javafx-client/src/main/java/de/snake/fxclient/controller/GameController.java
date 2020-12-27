@@ -54,14 +54,19 @@ public class GameController {
 
     // button for back to main menu - disconnect ws session
     public void back() {
-        if (user.getSession() != null) {
-            user.getSession().disconnect();
+        if (!playground.isRunning()) {
+            user.setReadyToPlay(false);
+            if (user.getSession() != null) {
+                user.getSession().disconnect();
+            }
+            backgroundController.changeView(MainController.class);
         }
-        backgroundController.changeView(MainController.class);
     }
 
     // executed after Spiel starten is pressed
     public void initializeGame() {
+        // set readiness in client to make sure correct ready message is displayed for player 1 or 2
+        user.setReadyToPlay(true);
         // send username to server
         // afterwards player id is assigned and returned to client
         // this callback will then execute method sendReadyToServer in PlayerAcitveController

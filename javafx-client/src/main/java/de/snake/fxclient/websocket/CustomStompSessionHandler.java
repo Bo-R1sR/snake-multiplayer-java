@@ -63,6 +63,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
         });
 
         session.subscribe("/topic/screenText", new StompFrameHandler() {
+
             @Override
             public Type getPayloadType(StompHeaders headers) {
                 return ScreenText.class;
@@ -70,9 +71,15 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                //logger.info("Received : screenText");
+                logger.info("Received : screenText");
                 BeanUtils.copyProperties(payload, screenText);
-                if (!user.isReadyToPlay()) {
+                if (screenText.getPlayerText() == null) {
+                    screenText.setPlayerText("Bitte Spiel starten ");
+                }
+                if (user.isReadyToPlay() && screenText.getPlayerText().equals("Bitte Spiel starten")) {
+                    user.setReadyToPlay(false);
+                }
+                if (!user.isReadyToPlay() && screenText.getPlayerText().equals("auf anderen Spieler warten")) {
                     screenText.setPlayerText("der andere Spieler ist bereit");
                 }
                 drawingService.updateScreenText();
@@ -115,10 +122,10 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
                 // if player quits early
-                if (!playground.isRunning()) {
-                    screenText.setPlayerText("");
-                    drawingService.updateScreenText();
-                }
+//                if (!playground.isRunning())  {
+//                    screenText.setPlayerText("");
+//                    drawingService.updateScreenText();
+//                }
                 InputMessage msg = (InputMessage) payload;
 
                 String outputFormat = System.lineSeparator() + "<" + msg.getTime() + " " + msg.getFrom() + "> " + msg.getText();
