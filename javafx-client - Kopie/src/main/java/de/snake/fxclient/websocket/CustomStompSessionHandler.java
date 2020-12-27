@@ -7,8 +7,6 @@ import de.snake.fxclient.game.ScreenText;
 import de.snake.fxclient.game.ServerSounds;
 import de.snake.fxclient.game.message.InputMessage;
 import de.snake.fxclient.game.message.Message;
-import de.snake.fxclient.service.DrawingService;
-import de.snake.fxclient.service.PlayerActiveService;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,25 +19,20 @@ import java.lang.reflect.Type;
 @Component
 public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
-    private final PlayerActiveService playerActiveService;
     private final GameController gameController;
     private final ScreenText screenText;
     private final User user;
     private final Logger logger = LogManager.getLogger(CustomStompSessionHandler.class);
     private final Playground playground;
     private final ServerSounds serverSounds;
-    private final DrawingService drawingService;
 
-    public CustomStompSessionHandler(PlayerActiveService playerActiveService, GameController gameController, ScreenText screenText, User user, Playground playground, ServerSounds serverSounds, DrawingService drawingService) {
-        this.playerActiveService = playerActiveService;
+    public CustomStompSessionHandler(GameController gameController, ScreenText screenText, User user, Playground playground, ServerSounds serverSounds) {
         this.gameController = gameController;
         this.screenText = screenText;
         this.user = user;
         this.playground = playground;
         this.serverSounds = serverSounds;
-        this.drawingService = drawingService;
     }
-
 
     @Override
     public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
@@ -57,7 +50,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
                 Platform.runLater(() -> {
                     user.setPlayerId((Integer) payload);
-                    playerActiveService.sendReadyToServer();
+                    gameController.startGame();
                 });
             }
         });
@@ -75,7 +68,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
                 if (!user.isReadyToPlay()) {
                     screenText.setPlayerText("der andere Spieler ist bereit");
                 }
-                drawingService.updateScreenText();
+                gameController.updateScreenText();
             }
         });
 
@@ -102,7 +95,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
             public void handleFrame(StompHeaders headers, Object payload) {
                 //logger.info("Playground arrived");
                 BeanUtils.copyProperties(payload, playground);
-                drawingService.updatePlayground();
+                gameController.updatePlayground();
             }
         });
 
@@ -117,7 +110,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
                 // if player quits early
                 if (!playground.isRunning()) {
                     screenText.setPlayerText("");
-                    drawingService.updateScreenText();
+                    gameController.updateScreenText();
                 }
                 InputMessage msg = (InputMessage) payload;
 
