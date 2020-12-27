@@ -117,7 +117,7 @@
                     <Insets top="25.0" />
                 </VBox.margin>
             </Label>
-            <JFXComboBox fx:id="colorPicker" focusColor="#3fa849" prefHeight="25.0" prefWidth="250.0" promptText="Schlangenfarbe">
+            <JFXComboBox fx:id="colorPicker" focusColor="#3fa849" onAction="#changeColor" prefHeight="25.0" prefWidth="250.0" promptText="Schlangenfarbe">
                 <VBox.margin>
                     <Insets top="10.0" />
                 </VBox.margin>
