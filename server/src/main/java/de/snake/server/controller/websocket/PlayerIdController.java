@@ -21,7 +21,8 @@ public class PlayerIdController {
     @MessageMapping("/playerId/{username}")
     @SendToUser(destinations = "/queue/playerId", broadcast = false)
     public Integer sendID(@DestinationVariable String username) {
-        HashMap<String, Integer> players = webSocketEventListener.getPlayers();
+        // send id which is saved in map with reference to username to user
+        HashMap<String, Integer> players = webSocketEventListener.getConnectedPlayers();
         return players.get(username);
     }
 

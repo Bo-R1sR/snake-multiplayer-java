@@ -20,7 +20,6 @@ public class PlayerService {
         this.template = template;
     }
 
-
     public void startCounter() throws InterruptedException {
         if (!playground.isRunning()) {
             playground.setRunning(true);

@@ -15,9 +15,9 @@ public class SnakeUpdateService {
     private final Playground playground;
     private final Level level;
     private final Random rand = new Random();
-    private Timer immortalTimer;
     private final SimpMessagingTemplate template;
     private final ServerSounds serverSounds;
+    private Timer immortalTimer;
 
     public SnakeUpdateService(Playground playground, Level level, SimpMessagingTemplate template, ServerSounds serverSounds) {
         this.playground = playground;
