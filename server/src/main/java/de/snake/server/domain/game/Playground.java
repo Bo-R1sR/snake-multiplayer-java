@@ -19,6 +19,7 @@ public class Playground implements Serializable {
     private Boolean player1active = false;
     private Boolean player2active = false;
 
+
     public Snake getSnake1() {
         return snake1;
     }
@@ -106,4 +107,6 @@ public class Playground implements Serializable {
     public void setPlayer2active(Boolean player2active) {
         this.player2active = player2active;
     }
+
+
 }

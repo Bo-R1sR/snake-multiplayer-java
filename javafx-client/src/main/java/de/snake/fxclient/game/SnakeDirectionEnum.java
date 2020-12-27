@@ -1,5 +1,5 @@
 package de.snake.fxclient.game;
 
-public enum SnakeDirection {
+public enum SnakeDirectionEnum {
     LEFT, RIGHT, UP, DOWN
 }

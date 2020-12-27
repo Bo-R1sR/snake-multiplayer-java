@@ -11,6 +11,7 @@ public class Snake implements Serializable {
     private int counter = 0;
     private int speed = 10;
     private int points = 0;
+    private SnakeDirectionEnum snakeDirectionEnum;
 
     private List<SnakeBodyPart> snakeBody = new ArrayList<>();
 
@@ -18,6 +19,22 @@ public class Snake implements Serializable {
         for (int i = 1; i <= numberBodyParts; i++) {
             snakeBody.add(new SnakeBodyPart(positionX, positionY, 0));
         }
+    }
+
+    public void resetCounter() {
+        setCounter(0);
+    }
+
+    public void increaseCounter() {
+        setCounter(getCounter() + 1);
+    }
+
+    public SnakeBodyPart getHead() {
+        return snakeBody.get(0);
+    }
+
+    public void increasePoints() {
+        setPoints(getPoints() + 1);
     }
 
     public List<SnakeBodyPart> getSnakeBody() {
@@ -66,5 +83,13 @@ public class Snake implements Serializable {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public SnakeDirectionEnum getSnakeDirectionEnum() {
+        return snakeDirectionEnum;
+    }
+
+    public void setSnakeDirectionEnum(SnakeDirectionEnum snakeDirectionEnum) {
+        this.snakeDirectionEnum = snakeDirectionEnum;
     }
 }

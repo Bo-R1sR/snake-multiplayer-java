@@ -1,4 +1,4 @@
-package de.snake.server.controller;
+package de.snake.server.controller.api;
 
 import de.snake.server.service.HistoryService;
 import org.springframework.web.bind.annotation.*;
