@@ -81,7 +81,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
                 BeanUtils.copyProperties(payload, serverSounds);
-                System.out.println(serverSounds.getText());
+                gameController.playServerSound(serverSounds.getText());
             }
         });
 
