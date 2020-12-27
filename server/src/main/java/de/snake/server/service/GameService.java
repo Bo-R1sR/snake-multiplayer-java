@@ -58,8 +58,19 @@ public class GameService {
         } else {
             points2 = 0;
         }
-        playground.setSnake1(new Snake(3, width / 2, height / 2 + 5));
-        playground.setSnake2(new Snake(3, width / 2, height / 2 - 5));
+        playground.setSnake1(new Snake(8, width / 2, height / 2 + 5));
+        playground.setSnake2(new Snake(8, width / 2, height / 2 - 5));
+
+
+        for (SnakeBodyPart sbp: playground.getSnake2().getSnakeBody()){
+            int sizeSnake = playground.getSnake2().getSnakeBody().size();
+            playground.getSnake2().getSnakeBody().get(sizeSnake - 1).setColor(3);
+            playground.getSnake2().getSnakeBody().get(sizeSnake - 2).setColor(3);
+            playground.getSnake2().getSnakeBody().get(sizeSnake - 3).setColor(3);
+        };
+        playground.getSnake2().setPossibleToBite(true);
+
+
         playground.setFood(new Food(width / 2, height / 2));
         playground.getSnake1().setPoints(points1);
         playground.getSnake2().setPoints(points2);

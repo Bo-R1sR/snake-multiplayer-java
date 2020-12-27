@@ -24,7 +24,7 @@ public class PlayerController {
 
         if (id == 1) playground.setPlayer1active(true);
         if (id == 2) playground.setPlayer2active(true);
-        if (playground.getPlayer1active() && playground.getPlayer2active()) {
+        if (playground.getPlayer1active() || playground.getPlayer2active()) {
             playerService.startCounter();
         } else {
             playerService.setScreenText();

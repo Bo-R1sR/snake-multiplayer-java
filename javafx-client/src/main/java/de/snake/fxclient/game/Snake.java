@@ -8,6 +8,7 @@ public class Snake {
 
     private int lastFoodColor;
     private boolean immortal;
+    private boolean possibleToBite = false;
     private int speed;
     private int points;
 
@@ -51,5 +52,13 @@ public class Snake {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public boolean isPossibleToBite() {
+        return possibleToBite;
+    }
+
+    public void setPossibleToBite(boolean possibleToBite) {
+        this.possibleToBite = possibleToBite;
     }
 }

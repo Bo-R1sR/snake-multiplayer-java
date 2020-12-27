@@ -96,10 +96,12 @@ public class DrawingService {
             snakeList.add(squareFront);
 
             // position where snake can be bitten
-            if (sbp.getColor() == 3) {
-                Shape biteCircle = new Circle(gc, sbp.getColor(),
-                        new Point2D(sbp.getPositionX() * playground.getSnakeBodySize(), sbp.getPositionY() * playground.getSnakeBodySize()), playground.getSnakeBodySize() - 2);
-                snakeList.add(biteCircle);
+            if (snake.isPossibleToBite()) {
+                if (sbp.getColor() == 3) {
+                    Shape biteCircle = new Circle(gc, sbp.getColor(),
+                            new Point2D(sbp.getPositionX() * playground.getSnakeBodySize(), sbp.getPositionY() * playground.getSnakeBodySize()), playground.getSnakeBodySize() - 2);
+                    snakeList.add(biteCircle);
+                }
             }
 
             if (snake.isImmortal()) {

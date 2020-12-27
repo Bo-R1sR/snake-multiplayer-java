@@ -1,14 +1,10 @@
 package de.snake.server.service;
 
 import de.snake.server.domain.game.*;
-import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 @Service
 public class SnakeUpdateService {
@@ -18,6 +14,7 @@ public class SnakeUpdateService {
     private final SimpMessagingTemplate template;
     private final ServerSounds serverSounds;
     private Timer immortalTimer;
+    private Timer bitingTimer;
 
     public SnakeUpdateService(Playground playground, Level level, SimpMessagingTemplate template, ServerSounds serverSounds) {
         this.playground = playground;
@@ -53,7 +50,7 @@ public class SnakeUpdateService {
         if (snakeHead.getPositionY() < 0 || snakeHead.getPositionX() < 0 ||
                 snakeHead.getPositionY() > playground.getHeight() - 1 || snakeHead.getPositionX() > playground.getWidth() - 1) {
             snake.increasePoints();
-            return true;
+            return snake == playground.getSnake1();
         } else return false;
     }
 
@@ -61,7 +58,7 @@ public class SnakeUpdateService {
         for (int i = 0; i < level.getAllLevels().get(playground.getLevelNumber()).size(); i++) {
             if (snake.getSnakeBody().get(0).getPositionX() == level.getAllLevels().get(playground.getLevelNumber()).get(i).getPositionX() &&
                     snake.getSnakeBody().get(0).getPositionY() == level.getAllLevels().get(playground.getLevelNumber()).get(i).getPositionY()) {
-                snake.setPoints(snake.getPoints() + 1);
+                snake.increasePoints();
                 return true;
             }
         }
@@ -70,10 +67,10 @@ public class SnakeUpdateService {
 
     public boolean checkSnakeLength(Snake snake1, Snake snake2) {
         // if snake is 6 elements longer than other snake
-        if (snake1.getSnakeBody().size() >= snake2.getSnakeBody().size() + 6) {
+        if (snake1.getSnakeBody().size() >= snake2.getSnakeBody().size() + 10) {
             snake2.increasePoints();
             return true;
-        } else if (snake2.getSnakeBody().size() >= snake1.getSnakeBody().size() + 6) {
+        } else if (snake2.getSnakeBody().size() >= snake1.getSnakeBody().size() + 10) {
             snake1.increasePoints();
             return true;
         }
@@ -100,7 +97,7 @@ public class SnakeUpdateService {
                 }
             } // Color.LIGHTBLUE - remove last part
             else if (playground.getFood().getFoodColor() == 1) {
-                if (snake.getSnakeBody().size() > 5) {
+                if (snake.getSnakeBody().size() > 3) {
                     snake.getSnakeBody().remove(snake.getSnakeBody().size() - 1);
                 }
             } // Color.YELLOW - set immortality
@@ -122,28 +119,69 @@ public class SnakeUpdateService {
                 }, 20000);
             } // Color.RED - position for biting
             else if (playground.getFood().getFoodColor() == 3) {
+                try {
+                    bitingTimer.cancel();
+                } catch (Exception ignored) {
+                }
+
+                snake.setPossibleToBite(true);
+                // reset after specified time
+                bitingTimer = new Timer();
+                bitingTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        snake.setPossibleToBite(false);
+                    }
+                    // snake can be bitten for 15 seconds
+                }, 15000);
+
                 // first set color back to default
                 for (SnakeBodyPart sbp : snake.getSnakeBody()) {
                     sbp.setColor(0);
                 }
                 // assign red color according to length of snake
                 int sizeSnake = snake.getSnakeBody().size();
-                if (sizeSnake == 5 || sizeSnake == 6) {
+//                if (sizeSnake == 5 || sizeSnake == 6) {
+//                    snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
+//                } else if (sizeSnake > 5 && sizeSnake < 9) {
+//                    snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
+//                    snake.getSnakeBody().get(sizeSnake - 2).setColor(3);
+//                } else if (sizeSnake > 5 && sizeSnake < 14) {
+//                    snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
+//                    snake.getSnakeBody().get(sizeSnake - 2).setColor(3);
+//                    snake.getSnakeBody().get(sizeSnake - 3).setColor(3);
+//                } else if (sizeSnake > 5) {
+//                    snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
+//                    snake.getSnakeBody().get(sizeSnake - 2).setColor(3);
+//                    snake.getSnakeBody().get(sizeSnake - 3).setColor(3);
+//                    snake.getSnakeBody().get(sizeSnake - 4).setColor(3);
+//                }
+//                snake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 3));
+                if (sizeSnake == 3) {
+
+                }
+                if (sizeSnake == 4 || sizeSnake == 5) {
                     snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
-                } else if (sizeSnake > 5 && sizeSnake < 9) {
+                } else if (sizeSnake <= 7) {
                     snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
                     snake.getSnakeBody().get(sizeSnake - 2).setColor(3);
-                } else if (sizeSnake > 5 && sizeSnake < 14) {
+                } else if (sizeSnake <= 9) {
                     snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
                     snake.getSnakeBody().get(sizeSnake - 2).setColor(3);
                     snake.getSnakeBody().get(sizeSnake - 3).setColor(3);
-                } else if (sizeSnake > 5) {
+                } else if (sizeSnake <= 14) {
                     snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
                     snake.getSnakeBody().get(sizeSnake - 2).setColor(3);
                     snake.getSnakeBody().get(sizeSnake - 3).setColor(3);
                     snake.getSnakeBody().get(sizeSnake - 4).setColor(3);
+                } else {
+                    snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
+                    snake.getSnakeBody().get(sizeSnake - 2).setColor(3);
+                    snake.getSnakeBody().get(sizeSnake - 3).setColor(3);
+                    snake.getSnakeBody().get(sizeSnake - 4).setColor(3);
+                    snake.getSnakeBody().get(sizeSnake - 5).setColor(3);
                 }
-                snake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 3));
+
             } // Color.PINK - snake faster
             else if (playground.getFood().getFoodColor() == 4) {
                 if (snake.getSpeed() > 4) {
@@ -174,6 +212,8 @@ public class SnakeUpdateService {
         // add bodies
         totalSnake.getSnakeBody().addAll(playground.getSnake1().getSnakeBody());
         totalSnake.getSnakeBody().addAll(playground.getSnake2().getSnakeBody());
+        totalSnake.getSnakeBody().addAll(level.getAllLevels().get(playground.getLevelNumber()));
+
         start:
         while (true) {
             // create random food position
@@ -210,8 +250,17 @@ public class SnakeUpdateService {
             // check if snake head is on same position as other snake body
             if (bitingSnake.getHead().getPositionX() == targetSnake.getSnakeBody().get(i).getPositionX() &&
                     bitingSnake.getHead().getPositionY() == targetSnake.getSnakeBody().get(i).getPositionY()) {
-                // only bite at red fields
-                if (targetSnake.getSnakeBody().get(i).getColor() == 3) {
+                // only bite if possible
+                if (targetSnake.isPossibleToBite()) {
+                    for(int ii = 0; ii < targetSnake.getSnakeBody().size(); ii++){
+                        // remove all read fields from snake1 and add to snake2
+                        if (targetSnake.getSnakeBody().get(ii).getColor() == 3) {
+                            targetSnake.getSnakeBody().remove(ii);
+                            bitingSnake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 0));
+                        }
+                    }
+
+/*                    //if (targetSnake.getSnakeBody().get(i).getColor() == 3) {
                     //divide target snake a bite point
                     List<SnakeBodyPart> sbp_tf = targetSnake.getSnakeBody().subList(0, i - 1);
                     List<SnakeBodyPart> sbp_tb = targetSnake.getSnakeBody().subList(i, targetSnake.getSnakeBody().size());
@@ -222,7 +271,9 @@ public class SnakeUpdateService {
                     // copy front part back to bitten snake
                     BeanUtils.copyProperties(snakeFrontTargetSnake, targetSnake);
                     // add remaining body to biting snake
-                    bitingSnake.getSnakeBody().addAll(1, sbp_tb);
+                    bitingSnake.getSnakeBody().addAll(1, sbp_tb);*/
+
+
                 } else {
                     bitingSnake.increasePoints();
                     return true;

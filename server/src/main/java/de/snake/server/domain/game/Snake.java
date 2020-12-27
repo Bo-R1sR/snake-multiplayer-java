@@ -8,6 +8,7 @@ public class Snake implements Serializable {
 
     private int lastFoodColor = 0;
     private boolean immortal = false;
+    private boolean possibleToBite = false;
     private int counter = 0;
     private int speed = 10;
     private int points = 0;
@@ -91,5 +92,13 @@ public class Snake implements Serializable {
 
     public void setSnakeDirectionEnum(SnakeDirectionEnum snakeDirectionEnum) {
         this.snakeDirectionEnum = snakeDirectionEnum;
+    }
+
+    public boolean isPossibleToBite() {
+        return possibleToBite;
+    }
+
+    public void setPossibleToBite(boolean possibleToBite) {
+        this.possibleToBite = possibleToBite;
     }
 }
