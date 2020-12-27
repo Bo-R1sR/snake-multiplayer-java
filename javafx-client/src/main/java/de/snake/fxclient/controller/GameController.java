@@ -38,8 +38,10 @@ public class GameController {
 
     private SnakeDirectionEnum direction;
     private GraphicsContext gc;
-    private Color Snake1;
-    private Color Snake2;
+    private Color colorSnake1 = Color.BLUE;
+    private Color colorSnake1Border = Color.LIGHTBLUE;
+    private Color colorSnake2 = Color.GREEN;
+    private Color colorSnake2Border = Color.LIGHTGREEN;
     private Boolean isSoundMuted = Boolean.TRUE;
     // Musik
     private final String musicPath = "src/main/resources/sounds/test.mp3";
@@ -84,7 +86,7 @@ public class GameController {
     @FXML
     private JFXSlider volumeSlider;
     @FXML
-    private JFXComboBox colorPicker;
+    private JFXComboBox<String> colorPicker;
 
     public GameController(BackgroundController backgroundController, User user, Playground playground, ScreenText screenText, Level level) {
         this.backgroundController = backgroundController;
@@ -159,19 +161,19 @@ public class GameController {
 
     public void playServerSound(String serverSound){
         if(!isSoundMuted){
-            switch (serverSound){
-                case "Food":
+            switch (serverSound) {
+                case "Food" -> {
                     eatPlayer.stop();
                     eatPlayer.play();
-                    break;
-                case "Countdown":
+                }
+                case "Countdown" -> {
                     countdownPlayer.stop();
                     countdownPlayer.play();
-                    break;
-                case "GameStart":
+                }
+                case "GameStart" -> {
                     gameStartPlayer.stop();
                     gameStartPlayer.play();
-                    break;
+                }
             }
         }
     }
@@ -181,9 +183,9 @@ public class GameController {
         // special screen only for game over
         if (playground.isGameOver()) {
             Shape gameOverText = new Text(gc, new Point2D(100, 250), "GAME OVER", Color.WHITE, true);
-            Shape score1 = new Text(gc, new Point2D(200, 100), "" + playground.getSnake2().getPoints(), Color.GREEN, false);
+            Shape score1 = new Text(gc, new Point2D(200, 100), "" + playground.getSnake2().getPoints(), colorSnake1, false);
             Shape space = new Text(gc, new Point2D(250, 100), " : ", Color.WHITE, false);
-            Shape score2 = new Text(gc, new Point2D(300, 100), "" + playground.getSnake1().getPoints(), Color.BLUE, false);
+            Shape score2 = new Text(gc, new Point2D(300, 100), "" + playground.getSnake1().getPoints(), colorSnake2, false);
             Shape gameOverScreen = new CompositeShape(gc, List.of(gameOverText, score1, space, score2));
             gameOverScreen.draw();
             user.setReadyToPlay(false);
@@ -192,8 +194,8 @@ public class GameController {
         // regular game screen
         Shape background = new Square(gc, Color.BLACK, new Point2D(0, 0), playground.getWidth() * playground.getSnakeBodySize(), playground.getHeight() * playground.getSnakeBodySize());
         Shape level = new CompositeShape(gc, createLevel(playground.getLevelNumber(), Color.WHITE, Color.LIGHTGREY));
-        Shape snake1 = new CompositeShape(gc, createSnake(playground.getSnake1(), Color.LIGHTGREEN, Color.GREEN));
-        Shape snake2 = new CompositeShape(gc, createSnake(playground.getSnake2(), Color.LIGHTBLUE, Color.BLUE));
+        Shape snake1 = new CompositeShape(gc, createSnake(playground.getSnake1(), colorSnake1Border, colorSnake1));
+        Shape snake2 = new CompositeShape(gc, createSnake(playground.getSnake2(), colorSnake2Border, colorSnake2));
         Shape snakes = new CompositeShape(gc, List.of(snake1, snake2));
         Shape food = new Circle(gc, playground.getFood().getFoodColor(), new Point2D(playground.getFood().getFoodPositionX() * playground.getSnakeBodySize(), playground.getFood().getFoodPositionY() * playground.getSnakeBodySize()), playground.getSnakeBodySize());
         Shape playground = new CompositeShape(gc, List.of(background, level, snakes, food));
@@ -291,22 +293,31 @@ public class GameController {
 
     private void initializeColorList(){
         colorPicker.getItems().clear();
-        colorPicker.getItems().addAll("Blau/Grün", "Rot/Gelb", "Weiß/Blau");
+        colorPicker.getItems().addAll("Blau/Grün", "Gelb/Rosa", "Lila/Cyan");
         colorPicker.getSelectionModel().select("Blau/Grün");
     }
 
     public void changeColor(){
-        String choosenColor = colorPicker.getValue().toString();
-        switch (choosenColor){
-            case "Blau/Grün":
-                System.out.println("Blau/Grün");
-                break;
-            case "Rot/Gelb":
-                System.out.println("Rot/Gelb");
-                break;
-            case "Weiß/Blau":
-                System.out.println("Weiß/Blau");
-                break;
+        String choosenColor = colorPicker.getValue();
+        switch (choosenColor) {
+            case "Blau/Grün" -> {
+                colorSnake1 = Color.BLUE;
+                colorSnake1Border = Color.LIGHTBLUE;
+                colorSnake2 = Color.GREEN;
+                colorSnake2Border = Color.LIGHTGREEN;
+            }
+            case "Gelb/Rosa" -> {
+                colorSnake1 = Color.YELLOW;
+                colorSnake1Border = Color.LIGHTYELLOW;
+                colorSnake2 = Color.PINK;
+                colorSnake2Border = Color.LIGHTPINK;
+            }
+            case "Lila/Cyan" -> {
+                colorSnake1 = Color.VIOLET;
+                colorSnake1Border = Color.PALEVIOLETRED;
+                colorSnake2 = Color.CYAN;
+                colorSnake2Border = Color.LIGHTCYAN;
+            }
         }
 
     }
