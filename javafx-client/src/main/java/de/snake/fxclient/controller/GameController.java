@@ -40,7 +40,7 @@ public class GameController {
     private GraphicsContext gc;
     private Color Snake1;
     private Color Snake2;
-    private Boolean isSoundMuted;
+    private Boolean isSoundMuted = Boolean.TRUE;
     // Musik
     private final String musicPath = "src/main/resources/sounds/test.mp3";
     Media musicMedia = new Media(new File(musicPath).toURI().toString());
@@ -51,25 +51,25 @@ public class GameController {
     Media eatMedia = new Media(new File(eatPath).toURI().toString());
     MediaPlayer eatPlayer = new MediaPlayer(eatMedia);
 
-    // Runde gewonnen
-    private final String roundWinPath = "src/main/resources/sounds/test.mp3";
-    Media roundWinMedia = new Media(new File(roundWinPath).toURI().toString());
-    MediaPlayer roundWinPlayer = new MediaPlayer(roundWinMedia);
+    // Runde vorbei
+    private final String roundOverPath = "src/main/resources/sounds/test.mp3";
+    Media roundOverMedia = new Media(new File(roundOverPath).toURI().toString());
+    MediaPlayer roundOverPlayer = new MediaPlayer(roundOverMedia);
 
-    // Runde gewonnen
-    private final String roundLostPath = "src/main/resources/sounds/test.mp3";
-    Media roundLostMedia = new Media(new File(roundLostPath).toURI().toString());
-    MediaPlayer roundLostPlayer = new MediaPlayer(roundLostMedia);
+    // Spiel vorbei
+    private final String gameOverPath = "src/main/resources/sounds/test.mp3";
+    Media gameOverMedia = new Media(new File(gameOverPath).toURI().toString());
+    MediaPlayer gameOverPlayer = new MediaPlayer(gameOverMedia);
 
-    // Spiel gewonnen
-    private final String gameWinPath = "src/main/resources/sounds/test.mp3";
-    Media gameWinMedia = new Media(new File(gameWinPath).toURI().toString());
-    MediaPlayer gameWinPlayer = new MediaPlayer(gameWinMedia);
+    // Countdown
+    private final String countdownPath = "src/main/resources/sounds/test.mp3";
+    Media countdownMedia = new Media(new File(countdownPath).toURI().toString());
+    MediaPlayer countdownPlayer = new MediaPlayer(countdownMedia);
 
-    // Spiel gewonnen
-    private final String gameLostPath = "src/main/resources/sounds/test.mp3";
-    Media gameLostMedia = new Media(new File(gameLostPath).toURI().toString());
-    MediaPlayer gameLostPlayer = new MediaPlayer(gameLostMedia);
+    // Game Start
+    private final String gameStartPath = "src/main/resources/sounds/test.mp3";
+    Media gameStartMedia = new Media(new File(gameStartPath).toURI().toString());
+    MediaPlayer gameStartPlayer = new MediaPlayer(gameStartMedia);
 
     @FXML
     private TextArea chatArea;
@@ -157,6 +157,25 @@ public class GameController {
         counterText.draw();
     }
 
+    public void playServerSound(String serverSound){
+        if(!isSoundMuted){
+            switch (serverSound){
+                case "Food":
+                    eatPlayer.stop();
+                    eatPlayer.play();
+                    break;
+                case "Countdown":
+                    countdownPlayer.stop();
+                    countdownPlayer.play();
+                    break;
+                case "GameStart":
+                    gameStartPlayer.stop();
+                    gameStartPlayer.play();
+                    break;
+            }
+        }
+    }
+
     // called from SessionHandler when new Playground arrives
     public void updatePlayground() {
         // special screen only for game over
@@ -226,7 +245,6 @@ public class GameController {
         return levelList;
     }
 
-
     private Message getNewMessage() {
         Message msg = new Message();
         msg.setFrom(user.getName());
@@ -247,9 +265,11 @@ public class GameController {
         if (musicSwitch.isSelected()){
             musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             musicPlayer.play();
+            System.out.println("Musik an");
         }
         else{
             musicPlayer.pause();
+            System.out.println("Musik an");
         }
     }
 
@@ -271,7 +291,23 @@ public class GameController {
 
     private void initializeColorList(){
         colorPicker.getItems().clear();
-        colorPicker.getItems().addAll("1 Blau und 2 Grün", "1 Rot und 2 Gelb", "1 Weiß und 2 Blau");
-        colorPicker.getSelectionModel().select("1 Blau und 2 Grün");
+        colorPicker.getItems().addAll("Blau/Grün", "Rot/Gelb", "Weiß/Blau");
+        colorPicker.getSelectionModel().select("Blau/Grün");
+    }
+
+    public void changeColor(){
+        String choosenColor = colorPicker.getValue().toString();
+        switch (choosenColor){
+            case "Blau/Grün":
+                System.out.println("Blau/Grün");
+                break;
+            case "Rot/Gelb":
+                System.out.println("Rot/Gelb");
+                break;
+            case "Weiß/Blau":
+                System.out.println("Weiß/Blau");
+                break;
+        }
+
     }
 }
