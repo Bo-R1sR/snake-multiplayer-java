@@ -197,6 +197,8 @@ public class SnakeUpdateService {
             if (snake.getHead().getPositionX() == snake.getSnakeBody().get(i).getPositionX() &&
                     snake.getHead().getPositionY() == snake.getSnakeBody().get(i).getPositionY()) {
                 snake.increasePoints();
+                serverSounds.setText("roundOver");
+                template.convertAndSend("/topic/serverSounds", serverSounds);
                 return true;
             }
         }
@@ -224,6 +226,8 @@ public class SnakeUpdateService {
                     bitingSnake.getSnakeBody().addAll(1, sbp_tb);
                 } else {
                     bitingSnake.increasePoints();
+                    serverSounds.setText("RoundOver");
+                    template.convertAndSend("/topic/serverSounds", serverSounds);
                     return true;
                 }
             }

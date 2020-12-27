@@ -13,11 +13,13 @@ public class GameService {
     private final SimpMessagingTemplate template;
     private final Playground playground;
     private final Random rand = new Random();
+    private final ServerSounds serverSounds;
 
-    public GameService(ScreenText screenText, SimpMessagingTemplate template, Playground playground) {
+    public GameService(ScreenText screenText, SimpMessagingTemplate template, Playground playground, ServerSounds serverSounds) {
         this.screenText = screenText;
         this.template = template;
         this.playground = playground;
+        this.serverSounds = serverSounds;
     }
 
 
@@ -26,10 +28,14 @@ public class GameService {
         for (int i = 3; i > 0; i--) {
             screenText.setPlayerText("" + i);
             this.template.convertAndSend("/topic/screenText", screenText);
+            serverSounds.setText("Countdown");
+            template.convertAndSend("/topic/serverSounds", serverSounds);
             Thread.sleep(1000);
         }
         screenText.setPlayerText("LOS GEHTS");
         this.template.convertAndSend("/topic/screenText", screenText);
+        serverSounds.setText("GameStart");
+        template.convertAndSend("/topic/serverSounds", serverSounds);
         Thread.sleep(1000);
         screenText.setPlayerText("");
         this.template.convertAndSend("/topic/screenText", screenText);
