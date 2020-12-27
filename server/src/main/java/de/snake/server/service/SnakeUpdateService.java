@@ -69,11 +69,12 @@ public class SnakeUpdateService {
     }
 
     public boolean checkSnakeLength(Snake snake1, Snake snake2) {
-        if (snake1.getSnakeBody().size() >= 5 * snake2.getSnakeBody().size()) {
-            snake2.setPoints(snake2.getPoints() + 1);
+        // if snake is 6 elements longer than other snake
+        if (snake1.getSnakeBody().size() >= snake2.getSnakeBody().size() + 6) {
+            snake2.increasePoints();
             return true;
-        } else if (snake2.getSnakeBody().size() >= 5 * snake1.getSnakeBody().size()) {
-            snake1.setPoints(snake1.getPoints() + 1);
+        } else if (snake2.getSnakeBody().size() >= snake1.getSnakeBody().size() + 6) {
+            snake1.increasePoints();
             return true;
         }
         return false;
