@@ -3,6 +3,8 @@ package de.snake.server.controller.api;
 import de.snake.server.service.HistoryService;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.ResultSet;
+
 @RestController
 @RequestMapping("/history")
 public class HistoryController {
@@ -15,15 +17,9 @@ public class HistoryController {
         this.historyService = historyService;
     }
 
-    @PostMapping
-    public String getHistory(@RequestBody String username) {
-        System.out.println(username);
-        return ("hello from server");
-    }
-
     @GetMapping
-    public String getHistory2(@RequestParam String username) {
-        System.out.println(username);
-        return "good to go";
+    public ResultSet getHistory(@RequestParam String username) {
+        ResultSet result = HistoryService.getPlayedGames(username);
+        return result;
     }
 }
