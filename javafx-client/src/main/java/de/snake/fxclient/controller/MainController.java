@@ -5,6 +5,7 @@ import de.snake.fxclient.task.HistoryTask;
 import de.snake.fxclient.websocket.CustomStompClient;
 import javafx.concurrent.WorkerStateEvent;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,6 +16,9 @@ public class MainController {
     private final User user;
     private final CustomStompClient customStompClient;
 
+    @Value("${server.ip}")
+    private String serverIp;
+
     public MainController(BackgroundController backgroundController, User user, CustomStompClient customStompClient) {
         this.backgroundController = backgroundController;
         this.user = user;
@@ -24,7 +28,7 @@ public class MainController {
 
     public void showHistory() {
 
-        HistoryTask historyTask = new HistoryTask(user);
+        HistoryTask historyTask = new HistoryTask(user, serverIp);
         new Thread(historyTask).start();
 
         historyTask.setOnSucceeded((WorkerStateEvent e2) -> {
