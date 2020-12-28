@@ -12,7 +12,7 @@ public class Snake implements Serializable {
     private int counter = 0;
     private int speed = 10;
     private int points = 0;
-    private SnakeDirectionEnum snakeDirectionEnum;
+    private SnakeDirection snakeDirection;
 
     private List<SnakeBodyPart> snakeBody = new ArrayList<>();
 
@@ -86,12 +86,12 @@ public class Snake implements Serializable {
         this.points = points;
     }
 
-    public SnakeDirectionEnum getSnakeDirectionEnum() {
-        return snakeDirectionEnum;
+    public SnakeDirection getSnakeDirectionEnum() {
+        return snakeDirection;
     }
 
-    public void setSnakeDirectionEnum(SnakeDirectionEnum snakeDirectionEnum) {
-        this.snakeDirectionEnum = snakeDirectionEnum;
+    public void setSnakeDirectionEnum(SnakeDirection snakeDirection) {
+        this.snakeDirection = snakeDirection;
     }
 
     public boolean isPossibleToBite() {

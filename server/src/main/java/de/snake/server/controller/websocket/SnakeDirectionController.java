@@ -1,7 +1,7 @@
 package de.snake.server.controller.websocket;
 
 import de.snake.server.domain.game.Playground;
-import de.snake.server.domain.game.SnakeDirectionEnum;
+import de.snake.server.domain.game.SnakeDirection;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 
@@ -16,13 +16,13 @@ public class SnakeDirectionController {
 
     // receive directions from player1
     @MessageMapping("/direction1")
-    public void changeDirection1(SnakeDirectionEnum direction) {
+    public void changeDirection1(SnakeDirection direction) {
         playground.getSnake1().setSnakeDirectionEnum(direction);
     }
 
     // receive directions from player2
     @MessageMapping("/direction2")
-    public void changeDirection2(SnakeDirectionEnum direction) {
+    public void changeDirection2(SnakeDirection direction) {
         playground.getSnake2().setSnakeDirectionEnum(direction);
     }
 

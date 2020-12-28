@@ -16,6 +16,8 @@ public class Playground implements Serializable {
     private Food food;
     private boolean gameOver;
     private boolean isRunning;
+    private boolean duringLevel = false;
+    private boolean levelFinish = false;
     private Boolean player1active = false;
     private Boolean player2active = false;
 
@@ -108,5 +110,23 @@ public class Playground implements Serializable {
         this.player2active = player2active;
     }
 
+    public boolean isDuringLevel() {
+        return duringLevel;
+    }
 
+    public void setDuringLevel(boolean duringLevel) {
+        this.duringLevel = duringLevel;
+    }
+
+    public void increaseLevelNumber() {
+        setLevelNumber(getLevelNumber() + 1);
+    }
+
+    public boolean isLevelFinish() {
+        return levelFinish;
+    }
+
+    public void setLevelFinish(boolean levelFinish) {
+        this.levelFinish = levelFinish;
+    }
 }

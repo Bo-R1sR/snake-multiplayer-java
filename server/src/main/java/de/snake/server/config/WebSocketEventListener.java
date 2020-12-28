@@ -70,7 +70,7 @@ public class WebSocketEventListener {
         if(!playground.isRunning()) {
             template.convertAndSend("/topic/screenText", screenText);
         }
-
+        playground.setDuringLevel(false);
     }
 
 }

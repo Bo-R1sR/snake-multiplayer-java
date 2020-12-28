@@ -23,7 +23,7 @@ public class SnakeUpdateService {
         this.serverSounds = serverSounds;
     }
 
-    public void updateSnakePosition(Snake snake, SnakeDirectionEnum direction) {
+    public void updateSnakePosition(Snake snake, SnakeDirection direction) {
         for (int i = snake.getSnakeBody().size() - 1; i >= 1; i--) {
             snake.getSnakeBody().get(i).setPositionX(snake.getSnakeBody().get(i - 1).getPositionX());
             snake.getSnakeBody().get(i).setPositionY(snake.getSnakeBody().get(i - 1).getPositionY());
@@ -50,7 +50,7 @@ public class SnakeUpdateService {
         if (snakeHead.getPositionY() < 0 || snakeHead.getPositionX() < 0 ||
                 snakeHead.getPositionY() > playground.getHeight() - 1 || snakeHead.getPositionX() > playground.getWidth() - 1) {
             snake.increasePoints();
-            return snake == playground.getSnake1();
+            return true;
         } else return false;
     }
 
@@ -66,11 +66,11 @@ public class SnakeUpdateService {
     }
 
     public boolean checkSnakeLength(Snake snake1, Snake snake2) {
-        // if snake is 6 elements longer than other snake
-        if (snake1.getSnakeBody().size() >= snake2.getSnakeBody().size() + 10) {
+        // if snake is 5 elements longer than other snake
+        if (snake1.getSnakeBody().size() >= snake2.getSnakeBody().size() + 5) {
             snake2.increasePoints();
             return true;
-        } else if (snake2.getSnakeBody().size() >= snake1.getSnakeBody().size() + 10) {
+        } else if (snake2.getSnakeBody().size() >= snake1.getSnakeBody().size() + 5) {
             snake1.increasePoints();
             return true;
         }

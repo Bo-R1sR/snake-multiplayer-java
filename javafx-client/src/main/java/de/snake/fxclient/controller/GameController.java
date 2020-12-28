@@ -6,6 +6,7 @@ import de.snake.fxclient.game.composite.Shape;
 import de.snake.fxclient.game.composite.Square;
 import de.snake.fxclient.game.message.Message;
 import de.snake.fxclient.service.GameService;
+import de.snake.fxclient.service.PlayerActiveService;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -24,6 +25,7 @@ public class GameController {
     private final User user;
     private final Playground playground;
     private final GameService gameService;
+    private final PlayerActiveService playerActiveService;
 
     private GraphicsContext gc;
 
@@ -34,11 +36,12 @@ public class GameController {
     @FXML
     private Canvas gameCanvas;
 
-    public GameController(BackgroundController backgroundController, User user, Playground playground, GameService gameService) {
+    public GameController(BackgroundController backgroundController, User user, Playground playground, GameService gameService, PlayerActiveService playerActiveService) {
         this.backgroundController = backgroundController;
         this.user = user;
         this.playground = playground;
         this.gameService = gameService;
+        this.playerActiveService = playerActiveService;
     }
 
     @FXML
@@ -70,7 +73,8 @@ public class GameController {
         // send username to server
         // afterwards player id is assigned and returned to client
         // this callback will then execute method sendReadyToServer in PlayerAcitveController
-        user.getSession().send("/app/playerId/" + user.getName(), "connect");
+        //user.getSession().send("/app/playerId/" + user.getName(), "connect");
+        playerActiveService.sendReadyToServer();
         // assign arrow keys for game control
         gameService.registerArrowKeys();
     }

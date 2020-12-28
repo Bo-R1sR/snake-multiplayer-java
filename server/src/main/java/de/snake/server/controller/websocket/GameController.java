@@ -2,7 +2,6 @@ package de.snake.server.controller.websocket;
 
 import de.snake.server.domain.game.Playground;
 import de.snake.server.domain.game.Snake;
-import de.snake.server.domain.game.SnakeDirectionEnum;
 import de.snake.server.service.GameService;
 import de.snake.server.service.SnakeUpdateService;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -21,7 +20,6 @@ public class GameController {
     private final GameService gameService;
     private final SnakeUpdateService snakeUpdateService;
     private Timer refreshTimer;
-    private int counter;
 
     public GameController(Playground playground, SimpMessagingTemplate template, GameService gameService, SnakeUpdateService snakeUpdateService) {
         this.playground = playground;
@@ -46,6 +44,12 @@ public class GameController {
         playground.setPlayer2active(false);
         playground.setRunning(false);
         refreshTimer.cancel();
+
+        if (playground.getLevelNumber() == 4) {
+            playground.setDuringLevel(false);
+            playground.setLevelFinish(true);
+        };
+
         //todo hier die history speichern bzw. updaten
     }
 
@@ -62,21 +66,6 @@ public class GameController {
             // when counter equals speed execute
             for (Snake snake : bothSnakes) {
                 if (snake.getCounter() == snake.getSpeed()) {
-                    // todo : remove counter: just for movement of second snake
-                    if (snake == snake2) {
-                        counter++;
-                        if (counter < 5) {
-                            snake2.setSnakeDirectionEnum(SnakeDirectionEnum.RIGHT);
-                        } else if (counter < 10) {
-                            snake2.setSnakeDirectionEnum(SnakeDirectionEnum.UP);
-                        } else if (counter < 15) {
-                            snake2.setSnakeDirectionEnum(SnakeDirectionEnum.LEFT);
-                        } else if (counter < 20) {
-                            snake2.setSnakeDirectionEnum(SnakeDirectionEnum.DOWN);
-                        } else {
-                            counter = 0;
-                        }
-                    }
                     snake.resetCounter();
                     // move snake head forward
                     //snakeUpdateService.updateSnakePosition(snake, snakeDirections.getDirection1());

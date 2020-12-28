@@ -2,7 +2,7 @@ package de.snake.fxclient.service;
 
 import de.snake.fxclient.controller.BackgroundController;
 import de.snake.fxclient.domain.User;
-import de.snake.fxclient.game.SnakeDirectionEnum;
+import de.snake.fxclient.game.SnakeDirection;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -14,7 +14,7 @@ public class GameService {
     private final BackgroundController backgroundController;
     private final User user;
 
-    private SnakeDirectionEnum direction;
+    private SnakeDirection direction;
 
     public GameService(BackgroundController backgroundController, User user) {
         this.backgroundController = backgroundController;
@@ -27,22 +27,22 @@ public class GameService {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             // only send key if it is arrow
             if (key.getCode() == KeyCode.UP) {
-                direction = SnakeDirectionEnum.UP;
+                direction = SnakeDirection.UP;
                 key.consume();
                 user.getSession().send("/app/direction" + user.getPlayerId(), direction);
             }
             if (key.getCode() == KeyCode.LEFT) {
-                direction = SnakeDirectionEnum.LEFT;
+                direction = SnakeDirection.LEFT;
                 key.consume();
                 user.getSession().send("/app/direction" + user.getPlayerId(), direction);
             }
             if (key.getCode() == KeyCode.DOWN) {
-                direction = SnakeDirectionEnum.DOWN;
+                direction = SnakeDirection.DOWN;
                 key.consume();
                 user.getSession().send("/app/direction" + user.getPlayerId(), direction);
             }
             if (key.getCode() == KeyCode.RIGHT) {
-                direction = SnakeDirectionEnum.RIGHT;
+                direction = SnakeDirection.RIGHT;
                 key.consume();
                 user.getSession().send("/app/direction" + user.getPlayerId(), direction);
             }

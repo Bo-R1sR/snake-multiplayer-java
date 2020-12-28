@@ -57,7 +57,7 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
                 Platform.runLater(() -> {
                     user.setPlayerId((Integer) payload);
-                    playerActiveService.sendReadyToServer();
+                    //playerActiveService.sendReadyToServer();
                 });
             }
         });
@@ -139,6 +139,8 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
         joinMessage.setFrom("SYSTEM");
         joinMessage.setText("Spieler " + user.getName() + " ist hinzugekommen");
         session.send("/app/message", joinMessage);
+
+        user.getSession().send("/app/playerId/" + user.getName(), "connect");
     }
 
     @Override
