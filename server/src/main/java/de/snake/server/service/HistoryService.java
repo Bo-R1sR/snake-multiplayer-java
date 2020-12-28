@@ -1,25 +1,21 @@
 package de.snake.server.service;
 
 import de.snake.server.domain.entity.GameHistory;
+import de.snake.server.repository.HistoryRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.sql.*;
+import java.util.List;
 
 @Service
 public class HistoryService {
+    private final HistoryRepository historyRepository;
 
-    private final GameHistory gameHistory;
-    private final Connection connection = DriverManager.getConnection("jdbc:h2:mem:snakegame", "sa", "");
-
-
-    public HistoryService(GameHistory gameHistory) throws SQLException {
-        this.gameHistory = gameHistory;
+    public HistoryService(HistoryRepository historyRepository) {
+        this.historyRepository = historyRepository;
     }
 
-    public ResultSet getPlayedGames(String username) throws SQLException {
-        String query = "select * from game WHERE username1=" + username + " OR username2=" + username;
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
-        return rs;
+    public List<GameHistory> getPlayedGames(String username){
+        return historyRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 }
