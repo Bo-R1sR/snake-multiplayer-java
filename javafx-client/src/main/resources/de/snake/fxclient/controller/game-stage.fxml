@@ -3,7 +3,7 @@
 <?import com.jfoenix.controls.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="dialog" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1"
@@ -81,26 +81,46 @@
             </Label>
             <Label text="Musik">
                 <font>
-                    <Font name="Segoe UI" size="14.0"/>
+                    <Font name="Segoe UI Bold" size="14.0"/>
                 </font>
+                <VBox.margin>
+                    <Insets top="10.0"/>
+                </VBox.margin>
             </Label>
-            <JFXToggleButton text="Aus/An" toggleColor="#3fa849" toggleLineColor="#a2dca8">
+            <JFXToggleButton fx:id="musicSwitch" onAction="#toggleMusic" text="Aus/An" toggleColor="#3fa849"
+                             toggleLineColor="#a2dca8">
                 <font>
                     <Font name="Segoe UI" size="12.0"/>
                 </font>
             </JFXToggleButton>
-            <JFXSlider/>
-            <Label text="Grafik">
+            <JFXSlider fx:id="volumeSlider" blockIncrement="0.1" majorTickUnit="0.1" max="1.0" minorTickCount="0"
+                       onMouseReleased="#changeVolume" value="0.5"/>
+            <Label text="Sounds">
                 <font>
-                    <Font name="Segoe UI" size="14.0"/>
+                    <Font name="Segoe UI Bold" size="14.0"/>
                 </font>
                 <VBox.margin>
                     <Insets top="25.0"/>
                 </VBox.margin>
             </Label>
-            <JFXComboBox focusColor="#3fa849" prefHeight="25.0" prefWidth="250.0" promptText="Schlangenfarbe">
+            <JFXToggleButton fx:id="soundSwitch" onAction="#toggleSounds" text="Aus/An" toggleColor="#3fa849"
+                             toggleLineColor="#a2dca8">
+                <font>
+                    <Font name="Segoe UI" size="12.0"/>
+                </font>
+            </JFXToggleButton>
+            <Label text="Grafik">
+                <font>
+                    <Font name="Segoe UI Bold" size="14.0"/>
+                </font>
                 <VBox.margin>
-                    <Insets/>
+                    <Insets top="25.0"/>
+                </VBox.margin>
+            </Label>
+            <JFXComboBox fx:id="colorPicker" focusColor="#3fa849" onAction="#changeColor" prefHeight="25.0"
+                         prefWidth="250.0" promptText="Schlangenfarbe">
+                <VBox.margin>
+                    <Insets top="10.0"/>
                 </VBox.margin>
             </JFXComboBox>
         </VBox>

@@ -1,13 +1,18 @@
 package de.snake.fxclient.controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXSlider;
+import com.jfoenix.controls.JFXToggleButton;
 import de.snake.fxclient.domain.User;
 import de.snake.fxclient.game.Playground;
+import de.snake.fxclient.game.SoundSetting;
 import de.snake.fxclient.game.composite.Shape;
 import de.snake.fxclient.game.composite.Square;
 import de.snake.fxclient.game.message.Message;
 import de.snake.fxclient.logger.MyLogger;
 import de.snake.fxclient.service.GameService;
 import de.snake.fxclient.service.PlayerActiveService;
+import de.snake.fxclient.service.SoundAndMusicService;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -28,6 +33,8 @@ public class GameController {
     private final GameService gameService;
     private final PlayerActiveService playerActiveService;
     private final MyLogger myLogger;
+    private final SoundAndMusicService soundAndMusicService;
+    private final SoundSetting soundSetting;
 
     private GraphicsContext gc;
 
@@ -37,21 +44,67 @@ public class GameController {
     private TextField chatMess;
     @FXML
     private Canvas gameCanvas;
+    @FXML
+    private JFXToggleButton musicSwitch;
+    @FXML
+    private JFXToggleButton soundSwitch;
+    @FXML
+    private JFXSlider volumeSlider;
+    @FXML
+    private JFXComboBox<String> colorPicker;
 
-    public GameController(BackgroundController backgroundController, User user, Playground playground, GameService gameService, PlayerActiveService playerActiveService, MyLogger myLogger) {
+    public GameController(BackgroundController backgroundController, User user, Playground playground, GameService gameService, PlayerActiveService playerActiveService, MyLogger myLogger, SoundAndMusicService soundAndMusicService, SoundSetting soundSetting) {
         this.backgroundController = backgroundController;
         this.user = user;
         this.playground = playground;
         this.gameService = gameService;
         this.playerActiveService = playerActiveService;
         this.myLogger = myLogger;
+        this.soundAndMusicService = soundAndMusicService;
+        this.soundSetting = soundSetting;
     }
 
     @FXML
     public void initialize() {
         gc = gameCanvas.getGraphicsContext2D();
+        initializeColorList();
         Shape background = new Square(gc, Color.BLACK, new Point2D(0, 0), playground.getWidth() * playground.getSnakeBodySize(), playground.getHeight() * playground.getSnakeBodySize());
         background.draw();
+    }
+
+    public void toggleMusic() {
+        if (musicSwitch.isSelected()) {
+            soundAndMusicService.playMusic();
+
+        } else {
+            soundAndMusicService.pauseMusic();
+
+        }
+    }
+
+    public void toggleSounds() {
+        if (soundSwitch.isSelected()) {
+            System.out.println("Sounds an");
+            soundSetting.setSoundMuted(false);
+        } else {
+            System.out.println("Sounds aus");
+            soundSetting.setSoundMuted(true);
+        }
+    }
+
+    public void changeVolume() {
+        soundAndMusicService.changeVolume(volumeSlider.getValue());
+
+    }
+
+    private void initializeColorList() {
+        colorPicker.getItems().clear();
+        colorPicker.getItems().addAll("Blau/Grün", "Gelb/Rosa", "Lila/Cyan");
+        colorPicker.getSelectionModel().select("Blau/Grün");
+    }
+
+    public void changeColor() {
+        gameService.changeColor(colorPicker.getValue());
     }
 
     public GraphicsContext getGC() {

@@ -1,13 +1,14 @@
 package de.snake.server.controller.api;
 
+import de.snake.server.domain.entity.GameHistory;
 import de.snake.server.service.HistoryService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/history")
 public class HistoryController {
-
-    //todo History Features
 
     private final HistoryService historyService;
 
@@ -15,15 +16,8 @@ public class HistoryController {
         this.historyService = historyService;
     }
 
-    @PostMapping
-    public String getHistory(@RequestBody String username) {
-        System.out.println(username);
-        return ("hello from server");
-    }
-
     @GetMapping
-    public String getHistory2(@RequestParam String username) {
-        System.out.println(username);
-        return "good to go";
+    public List<GameHistory> getHistory(@RequestParam String username) {
+        return historyService.getPlayedGames(username);
     }
 }

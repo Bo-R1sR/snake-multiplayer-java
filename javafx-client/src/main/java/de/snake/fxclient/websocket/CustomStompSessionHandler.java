@@ -5,10 +5,12 @@ import de.snake.fxclient.domain.User;
 import de.snake.fxclient.game.Playground;
 import de.snake.fxclient.game.ScreenText;
 import de.snake.fxclient.game.ServerSounds;
+import de.snake.fxclient.game.SoundSetting;
 import de.snake.fxclient.game.message.InputMessage;
 import de.snake.fxclient.game.message.Message;
 import de.snake.fxclient.logger.MyLogger;
 import de.snake.fxclient.service.DrawingService;
+import de.snake.fxclient.service.SoundAndMusicService;
 import javafx.application.Platform;
 import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.simp.stomp.*;
@@ -26,8 +28,10 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
     private final ServerSounds serverSounds;
     private final DrawingService drawingService;
     private final MyLogger myLogger;
+    private final SoundAndMusicService soundAndMusicService;
+    private final SoundSetting soundSetting;
 
-    public CustomStompSessionHandler(GameController gameController, ScreenText screenText, User user, Playground playground, ServerSounds serverSounds, DrawingService drawingService, MyLogger myLogger) {
+    public CustomStompSessionHandler(GameController gameController, ScreenText screenText, User user, Playground playground, ServerSounds serverSounds, DrawingService drawingService, MyLogger myLogger, SoundAndMusicService soundAndMusicService, SoundSetting soundSetting) {
         this.gameController = gameController;
         this.screenText = screenText;
         this.user = user;
@@ -35,6 +39,8 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
         this.serverSounds = serverSounds;
         this.drawingService = drawingService;
         this.myLogger = myLogger;
+        this.soundAndMusicService = soundAndMusicService;
+        this.soundSetting = soundSetting;
     }
 
     @Override
@@ -93,6 +99,9 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
             public void handleFrame(StompHeaders headers, Object payload) {
                 myLogger.log("Received : serverSound ");
                 BeanUtils.copyProperties(payload, serverSounds);
+                if (!soundSetting.isSoundMuted()) {
+                    soundAndMusicService.playServerSound(serverSounds.getText());
+                }
             }
         });
 

@@ -20,14 +20,16 @@ public class DrawingService {
     private final GameController gameController;
     private final User user;
     private final Level level;
+    private final SnakeColor snakeColor;
 
 
-    public DrawingService(Playground playground, ScreenText screenText, GameController gameController, User user, Level level) {
+    public DrawingService(Playground playground, ScreenText screenText, GameController gameController, User user, Level level, SnakeColor snakeColor) {
         this.playground = playground;
         this.screenText = screenText;
         this.gameController = gameController;
         this.user = user;
         this.level = level;
+        this.snakeColor = snakeColor;
     }
 
     // called from SessionHandler when Countdown ScreenText arrives
@@ -55,9 +57,9 @@ public class DrawingService {
         // special screen only for game over
         if (playground.isGameOver()) {
             Shape gameOverText = new Text(gc, new Point2D(100, 250), "GAME OVER\nweiter mit nächstem Level", Color.ORANGERED, true);
-            Shape score1 = new Text(gc, new Point2D(200, 100), "" + playground.getSnake2().getPoints(), Color.GREEN, false);
+            Shape score1 = new Text(gc, new Point2D(200, 100), "" + playground.getSnake2().getPoints(), snakeColor.getColorSnake1(), false);
             Shape space = new Text(gc, new Point2D(250, 100), " : ", Color.WHITE, false);
-            Shape score2 = new Text(gc, new Point2D(300, 100), "" + playground.getSnake1().getPoints(), Color.BLUE, false);
+            Shape score2 = new Text(gc, new Point2D(300, 100), "" + playground.getSnake1().getPoints(), snakeColor.getColorSnake2(), false);
             Shape gameOverScreen = new CompositeShape(gc, List.of(gameOverText, score1, space, score2));
             gameOverScreen.draw();
             user.setReadyToPlay(false);
@@ -66,8 +68,8 @@ public class DrawingService {
         // regular game screen
         Shape background = new Square(gc, Color.BLACK, new Point2D(0, 0), playground.getWidth() * playground.getSnakeBodySize(), playground.getHeight() * playground.getSnakeBodySize());
         Shape level = new CompositeShape(gc, createLevel(playground.getLevelNumber(), Color.WHITE, Color.LIGHTGREY));
-        Shape snake1 = new CompositeShape(gc, createSnake(playground.getSnake1(), Color.LIGHTGREEN, Color.GREEN));
-        Shape snake2 = new CompositeShape(gc, createSnake(playground.getSnake2(), Color.LIGHTBLUE, Color.BLUE));
+        Shape snake1 = new CompositeShape(gc, createSnake(playground.getSnake1(), snakeColor.getColorSnake1Border(), snakeColor.getColorSnake1()));
+        Shape snake2 = new CompositeShape(gc, createSnake(playground.getSnake2(), snakeColor.getColorSnake2Border(), snakeColor.getColorSnake2()));
         Shape snakes = new CompositeShape(gc, List.of(snake1, snake2));
         Shape food = new Circle(gc, playground.getFood().getFoodColor(), new Point2D(playground.getFood().getFoodPositionX() * playground.getSnakeBodySize(), playground.getFood().getFoodPositionY() * playground.getSnakeBodySize()), playground.getSnakeBodySize());
         Shape playground = new CompositeShape(gc, List.of(background, level, snakes, food));

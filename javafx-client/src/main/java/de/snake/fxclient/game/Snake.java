@@ -61,4 +61,5 @@ public class Snake {
     public void setPossibleToBite(boolean possibleToBite) {
         this.possibleToBite = possibleToBite;
     }
+
 }
