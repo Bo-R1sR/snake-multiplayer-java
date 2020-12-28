@@ -1,9 +1,10 @@
 package de.snake.server.controller.api;
 
+import de.snake.server.domain.entity.GameHistory;
 import de.snake.server.service.HistoryService;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.ResultSet;
+import java.util.List;
 
 @RestController
 @RequestMapping("/history")
@@ -18,8 +19,7 @@ public class HistoryController {
     }
 
     @GetMapping
-    public ResultSet getHistory(@RequestParam String username) {
-        ResultSet result = HistoryService.getPlayedGames(username);
-        return result;
+    public List<GameHistory> getHistory(@RequestParam String username) {
+        return historyService.getPlayedGames(username);
     }
 }
