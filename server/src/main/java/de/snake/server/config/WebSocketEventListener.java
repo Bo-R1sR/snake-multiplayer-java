@@ -67,7 +67,7 @@ public class WebSocketEventListener {
         template.convertAndSend("/topic/messages", leavePlayer);
 
         screenText.setPlayerText("Bitte Spiel starten");
-        if(!playground.isRunning()) {
+        if (!playground.isRunning()) {
             template.convertAndSend("/topic/screenText", screenText);
         }
         playground.setDuringLevel(false);

@@ -5,6 +5,7 @@ import de.snake.fxclient.game.Playground;
 import de.snake.fxclient.game.composite.Shape;
 import de.snake.fxclient.game.composite.Square;
 import de.snake.fxclient.game.message.Message;
+import de.snake.fxclient.logger.MyLogger;
 import de.snake.fxclient.service.GameService;
 import de.snake.fxclient.service.PlayerActiveService;
 import javafx.fxml.FXML;
@@ -26,6 +27,7 @@ public class GameController {
     private final Playground playground;
     private final GameService gameService;
     private final PlayerActiveService playerActiveService;
+    private final MyLogger myLogger;
 
     private GraphicsContext gc;
 
@@ -36,12 +38,13 @@ public class GameController {
     @FXML
     private Canvas gameCanvas;
 
-    public GameController(BackgroundController backgroundController, User user, Playground playground, GameService gameService, PlayerActiveService playerActiveService) {
+    public GameController(BackgroundController backgroundController, User user, Playground playground, GameService gameService, PlayerActiveService playerActiveService, MyLogger myLogger) {
         this.backgroundController = backgroundController;
         this.user = user;
         this.playground = playground;
         this.gameService = gameService;
         this.playerActiveService = playerActiveService;
+        this.myLogger = myLogger;
     }
 
     @FXML
@@ -68,6 +71,7 @@ public class GameController {
 
     // executed after Spiel starten is pressed
     public void initializeGame() {
+        myLogger.log("Game Initialized");
         // set readiness in client to make sure correct ready message is displayed for player 1 or 2
         user.setReadyToPlay(true);
         // send username to server

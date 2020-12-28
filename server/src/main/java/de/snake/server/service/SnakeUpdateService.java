@@ -4,7 +4,9 @@ import de.snake.server.domain.game.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Service
 public class SnakeUpdateService {
@@ -252,7 +254,7 @@ public class SnakeUpdateService {
                     bitingSnake.getHead().getPositionY() == targetSnake.getSnakeBody().get(i).getPositionY()) {
                 // only bite if possible
                 if (targetSnake.isPossibleToBite()) {
-                    for(int ii = 0; ii < targetSnake.getSnakeBody().size(); ii++){
+                    for (int ii = 0; ii < targetSnake.getSnakeBody().size(); ii++) {
                         // remove all read fields from snake1 and add to snake2
                         if (targetSnake.getSnakeBody().get(ii).getColor() == 3) {
                             targetSnake.getSnakeBody().remove(ii);

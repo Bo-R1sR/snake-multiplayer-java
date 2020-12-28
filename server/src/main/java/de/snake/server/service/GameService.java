@@ -4,8 +4,6 @@ import de.snake.server.domain.game.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Random;
-
 @Service
 public class GameService {
 

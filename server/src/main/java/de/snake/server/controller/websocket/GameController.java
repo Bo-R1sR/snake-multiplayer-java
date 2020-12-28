@@ -48,7 +48,8 @@ public class GameController {
         if (playground.getLevelNumber() == 4) {
             playground.setDuringLevel(false);
             playground.setLevelFinish(true);
-        };
+        }
+        ;
 
         //todo hier die history speichern bzw. updaten
     }

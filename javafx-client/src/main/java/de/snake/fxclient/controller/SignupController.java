@@ -1,6 +1,7 @@
 package de.snake.fxclient.controller;
 
 import de.snake.fxclient.domain.User;
+import de.snake.fxclient.logger.MyLogger;
 import de.snake.fxclient.task.SignupTask;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ public class SignupController {
 
     private final User user;
     private final BackgroundController backgroundController;
+    private final MyLogger myLogger;
 
     @FXML
     private TextField username;
@@ -33,9 +35,10 @@ public class SignupController {
     @Value("${server.ip}")
     private String serverIp;
 
-    public SignupController(User user, BackgroundController backgroundController) {
+    public SignupController(User user, BackgroundController backgroundController, MyLogger myLogger) {
         this.user = user;
         this.backgroundController = backgroundController;
+        this.myLogger = myLogger;
     }
 
     public void signupAction() {
@@ -55,24 +58,29 @@ public class SignupController {
             if (response == -2) {
                 signupFailure.setText("Username und/oder Passwort können nicht leer sein.");
                 signupFailure.setVisible(true);
+                myLogger.log("Signup Error");
             } else if (response == -1) {
                 signupFailure.setText("Passwörter stimmen nicht überein");
                 password.setText("");
                 confirmPassword.setText("");
                 signupFailure.setVisible(true);
+                myLogger.log("Signup Error");
             } else if (response == 400) {
                 signupFailure.setText("Username " + user.getName() + " schon vergeben.");
                 username.setText("");
                 signupFailure.setVisible(true);
+                myLogger.log("Signup Error");
             } else if (response == 200) {
                 user.reset();
                 backgroundController.changeView(LoginController.class);
+                myLogger.log("Signup Success");
             } else {
                 signupFailure.setText("Es gab einen unvorhersehbaren Fehler, bitte nochmal versuchen.");
                 username.setText("");
                 password.setText("");
                 confirmPassword.setText("");
                 signupFailure.setVisible(true);
+                myLogger.log("Signup Error");
             }
         });
     }

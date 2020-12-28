@@ -1,5 +1,6 @@
 package de.snake.fxclient.controller;
 
+import de.snake.fxclient.logger.MyLogger;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
@@ -12,12 +13,14 @@ import org.springframework.stereotype.Component;
 public class BackgroundController {
 
     private final FxWeaver fxWeaver;
+    private final MyLogger myLogger;
 
     @FXML
     StackPane viewHolder;
 
-    public BackgroundController(FxWeaver fxWeaver) {
+    public BackgroundController(FxWeaver fxWeaver, MyLogger myLogger) {
         this.fxWeaver = fxWeaver;
+        this.myLogger = myLogger;
     }
 
     public StackPane getViewHolder() {
@@ -26,6 +29,7 @@ public class BackgroundController {
 
     @FXML
     public void initialize() {
+        myLogger.log("Client started and ready");
         changeView(LoginController.class);
     }
 

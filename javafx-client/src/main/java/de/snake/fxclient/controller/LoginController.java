@@ -1,6 +1,7 @@
 package de.snake.fxclient.controller;
 
 import de.snake.fxclient.domain.User;
+import de.snake.fxclient.logger.MyLogger;
 import de.snake.fxclient.task.LoginTask;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ public class LoginController {
 
     private final User user;
     private final BackgroundController backgroundController;
+    private final MyLogger myLogger;
 
     @FXML
     private TextField username;
@@ -30,9 +32,10 @@ public class LoginController {
     @Value("${server.ip}")
     private String serverIp;
 
-    public LoginController(User user, BackgroundController backgroundController) {
+    public LoginController(User user, BackgroundController backgroundController, MyLogger myLogger) {
         this.user = user;
         this.backgroundController = backgroundController;
+        this.myLogger = myLogger;
     }
 
     public void loginAction() {
@@ -51,18 +54,22 @@ public class LoginController {
             if (response == -2) {
                 loginFailure.setText("Username und/oder Passwort kann nicht leer sein.");
                 loginFailure.setVisible(true);
+                myLogger.log("Login Error");
             } else if (response == 200) {
                 backgroundController.changeView(MainController.class);
+                myLogger.log("Login Success");
             } else if (response == 403) {
                 loginFailure.setText("Username und/oder Passwort sind falsch.");
                 username.setText("");
                 password.setText("");
                 loginFailure.setVisible(true);
+                myLogger.log("Login Error");
             } else {
                 loginFailure.setText("Es gab einen unvorhersehbaren Fehler, bitte nochmal versuchen.");
                 username.setText("");
                 password.setText("");
                 loginFailure.setVisible(true);
+                myLogger.log("Login Error");
             }
         });
     }

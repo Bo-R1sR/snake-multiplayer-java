@@ -1,6 +1,7 @@
 package de.snake.fxclient.controller;
 
 import de.snake.fxclient.domain.User;
+import de.snake.fxclient.logger.MyLogger;
 import de.snake.fxclient.task.HistoryTask;
 import de.snake.fxclient.websocket.CustomStompClient;
 import javafx.concurrent.WorkerStateEvent;
@@ -14,11 +15,13 @@ public class MainController {
     private final BackgroundController backgroundController;
     private final User user;
     private final CustomStompClient customStompClient;
+    private final MyLogger myLogger;
 
-    public MainController(BackgroundController backgroundController, User user, CustomStompClient customStompClient) {
+    public MainController(BackgroundController backgroundController, User user, CustomStompClient customStompClient, MyLogger myLogger) {
         this.backgroundController = backgroundController;
         this.user = user;
         this.customStompClient = customStompClient;
+        this.myLogger = myLogger;
     }
 
 
@@ -41,5 +44,6 @@ public class MainController {
     public void showGame() {
         backgroundController.changeView(GameController.class);
         customStompClient.connectToServerWS();
+        myLogger.log("Establishing WebSocket Connection");
     }
 }
