@@ -16,6 +16,6 @@ public class HistoryService {
     }
 
     public List<GameHistory> getPlayedGames(String username){
-        return historyRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+        return historyRepository.findAllByUsername1OrUsername2(username, username, Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 }
