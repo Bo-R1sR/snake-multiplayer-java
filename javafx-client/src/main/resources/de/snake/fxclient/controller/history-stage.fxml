@@ -13,14 +13,17 @@
         <font>
             <Font name="Segoe UI Bold" size="24.0" />
         </font>
+      <VBox.margin>
+         <Insets bottom="25.0" />
+      </VBox.margin>
     </Label>
    <TableView fx:id="tableView" maxWidth="700.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0">
      <columns>
-       <TableColumn fx:id="date" prefWidth="139.0" resizable="false" sortType="DESCENDING" sortable="false" text="Datum" />
-       <TableColumn fx:id="yourPoints" prefWidth="139.0" resizable="false" sortable="false" text="Deine Punkte" />
-         <TableColumn fx:id="enemyPoints" prefWidth="139.0" resizable="false" sortable="false" text="Gegnerpunkte" />
-         <TableColumn fx:id="enemyName" prefWidth="139.0" resizable="false" sortable="false" text="Gegner" />
-         <TableColumn fx:id="decision" prefWidth="139.0" resizable="false" sortable="false" text="Entscheidung" />
+       <TableColumn fx:id="date" editable="false" prefWidth="139.0" resizable="false" sortType="DESCENDING" sortable="false" text="Datum" />
+       <TableColumn fx:id="yourPoints" editable="false" prefWidth="139.0" resizable="false" sortable="false" text="Deine Punkte" />
+         <TableColumn fx:id="enemyPoints" editable="false" prefWidth="139.0" resizable="false" sortable="false" text="Gegnerpunkte" />
+         <TableColumn fx:id="enemyName" editable="false" prefWidth="139.0" resizable="false" sortable="false" text="Gegner" />
+         <TableColumn fx:id="decision" editable="false" prefWidth="139.0" resizable="false" sortable="false" text="Entscheidung" />
      </columns>
    </TableView>
     <JFXButton onAction="#back" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Hauptmenü">
