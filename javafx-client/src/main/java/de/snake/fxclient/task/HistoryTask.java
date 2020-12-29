@@ -1,16 +1,22 @@
 package de.snake.fxclient.task;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import de.snake.fxclient.domain.GameHistory;
 import de.snake.fxclient.domain.User;
 import javafx.concurrent.Task;
+
+import java.util.List;
 
 public class HistoryTask extends Task<Integer> {
 
     private final User user;
     private final String serverIp;
-    private String responseBody;
+    private List<GameHistory> gameHistoryList;
 
     public HistoryTask(User user, String serverIp) {
         this.user = user;
@@ -23,7 +29,12 @@ public class HistoryTask extends Task<Integer> {
 
         try {
             HttpResponse<String> res = Unirest.get(url).queryString("username", user.getName()).asString();
-            responseBody = res.getBody();
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                gameHistoryList = objectMapper.readValue(res.getBody(), new TypeReference<>() {});
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
             return res.getStatus();
         } catch (UnirestException e) {
             e.printStackTrace();
@@ -32,8 +43,8 @@ public class HistoryTask extends Task<Integer> {
         return null;
     }
 
-    public String getResponseBody() {
-        return responseBody;
+    public List<GameHistory> getResponseBody() {
+        return gameHistoryList;
     }
 }
 
