@@ -1,12 +1,15 @@
 package de.snake.server.controller.websocket;
 
+import de.snake.server.config.WebSocketEventListener;
 import de.snake.server.domain.game.Playground;
 import de.snake.server.domain.game.Snake;
 import de.snake.server.service.GameService;
+import de.snake.server.service.HistoryService;
 import de.snake.server.service.SnakeUpdateService;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -19,13 +22,17 @@ public class GameController {
     private final SimpMessagingTemplate template;
     private final GameService gameService;
     private final SnakeUpdateService snakeUpdateService;
+    private final HistoryService historyService;
+    private final WebSocketEventListener webSocketEventListener;
     private Timer refreshTimer;
 
-    public GameController(Playground playground, SimpMessagingTemplate template, GameService gameService, SnakeUpdateService snakeUpdateService) {
+    public GameController(Playground playground, SimpMessagingTemplate template, GameService gameService, SnakeUpdateService snakeUpdateService, HistoryService historyService, WebSocketEventListener webSocketEventListener) {
         this.playground = playground;
         this.template = template;
         this.gameService = gameService;
         this.snakeUpdateService = snakeUpdateService;
+        this.historyService = historyService;
+        this.webSocketEventListener = webSocketEventListener;
     }
 
     // entry point for each game
@@ -48,10 +55,8 @@ public class GameController {
         if (playground.getLevelNumber() == 4) {
             playground.setDuringLevel(false);
             playground.setLevelFinish(true);
+            historyService.save(playground.getSnake1().getPoints(), playground.getSnake2().getPoints(), webSocketEventListener.getUsername1(), webSocketEventListener.getUsername2());
         }
-        ;
-
-        //todo hier die history speichern bzw. updaten
     }
 
     public class SnakeUpdateTask extends TimerTask {
