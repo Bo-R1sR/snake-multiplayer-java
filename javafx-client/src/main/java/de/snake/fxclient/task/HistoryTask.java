@@ -28,7 +28,7 @@ public class HistoryTask extends Task<Integer> {
         String url = "http://" + serverIp + ":8080" + "/history";
 
         try {
-            HttpResponse<String> res = Unirest.get(url).queryString("username", user.getName()).asString();
+            HttpResponse<String> res = Unirest.get(url).header("Authorization", user.getJsonWebToken()).queryString("username", user.getName()).asString();
             ObjectMapper objectMapper = new ObjectMapper();
             try {
                 gameHistoryList = objectMapper.readValue(res.getBody(), new TypeReference<>() {});
