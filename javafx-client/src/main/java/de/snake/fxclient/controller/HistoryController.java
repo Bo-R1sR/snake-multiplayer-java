@@ -1,25 +1,19 @@
 package de.snake.fxclient.controller;
 
-import com.jfoenix.controls.JFXTreeTableView;
 import de.snake.fxclient.domain.GameHistory;
+import de.snake.fxclient.domain.GameHistoryTable;
 import de.snake.fxclient.domain.User;
 import de.snake.fxclient.task.HistoryTask;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -30,26 +24,22 @@ public class HistoryController {
     private String serverIp;
 
     @FXML
-    private TableView tableView;
+    private TableView<GameHistoryTable> tableView;
 
     @FXML
-    private TableColumn date;
+    private TableColumn<GameHistoryTable, String> date;
 
     @FXML
-    private TableColumn points1;
+    private TableColumn<GameHistoryTable, Integer> yourPoints;
 
     @FXML
-    private TableColumn points2;
+    private TableColumn<GameHistoryTable, Integer>  enemyPoints;
 
     @FXML
-    private TableColumn<String, String> decision;
+    private TableColumn<GameHistoryTable, String>  decision;
 
     @FXML
-    private TableColumn username1;
-
-    @FXML
-    private TableColumn username2;
-
+    private TableColumn<GameHistoryTable, String>  enemyName;
 
 
     private final BackgroundController backgroundController;
@@ -62,44 +52,65 @@ public class HistoryController {
         this.user = user;
     }
 
-    public void initialize(){
-        date.setCellValueFactory(new PropertyValueFactory<GameHistory, String>("createdAt"));
-        points1.setCellValueFactory(new PropertyValueFactory<GameHistory, Integer>("pointsUser1"));
-        points2.setCellValueFactory(new PropertyValueFactory<GameHistory, Integer>("pointsUser2"));
-        username1.setCellValueFactory(new PropertyValueFactory<GameHistory, String>("username1"));
-        username2.setCellValueFactory(new PropertyValueFactory<GameHistory, String>("username2"));
+    public void initialize() {
+        // Configure the population of the columns
+        date.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
+        yourPoints.setCellValueFactory(new PropertyValueFactory<>("yourPoints"));
+        enemyPoints.setCellValueFactory(new PropertyValueFactory<>("enemyPoints"));
+        enemyName.setCellValueFactory(new PropertyValueFactory<>("enemyName"));
+        decision.setCellValueFactory(new PropertyValueFactory<>("decision"));
 
+        // Start the history task
         HistoryTask historyTask = new HistoryTask(user, serverIp);
         new Thread(historyTask).start();
 
+        // If the history task succeeds
         historyTask.setOnSucceeded((WorkerStateEvent e2) -> {
             gameHistoryList = historyTask.getResponseBody();
-            ObservableList<GameHistory> oGameHistoryList = FXCollections.observableArrayList(gameHistoryList);
-            ObservableList<String> decisions = FXCollections.observableArrayList();
-
-            oGameHistoryList.forEach((GameHistory) -> {
-                if(user.getName().equals(GameHistory.getUsername1())){
-                    if(GameHistory.getPointsUser1() > GameHistory.getPointsUser2()){
-                        decisions.add("Gewonnen");
-                    }
-                    else{
-                        decisions.add("Verloren");
+            // New observable list
+            ObservableList<GameHistoryTable> gameHistoryTableList = FXCollections.observableArrayList();
+            // For each object in the response
+            gameHistoryList.forEach((GameHistory) -> {
+                GameHistoryTable gameHistoryTable = new GameHistoryTable();
+                // Make the string more readable
+                gameHistoryTable.setCreatedAt(GameHistory.getCreatedAt().substring(0, 19).replace("T", " "));
+                // User is player 1
+                if (user.getName().equals(GameHistory.getUsername1())) {
+                    gameHistoryTable.setYourPoints(GameHistory.getPointsUser1());
+                    gameHistoryTable.setEnemyPoints(GameHistory.getPointsUser2());
+                    gameHistoryTable.setEnemyName(GameHistory.getUsername2());
+                    // Check who won
+                    if (GameHistory.getPointsUser1() > GameHistory.getPointsUser2()) {
+                        gameHistoryTable.setDecision("Gewonnen");
+                    } else if (GameHistory.getPointsUser1() == GameHistory.getPointsUser2()) {
+                        gameHistoryTable.setDecision("Unentschieden");
+                    } else {
+                        gameHistoryTable.setDecision("Verloren");
                     }
                 }
-                else{
-                    if(GameHistory.getPointsUser1() > GameHistory.getPointsUser2()){
-                        decisions.add("Verloren");
-                    }
-                    else{
-                        decisions.add("Gewonnen");
+                // User is player 2
+                else {
+                    gameHistoryTable.setYourPoints(GameHistory.getPointsUser2());
+                    gameHistoryTable.setEnemyPoints(GameHistory.getPointsUser1());
+                    gameHistoryTable.setEnemyName(GameHistory.getUsername1());
+                    // Check who won
+                    if (GameHistory.getPointsUser1() > GameHistory.getPointsUser2()) {
+                        gameHistoryTable.setDecision("Verloren");
+                    } else if (GameHistory.getPointsUser1() == GameHistory.getPointsUser2()) {
+                        gameHistoryTable.setDecision("Unentschieden");
+                    } else {
+                        gameHistoryTable.setDecision("Gewonnen");
                     }
                 }
-
+                // Add to the list
+                gameHistoryTableList.add(gameHistoryTable);
             });
-            tableView.setItems(oGameHistoryList);
+            // Display data in the table
+            tableView.setItems(gameHistoryTableList);
         });
 
     }
+
     public void back() {
         backgroundController.changeView(MainController.class);
     }
