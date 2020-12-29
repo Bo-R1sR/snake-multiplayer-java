@@ -20,12 +20,12 @@
 /* Centers the text and sets the font*/
 .table-column {
     -fx-alignment: CENTER;
-    -fx-font: 12 "Segoe UI" bold;
+    -fx-font: 12 "Segoe UI";
 }
 
-/* Sets the font to not bold */
-.table-row-cell {
-    -fx-font: 12 "Segoe UI";
+/* Set the header font bold */
+.column-header{
+    -fx-font-weight: BOLD;
 }
 
 /* Styling the slider thumb */
