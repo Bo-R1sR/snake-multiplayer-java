@@ -1,6 +1,7 @@
 package de.snake.server.controller.websocket;
 
 import de.snake.server.domain.game.Playground;
+import de.snake.server.domain.game.ServerSounds;
 import de.snake.server.domain.game.Snake;
 import de.snake.server.service.GameService;
 import de.snake.server.service.SnakeUpdateService;
@@ -20,12 +21,14 @@ public class GameController {
     private final GameService gameService;
     private final SnakeUpdateService snakeUpdateService;
     private Timer refreshTimer;
+    private final ServerSounds serverSounds;
 
-    public GameController(Playground playground, SimpMessagingTemplate template, GameService gameService, SnakeUpdateService snakeUpdateService) {
+    public GameController(Playground playground, SimpMessagingTemplate template, GameService gameService, SnakeUpdateService snakeUpdateService, ServerSounds serverSounds) {
         this.playground = playground;
         this.template = template;
         this.gameService = gameService;
         this.snakeUpdateService = snakeUpdateService;
+        this.serverSounds = serverSounds;
     }
 
     // entry point for each game
@@ -45,13 +48,22 @@ public class GameController {
         playground.setRunning(false);
         refreshTimer.cancel();
 
+
         if (playground.getLevelNumber() == 4) {
             playground.setDuringLevel(false);
             playground.setLevelFinish(true);
-        }
-        ;
+            serverSounds.setText("RoundOver");
+            template.convertAndSend("/topic/serverSounds", serverSounds);
 
-        //todo hier die history speichern bzw. updaten
+            //todo hier die history speichern
+
+        } else {
+            serverSounds.setText("GameOver");
+            template.convertAndSend("/topic/serverSounds", serverSounds);
+        }
+
+
+
     }
 
     public class SnakeUpdateTask extends TimerTask {

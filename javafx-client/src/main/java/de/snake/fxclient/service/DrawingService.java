@@ -46,9 +46,9 @@ public class DrawingService {
         GraphicsContext gc = gameController.getGC();
         if (playground.isGameOver() && playground.isLevelFinish()) {
             Shape gameOverText = new Text(gc, new Point2D(100, 250), "ENDE DER LEVEL\n weiter mit neuer Runde", Color.ORANGERED, true);
-            Shape score1 = new Text(gc, new Point2D(200, 100), "" + playground.getSnake2().getPoints(), Color.GREEN, false);
+            Shape score1 = new Text(gc, new Point2D(200, 100), "" + playground.getSnake2().getPoints(), snakeColor.getColorSnake1(), false);
             Shape space = new Text(gc, new Point2D(250, 100), " : ", Color.WHITE, false);
-            Shape score2 = new Text(gc, new Point2D(300, 100), "" + playground.getSnake1().getPoints(), Color.BLUE, false);
+            Shape score2 = new Text(gc, new Point2D(300, 100), "" + playground.getSnake1().getPoints(), snakeColor.getColorSnake2(), false);
             Shape gameOverScreen = new CompositeShape(gc, List.of(gameOverText, score1, space, score2));
             gameOverScreen.draw();
             user.setReadyToPlay(false);
@@ -108,11 +108,20 @@ public class DrawingService {
             snakeList.add(squareFront);
 
             // position where snake can be bitten
+//            if (snake.isPossibleToBite()) {
+//                if (sbp.getColor() == 3) {
+//                    Shape biteCircle = new Circle(gc, sbp.getColor(),
+//                            new Point2D(sbp.getPositionX() * playground.getSnakeBodySize(), sbp.getPositionY() * playground.getSnakeBodySize()), playground.getSnakeBodySize() - 2);
+//                    snakeList.add(biteCircle);
+//                }
+//            }
+
             if (snake.isPossibleToBite()) {
                 if (sbp.getColor() == 3) {
-                    Shape biteCircle = new Circle(gc, sbp.getColor(),
-                            new Point2D(sbp.getPositionX() * playground.getSnakeBodySize(), sbp.getPositionY() * playground.getSnakeBodySize()), playground.getSnakeBodySize() - 2);
-                    snakeList.add(biteCircle);
+                    Shape biteSquare = new Square(gc, Color.RED,
+                            new Point2D(sbp.getPositionX() * playground.getSnakeBodySize(), sbp.getPositionY() * playground.getSnakeBodySize()),
+                            playground.getSnakeBodySize() - 2, playground.getSnakeBodySize() - 2);
+                    snakeList.add(biteSquare);
                 }
             }
 
@@ -122,6 +131,11 @@ public class DrawingService {
                 snakeList.add(immortalCircle);
             }
         }
+//        Shape head = new Square(gc, Color.ORANGE,
+//                new Point2D(snake.getSnakeBody().get(0).getPositionX() * playground.getSnakeBodySize(), snake.getSnakeBody().get(0).getPositionY() * playground.getSnakeBodySize()),
+//                playground.getSnakeBodySize() - 2, playground.getSnakeBodySize() - 2);
+//        snakeList.add(head);
+
         return snakeList;
     }
 

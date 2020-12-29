@@ -29,27 +29,27 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers(SIGN_UP_URL, "/h2-console/**").permitAll()
-                .antMatchers("/history").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilter(new JWTAuthenticationVerificationFilter(authenticationManager()))
-                // this disables session creation on Spring Security
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        http.csrf()
-                .ignoringAntMatchers("/h2-console/**");
-        http.headers().frameOptions().sameOrigin();
-//        http.cors().and().csrf().disable().authorizeRequests()
-//                .antMatchers(SIGN_UP_URL).permitAll()
+//        http.authorizeRequests()
+//                .antMatchers(SIGN_UP_URL, "/h2-console/**").permitAll()
+//                .antMatchers("/history").permitAll()
 //                .anyRequest().authenticated()
 //                .and()
 //                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
 //                .addFilter(new JWTAuthenticationVerificationFilter(authenticationManager()))
 //                // this disables session creation on Spring Security
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//
+//        http.csrf()
+//                .ignoringAntMatchers("/h2-console/**");
+//        http.headers().frameOptions().sameOrigin();
+        http.cors().and().csrf().disable().authorizeRequests()
+                .antMatchers(SIGN_UP_URL).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .addFilter(new JWTAuthenticationVerificationFilter(authenticationManager()))
+                // this disables session creation on Spring Security
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     }
 

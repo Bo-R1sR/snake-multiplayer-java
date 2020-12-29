@@ -9,27 +9,33 @@ import java.io.File;
 @Service
 public class SoundAndMusicService {
     // Musik
-    private final String musicPath = "src/main/resources/sounds/test.mp3";
+    private final String musicPath = "src/main/resources/sounds/483502__dominikbraun__let-me-see-ya-bounce-8-bit-music.mp3";
     // Essen
-    private final String eatPath = "src/main/resources/sounds/test.mp3";
+    private final String eatPath = "src/main/resources/sounds/342744__michael-kur95__increase-01.wav";
     // Runde vorbei
-    private final String roundOverPath = "src/main/resources/sounds/test.mp3";
+    private final String roundOverPath = "src/main/resources/sounds/365782__mattix__game-over-04.wav";
     // Spiel vorbei
-    private final String gameOverPath = "src/main/resources/sounds/test.mp3";
+    private final String gameOverPath = "src/main/resources/sounds/159408__noirenex__life-lost-game-over.wav";
     // Countdown
-    private final String countdownPath = "src/main/resources/sounds/test.mp3";
+    private final String countdownPath = "src/main/resources/sounds/523762__matrixxx__select-granted-05.wav";
     // Game Start
-    private final String gameStartPath = "src/main/resources/sounds/test.mp3";
+    private final String gameStartPath = "src/main/resources/sounds/368691__fartbiscuit1700__8-bit-arcade-video-game-start-sound-effect-gun-reload-and-jump.wav";
+
     Media musicMedia = new Media(new File(musicPath).toURI().toString());
     MediaPlayer musicPlayer = new MediaPlayer(musicMedia);
+
     Media eatMedia = new Media(new File(eatPath).toURI().toString());
     MediaPlayer eatPlayer = new MediaPlayer(eatMedia);
+
     Media roundOverMedia = new Media(new File(roundOverPath).toURI().toString());
     MediaPlayer roundOverPlayer = new MediaPlayer(roundOverMedia);
+
     Media gameOverMedia = new Media(new File(gameOverPath).toURI().toString());
     MediaPlayer gameOverPlayer = new MediaPlayer(gameOverMedia);
+
     Media countdownMedia = new Media(new File(countdownPath).toURI().toString());
     MediaPlayer countdownPlayer = new MediaPlayer(countdownMedia);
+
     Media gameStartMedia = new Media(new File(gameStartPath).toURI().toString());
     MediaPlayer gameStartPlayer = new MediaPlayer(gameStartMedia);
 
@@ -46,6 +52,14 @@ public class SoundAndMusicService {
             case "GameStart" -> {
                 gameStartPlayer.stop();
                 gameStartPlayer.play();
+            }
+            case "GameOver" -> {
+                gameOverPlayer.stop();
+                gameOverPlayer.play();
+            }
+            case "RoundOver" -> {
+                roundOverPlayer.stop();
+                roundOverPlayer.play();
             }
         }
     }
