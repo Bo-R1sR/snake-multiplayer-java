@@ -46,9 +46,9 @@ public class DrawingService {
         GraphicsContext gc = gameController.getGC();
         if (playground.isGameOver() && playground.isLevelFinish()) {
             Shape gameOverText = new Text(gc, new Point2D(100, 250), "ENDE DER LEVEL\n weiter mit neuer Runde", Color.ORANGERED, true);
-            Shape score1 = new Text(gc, new Point2D(200, 100), "" + playground.getSnake2().getPoints(), Color.GREEN, false);
+            Shape score1 = new Text(gc, new Point2D(200, 100), "" + playground.getSnake2().getPoints(), snakeColor.getColorSnake1(), false);
             Shape space = new Text(gc, new Point2D(250, 100), " : ", Color.WHITE, false);
-            Shape score2 = new Text(gc, new Point2D(300, 100), "" + playground.getSnake1().getPoints(), Color.BLUE, false);
+            Shape score2 = new Text(gc, new Point2D(300, 100), "" + playground.getSnake1().getPoints(), snakeColor.getColorSnake2(), false);
             Shape gameOverScreen = new CompositeShape(gc, List.of(gameOverText, score1, space, score2));
             gameOverScreen.draw();
             user.setReadyToPlay(false);
