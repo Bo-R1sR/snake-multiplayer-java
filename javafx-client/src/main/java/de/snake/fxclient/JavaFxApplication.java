@@ -34,6 +34,7 @@ public class JavaFxApplication extends Application {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.getIcons().add(new Image("file:src/main/resources/icon/snake.png"));
+        scene.getStylesheets().add("file:src/main/resources/css/snakeStyleSheet.css");
         stage.show();
     }
 
