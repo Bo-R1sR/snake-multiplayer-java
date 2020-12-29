@@ -21,6 +21,8 @@ public class WebSocketEventListener {
     private final SimpMessagingTemplate template;
     private final Playground playground;
     private final ScreenText screenText;
+    private String username1;
+    private String username2;
 
     List<Integer> ids = new ArrayList<>(Arrays.asList(1, 2));
     HashMap<String, Integer> connectedPlayers = new HashMap<>();
@@ -45,9 +47,27 @@ public class WebSocketEventListener {
         LOGGER.info(Objects.requireNonNull(event.getUser()).getName() + " has connected");
         // add first user with username and id 1
         connectedPlayers.put(event.getUser().getName(), ids.get(0));
+        // set the username variable
+        if(connectedPlayers.get(event.getUser().getName()) == 2){
+            username1 = event.getUser().getName();
+        }
+        else if (connectedPlayers.get(event.getUser().getName()) == 1){
+            username2 = event.getUser().getName();
+        }
         // remove id 1
         ids.remove(0);
         // when second user connects, assign remaining id 2 to username
+
+    }
+
+    // return username1
+    public String getUsername1(){
+        return username1;
+    }
+
+    // return username2
+    public String getUsername2(){
+        return username2;
     }
 
     @EventListener
@@ -56,6 +76,13 @@ public class WebSocketEventListener {
         LOGGER.info(Objects.requireNonNull(event.getUser()).getName() + " has disconnected");
         // when user disconnects add his id as back as available
         ids.add(connectedPlayers.get(event.getUser().getName()));
+        // Unset the username variable
+        if(event.getUser().getName().equals(username1)){
+            username1 = null;
+        }
+        else {
+            username2 = null;
+        }
         // remove from map of connected users
         connectedPlayers.remove(event.getUser().getName());
         // set both players as not active so a restart of game is not possible
