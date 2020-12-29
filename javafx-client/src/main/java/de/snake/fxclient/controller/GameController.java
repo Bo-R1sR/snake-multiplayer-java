@@ -118,6 +118,7 @@ public class GameController {
             if (user.getSession() != null) {
                 user.getSession().disconnect();
             }
+            soundAndMusicService.pauseMusic();
             backgroundController.changeView(MainController.class);
         }
     }
