@@ -1,0 +1,39 @@
+/* Removes the blue highlight color from the table */
+.root {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* Same as above */
+.table-row-cell:filled:selected {
+    -fx-background: -fx-control-inner-background ;
+    -fx-background-color: -fx-table-cell-border-color, -fx-background ;
+    -fx-background-insets: 0, 0 0 1 0 ;
+    -fx-table-cell-border-color: derive(-fx-color, 5%);
+}
+
+/* Same as above */
+.table-row-cell:odd:filled:selected {
+    -fx-background: -fx-control-inner-background-alt ;
+}
+
+/* Centers the text and sets the font*/
+.table-column {
+    -fx-alignment: CENTER;
+    -fx-font: 12 "Segoe UI" bold;
+}
+
+/* Sets the font to not bold */
+.table-row-cell {
+    -fx-font: 12 "Segoe UI";
+}
+
+/* Styling the slider thumb */
+.jfx-slider > .thumb {
+    -fx-background-color: #3fa849;
+}
+
+/* Styling the filled track */
+.jfx-slider > .colored-track {
+    -fx-background-color: #3fa849;
+}
