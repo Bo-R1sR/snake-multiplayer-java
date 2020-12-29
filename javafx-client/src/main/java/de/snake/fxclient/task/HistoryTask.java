@@ -10,6 +10,7 @@ public class HistoryTask extends Task<Integer> {
 
     private final User user;
     private final String serverIp;
+    private String responseBody;
 
     public HistoryTask(User user, String serverIp) {
         this.user = user;
@@ -22,12 +23,17 @@ public class HistoryTask extends Task<Integer> {
 
         try {
             HttpResponse<String> res = Unirest.get(url).queryString("username", user.getName()).asString();
+            responseBody = res.getBody();
             return res.getStatus();
         } catch (UnirestException e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    public String getResponseBody() {
+        return responseBody;
     }
 }
 
