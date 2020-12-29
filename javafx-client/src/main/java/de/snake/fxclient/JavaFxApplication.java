@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -32,6 +33,7 @@ public class JavaFxApplication extends Application {
         stage.setTitle("Snake Multiplayer");
         stage.setResizable(false);
         stage.setScene(scene);
+        stage.getIcons().add(new Image("file:src/main/resources/icon/snake.png"));
         stage.show();
     }
 
