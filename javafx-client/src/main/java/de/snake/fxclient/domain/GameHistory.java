@@ -1,12 +1,10 @@
 package de.snake.fxclient.domain;
 
-import java.time.LocalDateTime;
-
 public class GameHistory {
 
     private long id;
 
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     private String username1;
 
@@ -24,11 +22,11 @@ public class GameHistory {
         this.id = id;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
