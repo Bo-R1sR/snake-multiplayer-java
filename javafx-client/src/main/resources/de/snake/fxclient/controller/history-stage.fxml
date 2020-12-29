@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="dialog" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.snake.fxclient.controller.HistoryController">
+<VBox fx:id="dialog" alignment="TOP_CENTER" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.snake.fxclient.controller.HistoryController">
     <Label text="Historie">
         <font>
             <Font name="Segoe UI Bold" size="24.0" />
         </font>
     </Label>
-   <JFXTreeTableView fx:id="tableView" />
+   <TableView fx:id="tableView" maxWidth="700.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0">
+     <columns>
+       <TableColumn fx:id="date" prefWidth="116.0" resizable="false" sortType="DESCENDING" sortable="false" text="Datum" />
+       <TableColumn fx:id="points1" prefWidth="116.0" resizable="false" sortable="false" text="Punkte Spieler 1" />
+         <TableColumn fx:id="username1" prefWidth="116.0" resizable="false" sortable="false" text="Name Spieler 1" />
+         <TableColumn fx:id="points2" prefWidth="116.0" resizable="false" sortable="false" text="Punkte Spieler 2" />
+         <TableColumn fx:id="username2" prefWidth="116.0" resizable="false" sortable="false" text="Name Spieler 2" />
+         <TableColumn fx:id="decision" prefWidth="116.0" resizable="false" sortable="false" text="Entscheidung" />
+     </columns>
+   </TableView>
     <JFXButton onAction="#back" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Hauptmenü">
         <VBox.margin>
             <Insets top="25.0" />
