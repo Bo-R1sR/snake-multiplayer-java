@@ -10,14 +10,6 @@ import java.io.File;
 @Service
 public class SoundAndMusicService {
 
-    final MediaPlayer musicPlayer = new MediaPlayer(musicMedia);
-    final MediaPlayer eatPlayer = new MediaPlayer(eatMedia);
-    final MediaPlayer roundOverPlayer = new MediaPlayer(roundOverMedia);
-    final MediaPlayer gameOverPlayer = new MediaPlayer(gameOverMedia);
-    final MediaPlayer countdownPlayer1 = new MediaPlayer(countdownMedia);
-    final MediaPlayer countdownPlayer2 = new MediaPlayer(countdownMedia);
-    final MediaPlayer countdownPlayer3 = new MediaPlayer(countdownMedia);
-    final MediaPlayer gameStartPlayer = new MediaPlayer(gameStartMedia);
     private final MyLogger myLogger;
     // Musik
     private final String musicPath = "src/main/resources/sounds/483502__dominikbraun__let-me-see-ya-bounce-8-bit-music.mp3";
@@ -37,6 +29,15 @@ public class SoundAndMusicService {
     // Game Start
     private final String gameStartPath = "src/main/resources/sounds/368691__fartbiscuit1700__8-bit-arcade-video-game-start-sound-effect-gun-reload-and-jump.wav";
     final Media gameStartMedia = new Media(new File(gameStartPath).toURI().toString());
+
+    final MediaPlayer musicPlayer = new MediaPlayer(musicMedia);
+    final MediaPlayer eatPlayer = new MediaPlayer(eatMedia);
+    final MediaPlayer roundOverPlayer = new MediaPlayer(roundOverMedia);
+    final MediaPlayer gameOverPlayer = new MediaPlayer(gameOverMedia);
+    final MediaPlayer countdownPlayer1 = new MediaPlayer(countdownMedia);
+    final MediaPlayer countdownPlayer2 = new MediaPlayer(countdownMedia);
+    final MediaPlayer countdownPlayer3 = new MediaPlayer(countdownMedia);
+    final MediaPlayer gameStartPlayer = new MediaPlayer(gameStartMedia);
 
     public SoundAndMusicService(MyLogger myLogger) {
         this.myLogger = myLogger;

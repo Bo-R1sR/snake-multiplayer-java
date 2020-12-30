@@ -61,7 +61,7 @@ public class GameService {
         playground.getSnake1().setSnakeDirectionEnum(SnakeDirection.LEFT);
         playground.getSnake2().setSnakeDirectionEnum(SnakeDirection.RIGHT);
 
-        playground.getSnake2().setCounter(1000000);
+        //playground.getSnake2().setCounter(1000000);
 
         if (!playground.isDuringLevel()) {
             playground.setLevelNumber(0);

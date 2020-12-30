@@ -110,7 +110,7 @@ public class SnakeUpdateService {
                         snake.setImmortal(false);
                     }
                     // snake will be immortal for 20 seconds
-                }, 20000);
+                }, 30000);
             } // Color.RED - position for biting
             else if (playground.getFood().getFoodColor() == 3) {
                 try {
