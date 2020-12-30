@@ -156,8 +156,7 @@ public class SnakeUpdateService {
 //                snake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 3));
                 if (sizeSnake == 3) {
 
-                }
-                if (sizeSnake == 4 || sizeSnake == 5) {
+                } else if (sizeSnake == 4 || sizeSnake == 5) {
                     snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
                 } else if (sizeSnake <= 7) {
                     snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
