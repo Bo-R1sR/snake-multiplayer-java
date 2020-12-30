@@ -2,11 +2,10 @@ package de.snake.fxclient.game.composite;
 
 import javafx.scene.canvas.GraphicsContext;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CompositeShape extends Shape {
-    private List<Shape> components = new ArrayList<>();
+    private List<Shape> components;
 
     public CompositeShape(GraphicsContext gc, List<Shape> components) {
         super(gc);

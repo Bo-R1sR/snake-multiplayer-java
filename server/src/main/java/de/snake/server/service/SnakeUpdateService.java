@@ -138,22 +138,6 @@ public class SnakeUpdateService {
                 }
                 // assign red color according to length of snake
                 int sizeSnake = snake.getSnakeBody().size();
-//                if (sizeSnake == 5 || sizeSnake == 6) {
-//                    snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
-//                } else if (sizeSnake > 5 && sizeSnake < 9) {
-//                    snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
-//                    snake.getSnakeBody().get(sizeSnake - 2).setColor(3);
-//                } else if (sizeSnake > 5 && sizeSnake < 14) {
-//                    snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
-//                    snake.getSnakeBody().get(sizeSnake - 2).setColor(3);
-//                    snake.getSnakeBody().get(sizeSnake - 3).setColor(3);
-//                } else if (sizeSnake > 5) {
-//                    snake.getSnakeBody().get(sizeSnake - 1).setColor(3);
-//                    snake.getSnakeBody().get(sizeSnake - 2).setColor(3);
-//                    snake.getSnakeBody().get(sizeSnake - 3).setColor(3);
-//                    snake.getSnakeBody().get(sizeSnake - 4).setColor(3);
-//                }
-//                snake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 3));
                 if (sizeSnake == 3) {
 
                 } else if (sizeSnake == 4 || sizeSnake == 5) {

@@ -92,7 +92,7 @@ public class GameController {
     }
 
     public void changeVolume() {
-        soundAndMusicService.changeVolume(volumeSlider.getValue()/100);
+        soundAndMusicService.changeVolume(volumeSlider.getValue() / 100);
 
     }
 

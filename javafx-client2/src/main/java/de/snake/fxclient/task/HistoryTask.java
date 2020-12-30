@@ -31,7 +31,8 @@ public class HistoryTask extends Task<Integer> {
             HttpResponse<String> res = Unirest.get(url).header("Authorization", user.getJsonWebToken()).queryString("username", user.getName()).asString();
             ObjectMapper objectMapper = new ObjectMapper();
             try {
-                gameHistoryList = objectMapper.readValue(res.getBody(), new TypeReference<>() {});
+                gameHistoryList = objectMapper.readValue(res.getBody(), new TypeReference<>() {
+                });
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }

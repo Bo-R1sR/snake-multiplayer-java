@@ -11,8 +11,6 @@ public class LoggerFactory {
         return null;
     }
 
-    ;
-
     public static MyLogger createLogger() {
         return createLogger(LogType.CONSOLE); // default logger
     }

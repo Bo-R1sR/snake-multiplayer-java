@@ -18,10 +18,10 @@ import java.util.*;
 public class WebSocketEventListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketEventListener.class);
+    final List<Integer> ids = new ArrayList<>(Arrays.asList(1, 2));
     private final SimpMessagingTemplate template;
     private final Playground playground;
     private final ScreenText screenText;
-    List<Integer> ids = new ArrayList<>(Arrays.asList(1, 2));
     HashMap<String, Integer> connectedPlayers = new HashMap<>();
     private String username1;
     private String username2;

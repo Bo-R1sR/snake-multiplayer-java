@@ -5,10 +5,10 @@ import java.util.Random;
 
 
 public class Food implements Serializable {
-    Random rand = new Random();
+    final Random rand = new Random();
     private int foodPositionX;
     private int foodPositionY;
-    private int foodColor = 0;
+    private int foodColor;
 
     public Food(int foodPositionX, int foodPositionY) {
         this.foodPositionX = foodPositionX;

@@ -5,8 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 public class ConsoleLogger implements MyLogger {
 
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-    LocalDateTime now = LocalDateTime.now();
+    final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    final LocalDateTime now = LocalDateTime.now();
 
     @Override
     public void log(String message) {

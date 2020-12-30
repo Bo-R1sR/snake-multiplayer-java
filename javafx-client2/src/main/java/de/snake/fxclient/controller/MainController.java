@@ -2,9 +2,7 @@ package de.snake.fxclient.controller;
 
 import de.snake.fxclient.domain.User;
 import de.snake.fxclient.logger.MyLogger;
-import de.snake.fxclient.task.HistoryTask;
 import de.snake.fxclient.websocket.CustomStompClient;
-import javafx.concurrent.WorkerStateEvent;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

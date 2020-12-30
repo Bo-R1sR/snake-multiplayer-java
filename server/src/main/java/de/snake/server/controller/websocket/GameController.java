@@ -57,11 +57,10 @@ public class GameController {
             playground.setLevelFinish(true);
             serverSounds.setText("RoundOver");
             historyService.saveGame();
-            template.convertAndSend("/topic/serverSounds", serverSounds);
         } else {
             serverSounds.setText("GameOver");
-            template.convertAndSend("/topic/serverSounds", serverSounds);
         }
+        template.convertAndSend("/topic/serverSounds", serverSounds);
     }
 
     public class SnakeUpdateTask extends TimerTask {

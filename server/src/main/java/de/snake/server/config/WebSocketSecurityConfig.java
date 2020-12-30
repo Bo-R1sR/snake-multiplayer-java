@@ -27,6 +27,7 @@ public class WebSocketSecurityConfig implements WebSocketMessageBrokerConfigurer
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
                 StompHeaderAccessor accessor =
                         MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+                assert accessor != null;
                 if (StompCommand.CONNECT.equals(accessor.getCommand())) {
                     if (message.getHeaders().containsKey("simpUser")) {
                         Authentication user = (Authentication) message.getHeaders().get("simpUser");
