@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface HistoryRepository extends JpaRepository<GameHistory, Long> {
     List<GameHistory> findAllByUsername1(String username, Sort createdAt);
+
     List<GameHistory> findAllByUsername2(String username);
 
     List<GameHistory> findAllByUsername1OrUsername2(String username1, String username2, Sort createdAt);

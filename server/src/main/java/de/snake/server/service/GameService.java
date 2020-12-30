@@ -22,10 +22,11 @@ public class GameService {
     public void startCountdown() throws InterruptedException {
         // countdown from 3 to zero and send to client
         for (int i = 3; i > 0; i--) {
+            serverSounds.setText("Countdown" + i);
+            template.convertAndSend("/topic/serverSounds", serverSounds);
             screenText.setPlayerText("" + i);
             this.template.convertAndSend("/topic/screenText", screenText);
-            serverSounds.setText("Countdown");
-            template.convertAndSend("/topic/serverSounds", serverSounds);
+
             Thread.sleep(1000);
         }
         screenText.setPlayerText("LOS GEHTS");

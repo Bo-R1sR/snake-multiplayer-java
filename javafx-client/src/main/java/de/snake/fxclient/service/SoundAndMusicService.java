@@ -34,7 +34,9 @@ public class SoundAndMusicService {
     MediaPlayer gameOverPlayer = new MediaPlayer(gameOverMedia);
 
     Media countdownMedia = new Media(new File(countdownPath).toURI().toString());
-    MediaPlayer countdownPlayer = new MediaPlayer(countdownMedia);
+    MediaPlayer countdownPlayer1 = new MediaPlayer(countdownMedia);
+    MediaPlayer countdownPlayer2 = new MediaPlayer(countdownMedia);
+    MediaPlayer countdownPlayer3 = new MediaPlayer(countdownMedia);
 
     Media gameStartMedia = new Media(new File(gameStartPath).toURI().toString());
     MediaPlayer gameStartPlayer = new MediaPlayer(gameStartMedia);
@@ -45,9 +47,17 @@ public class SoundAndMusicService {
                 eatPlayer.stop();
                 eatPlayer.play();
             }
-            case "Countdown" -> {
-                countdownPlayer.stop();
-                countdownPlayer.play();
+            case "Countdown1" -> {
+                countdownPlayer1.stop();
+                countdownPlayer1.play();
+            }
+            case "Countdown2" -> {
+                countdownPlayer2.stop();
+                countdownPlayer2.play();
+            }
+            case "Countdown3" -> {
+                countdownPlayer3.stop();
+                countdownPlayer3.play();
             }
             case "GameStart" -> {
                 gameStartPlayer.stop();

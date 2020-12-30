@@ -2,7 +2,6 @@ package de.snake.fxclient.game;
 
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 
 @Component

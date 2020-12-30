@@ -20,8 +20,8 @@ public class GameController {
     private final SimpMessagingTemplate template;
     private final GameService gameService;
     private final SnakeUpdateService snakeUpdateService;
-    private Timer refreshTimer;
     private final ServerSounds serverSounds;
+    private Timer refreshTimer;
 
     public GameController(Playground playground, SimpMessagingTemplate template, GameService gameService, SnakeUpdateService snakeUpdateService, ServerSounds serverSounds) {
         this.playground = playground;
@@ -61,7 +61,6 @@ public class GameController {
             serverSounds.setText("GameOver");
             template.convertAndSend("/topic/serverSounds", serverSounds);
         }
-
 
 
     }
