@@ -1,9 +1,11 @@
 package de.snake.server.controller.websocket;
 
+import de.snake.server.config.WebSocketEventListener;
 import de.snake.server.domain.game.Playground;
 import de.snake.server.domain.game.ServerSounds;
 import de.snake.server.domain.game.Snake;
 import de.snake.server.service.GameService;
+import de.snake.server.service.HistoryService;
 import de.snake.server.service.SnakeUpdateService;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -21,14 +23,16 @@ public class GameController {
     private final GameService gameService;
     private final SnakeUpdateService snakeUpdateService;
     private final ServerSounds serverSounds;
+    private final HistoryService historyService;
     private Timer refreshTimer;
 
-    public GameController(Playground playground, SimpMessagingTemplate template, GameService gameService, SnakeUpdateService snakeUpdateService, ServerSounds serverSounds) {
+    public GameController(Playground playground, SimpMessagingTemplate template, GameService gameService, SnakeUpdateService snakeUpdateService, ServerSounds serverSounds, HistoryService historyService) {
         this.playground = playground;
         this.template = template;
         this.gameService = gameService;
         this.snakeUpdateService = snakeUpdateService;
         this.serverSounds = serverSounds;
+        this.historyService = historyService;
     }
 
     // entry point for each game
@@ -53,17 +57,13 @@ public class GameController {
             playground.setDuringLevel(false);
             playground.setLevelFinish(true);
             serverSounds.setText("RoundOver");
+            historyService.saveGame();
             template.convertAndSend("/topic/serverSounds", serverSounds);
-
-            //todo hier die history speichern
-
         } else {
             serverSounds.setText("GameOver");
             template.convertAndSend("/topic/serverSounds", serverSounds);
+                }
         }
-
-
-    }
 
     public class SnakeUpdateTask extends TimerTask {
         @Override

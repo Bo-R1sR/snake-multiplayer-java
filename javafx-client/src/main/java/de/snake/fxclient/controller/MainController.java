@@ -30,13 +30,7 @@ public class MainController {
 
 
     public void showHistory() {
-        HistoryTask historyTask = new HistoryTask(user, serverIp);
-        new Thread(historyTask).start();
-
-        historyTask.setOnSucceeded((WorkerStateEvent e2) -> {
-            backgroundController.changeView(HistoryController.class);
-        });
-
+        backgroundController.changeView(HistoryController.class);
     }
 
     public void logout() {

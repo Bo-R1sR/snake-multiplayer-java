@@ -93,7 +93,7 @@ public class GameController {
     }
 
     public void changeVolume() {
-        soundAndMusicService.changeVolume(volumeSlider.getValue());
+        soundAndMusicService.changeVolume(volumeSlider.getValue()/100);
 
     }
 
@@ -118,6 +118,7 @@ public class GameController {
             if (user.getSession() != null) {
                 user.getSession().disconnect();
             }
+            soundAndMusicService.pauseMusic();
             backgroundController.changeView(MainController.class);
         }
     }
