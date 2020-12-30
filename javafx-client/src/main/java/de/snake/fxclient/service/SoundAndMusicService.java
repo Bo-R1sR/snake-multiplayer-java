@@ -1,5 +1,6 @@
 package de.snake.fxclient.service;
 
+import de.snake.fxclient.logger.MyLogger;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,9 @@ import java.io.File;
 
 @Service
 public class SoundAndMusicService {
+
+    private final MyLogger myLogger;
+
     // Musik
     private final String musicPath = "src/main/resources/sounds/483502__dominikbraun__let-me-see-ya-bounce-8-bit-music.mp3";
     // Essen
@@ -40,6 +44,10 @@ public class SoundAndMusicService {
 
     Media gameStartMedia = new Media(new File(gameStartPath).toURI().toString());
     MediaPlayer gameStartPlayer = new MediaPlayer(gameStartMedia);
+
+    public SoundAndMusicService(MyLogger myLogger) {
+        this.myLogger = myLogger;
+    }
 
     public void playServerSound(String serverSound) {
         switch (serverSound) {
@@ -77,17 +85,16 @@ public class SoundAndMusicService {
     public void playMusic() {
         musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         musicPlayer.play();
-        System.out.println("Musik an");
+        myLogger.log("Musik an");
     }
 
     public void pauseMusic() {
         musicPlayer.pause();
-        System.out.println("Musik aus");
+        myLogger.log("Musik aus");
     }
 
     public void changeVolume(double value) {
         musicPlayer.setVolume(value);
-        System.out.println("Volume: " + value);
     }
 }
 

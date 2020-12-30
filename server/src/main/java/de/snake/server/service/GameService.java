@@ -42,20 +42,15 @@ public class GameService {
         // values for game start
         playground.setGameOver(false);
 
-        // todo points in history auslagern
-        // todo make sure after restart snake is correctly assigned depending who clicks first
-        int points1;
-        int points2;
+        int points1 = 0;
+        int points2 = 0;
         if (playground.getSnake1() != null) {
             points1 = playground.getSnake1().getPoints();
-        } else {
-            points1 = 0;
         }
         if (playground.getSnake1() != null) {
             points2 = playground.getSnake2().getPoints();
-        } else {
-            points2 = 0;
         }
+
         playground.setSnake1(new Snake(3, 12, 15));
         playground.setSnake2(new Snake(3, 12, 9));
 
@@ -65,6 +60,8 @@ public class GameService {
         // initial movement direction for snakes
         playground.getSnake1().setSnakeDirectionEnum(SnakeDirection.LEFT);
         playground.getSnake2().setSnakeDirectionEnum(SnakeDirection.RIGHT);
+
+        //playground.getSnake2().setCounter(1000000);
 
         if (!playground.isDuringLevel()) {
             playground.setLevelNumber(0);

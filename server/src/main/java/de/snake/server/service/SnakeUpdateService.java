@@ -32,18 +32,10 @@ public class SnakeUpdateService {
         }
         SnakeBodyPart snakeHead = snake.getSnakeBody().get(0);
         switch (direction) {
-            case UP:
-                snakeHead.decreaseY();
-                break;
-            case DOWN:
-                snakeHead.increaseY();
-                break;
-            case LEFT:
-                snakeHead.decreaseX();
-                break;
-            case RIGHT:
-                snakeHead.increaseX();
-                break;
+            case UP -> snakeHead.decreaseY();
+            case DOWN -> snakeHead.increaseY();
+            case LEFT -> snakeHead.decreaseX();
+            case RIGHT -> snakeHead.increaseX();
         }
     }
 
@@ -133,6 +125,9 @@ public class SnakeUpdateService {
                     @Override
                     public void run() {
                         snake.setPossibleToBite(false);
+                        for (SnakeBodyPart sbp : snake.getSnakeBody()) {
+                            sbp.setColor(0);
+                        }
                     }
                     // snake can be bitten for 15 seconds
                 }, 15000);

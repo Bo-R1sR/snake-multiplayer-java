@@ -21,11 +21,10 @@ public class WebSocketEventListener {
     private final SimpMessagingTemplate template;
     private final Playground playground;
     private final ScreenText screenText;
-    private String username1;
-    private String username2;
-
     List<Integer> ids = new ArrayList<>(Arrays.asList(1, 2));
     HashMap<String, Integer> connectedPlayers = new HashMap<>();
+    private String username1;
+    private String username2;
 
     public WebSocketEventListener(SimpMessagingTemplate template, Playground playground, ScreenText screenText) {
         this.template = template;
@@ -48,10 +47,9 @@ public class WebSocketEventListener {
         // add first user with username and id 1
         connectedPlayers.put(event.getUser().getName(), ids.get(0));
         // set the username variable
-        if(connectedPlayers.get(event.getUser().getName()) == 2){
+        if (connectedPlayers.get(event.getUser().getName()) == 2) {
             username1 = event.getUser().getName();
-        }
-        else if (connectedPlayers.get(event.getUser().getName()) == 1){
+        } else if (connectedPlayers.get(event.getUser().getName()) == 1) {
             username2 = event.getUser().getName();
         }
         // remove id 1
@@ -61,12 +59,12 @@ public class WebSocketEventListener {
     }
 
     // return username1
-    public String getUsername1(){
+    public String getUsername1() {
         return username1;
     }
 
     // return username2
-    public String getUsername2(){
+    public String getUsername2() {
         return username2;
     }
 
@@ -77,10 +75,9 @@ public class WebSocketEventListener {
         // when user disconnects add his id as back as available
         ids.add(connectedPlayers.get(event.getUser().getName()));
         // Unset the username variable
-        if(event.getUser().getName().equals(username1)){
+        if (event.getUser().getName().equals(username1)) {
             username1 = null;
-        }
-        else {
+        } else {
             username2 = null;
         }
         // remove from map of connected users

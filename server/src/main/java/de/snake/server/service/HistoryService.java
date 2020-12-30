@@ -24,7 +24,8 @@ public class HistoryService {
     public List<GameHistory> getPlayedGames(String username) {
         return historyRepository.findAllByUsername1OrUsername2(username, username, Sort.by(Sort.Direction.DESC, "createdAt"));
     }
-    public void saveGame(){
+
+    public void saveGame() {
         GameHistory gameHistory = new GameHistory();
         gameHistory.setPointsUser1(playground.getSnake1().getPoints());
         gameHistory.setPointsUser2(playground.getSnake2().getPoints());

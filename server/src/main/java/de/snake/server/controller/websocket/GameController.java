@@ -1,6 +1,5 @@
 package de.snake.server.controller.websocket;
 
-import de.snake.server.config.WebSocketEventListener;
 import de.snake.server.domain.game.Playground;
 import de.snake.server.domain.game.ServerSounds;
 import de.snake.server.domain.game.Snake;
@@ -62,8 +61,8 @@ public class GameController {
         } else {
             serverSounds.setText("GameOver");
             template.convertAndSend("/topic/serverSounds", serverSounds);
-                }
         }
+    }
 
     public class SnakeUpdateTask extends TimerTask {
         @Override

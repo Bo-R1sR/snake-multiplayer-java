@@ -75,7 +75,6 @@ public class GameController {
     public void toggleMusic() {
         if (musicSwitch.isSelected()) {
             soundAndMusicService.playMusic();
-
         } else {
             soundAndMusicService.pauseMusic();
 
@@ -84,10 +83,10 @@ public class GameController {
 
     public void toggleSounds() {
         if (soundSwitch.isSelected()) {
-            System.out.println("Sounds an");
+            myLogger.log("Sounds an");
             soundSetting.setSoundMuted(false);
         } else {
-            System.out.println("Sounds aus");
+            myLogger.log("Sounds aus");
             soundSetting.setSoundMuted(true);
         }
     }
