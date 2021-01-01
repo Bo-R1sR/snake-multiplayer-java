@@ -61,10 +61,10 @@ public class SnakeUpdateService {
 
     public boolean checkSnakeLength(Snake snake1, Snake snake2) {
         // if snake is 5 elements longer than other snake
-        if (snake1.getSnakeBody().size() >= snake2.getSnakeBody().size() + 5) {
+        if (snake1.getSnakeBody().size() >= snake2.getSnakeBody().size() + 10) {
             snake2.increasePoints();
             return true;
-        } else if (snake2.getSnakeBody().size() >= snake1.getSnakeBody().size() + 5) {
+        } else if (snake2.getSnakeBody().size() >= snake1.getSnakeBody().size() + 10) {
             snake1.increasePoints();
             return true;
         }
@@ -226,34 +226,25 @@ public class SnakeUpdateService {
 
     // check if snake bites other snake
     public boolean checkSnakeAgainstOther(Snake bitingSnake, Snake targetSnake) {
+        int numberOfParts = 0;
+        int original_size = targetSnake.getSnakeBody().size();
         for (int i = 0; i < targetSnake.getSnakeBody().size(); i++) {
             // check if snake head is on same position as other snake body
             if (bitingSnake.getHead().getPositionX() == targetSnake.getSnakeBody().get(i).getPositionX() &&
                     bitingSnake.getHead().getPositionY() == targetSnake.getSnakeBody().get(i).getPositionY()) {
                 // only bite if possible
                 if (targetSnake.isPossibleToBite()) {
-                    for (int ii = 0; ii < targetSnake.getSnakeBody().size(); ii++) {
-                        // remove all read fields from snake1 and add to snake2
-                        if (targetSnake.getSnakeBody().get(ii).getColor() == 3) {
+                    for (SnakeBodyPart sbp : targetSnake.getSnakeBody()) {
+                        if (sbp.getColor() == 3) {
+                            numberOfParts += 1;
+                        }
+                    }
+                    if (numberOfParts > 0) {
+                        for (int ii = original_size - 1; ii >= original_size - numberOfParts; ii--) {
                             targetSnake.getSnakeBody().remove(ii);
                             bitingSnake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 0));
                         }
                     }
-
-/*                    //if (targetSnake.getSnakeBody().get(i).getColor() == 3) {
-                    //divide target snake a bite point
-                    List<SnakeBodyPart> sbp_tf = targetSnake.getSnakeBody().subList(0, i - 1);
-                    List<SnakeBodyPart> sbp_tb = targetSnake.getSnakeBody().subList(i, targetSnake.getSnakeBody().size());
-                    // create new snake for continuing with front part
-                    Snake snakeFrontTargetSnake = new Snake(0, -1, -1);
-                    // set body of front snake
-                    snakeFrontTargetSnake.setSnakeBody(sbp_tf);
-                    // copy front part back to bitten snake
-                    BeanUtils.copyProperties(snakeFrontTargetSnake, targetSnake);
-                    // add remaining body to biting snake
-                    bitingSnake.getSnakeBody().addAll(1, sbp_tb);*/
-
-
                 } else {
                     bitingSnake.increasePoints();
                     return true;

@@ -30,14 +30,7 @@ public class SoundAndMusicService {
     private final String gameStartPath = "src/main/resources/sounds/368691__fartbiscuit1700__8-bit-arcade-video-game-start-sound-effect-gun-reload-and-jump.wav";
     final Media gameStartMedia = new Media(new File(gameStartPath).toURI().toString());
 
-    final MediaPlayer musicPlayer = new MediaPlayer(musicMedia);
-    final MediaPlayer eatPlayer = new MediaPlayer(eatMedia);
-    final MediaPlayer roundOverPlayer = new MediaPlayer(roundOverMedia);
-    final MediaPlayer gameOverPlayer = new MediaPlayer(gameOverMedia);
-    final MediaPlayer countdownPlayer1 = new MediaPlayer(countdownMedia);
-    final MediaPlayer countdownPlayer2 = new MediaPlayer(countdownMedia);
-    final MediaPlayer countdownPlayer3 = new MediaPlayer(countdownMedia);
-    final MediaPlayer gameStartPlayer = new MediaPlayer(gameStartMedia);
+    private final MediaPlayer musicPlayer = new MediaPlayer(musicMedia);
 
     public SoundAndMusicService(MyLogger myLogger) {
         this.myLogger = myLogger;
@@ -46,32 +39,19 @@ public class SoundAndMusicService {
     public void playServerSound(String serverSound) {
         switch (serverSound) {
             case "Food" -> {
-                eatPlayer.stop();
-                eatPlayer.play();
+                new MediaPlayer(eatMedia).play();
             }
-            case "Countdown1" -> {
-                countdownPlayer1.stop();
-                countdownPlayer1.play();
-            }
-            case "Countdown2" -> {
-                countdownPlayer2.stop();
-                countdownPlayer2.play();
-            }
-            case "Countdown3" -> {
-                countdownPlayer3.stop();
-                countdownPlayer3.play();
+            case "Countdown1", "Countdown2", "Countdown3" -> {
+                new MediaPlayer(countdownMedia).play();
             }
             case "GameStart" -> {
-                gameStartPlayer.stop();
-                gameStartPlayer.play();
+                new MediaPlayer(gameStartMedia).play();
             }
             case "GameOver" -> {
-                gameOverPlayer.stop();
-                gameOverPlayer.play();
+                new MediaPlayer(gameOverMedia).play();
             }
             case "RoundOver" -> {
-                roundOverPlayer.stop();
-                roundOverPlayer.play();
+                new MediaPlayer(roundOverMedia).play();
             }
         }
     }

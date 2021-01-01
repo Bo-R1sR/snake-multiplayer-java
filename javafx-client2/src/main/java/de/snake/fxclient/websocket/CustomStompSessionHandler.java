@@ -100,7 +100,12 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
                 myLogger.log("Received : serverSound ");
                 BeanUtils.copyProperties(payload, serverSounds);
                 if (!soundSetting.isSoundMuted()) {
-                    soundAndMusicService.playServerSound(serverSounds.getText());
+                    Runnable runnable =
+                            () -> {
+                                soundAndMusicService.playServerSound(serverSounds.getText());
+                            };
+                    Thread thread = new Thread(runnable);
+                    thread.start();
                 }
             }
         });
