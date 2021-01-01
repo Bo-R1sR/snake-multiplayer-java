@@ -4,6 +4,8 @@ import de.snake.server.domain.game.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GameService {
 
@@ -61,27 +63,27 @@ public class GameService {
         playground.getSnake1().setSnakeDirectionEnum(SnakeDirection.LEFT);
         playground.getSnake2().setSnakeDirectionEnum(SnakeDirection.RIGHT);
 
-        // ab hier für TEST beißen
-/*
-        playground.setSnake2(new Snake(8, 12, 15));
-        playground.getSnake2().setPossibleToBite(true);
-        playground.getSnake2().setSnakeDirectionEnum(SnakeDirection.RIGHT);
+//        // ab hier für TEST beißen
+//
+//        playground.setSnake2(new Snake(8, 12, 15));
+//        playground.getSnake2().setPossibleToBite(true);
+//        playground.getSnake2().setSnakeDirectionEnum(SnakeDirection.RIGHT);
+//
+//        List<SnakeBodyPart> sbp2 = playground.getSnake2().getSnakeBody();
+//        sbp2.get(7).setColor(3);
+//        sbp2.get(6).setColor(3);
+//        sbp2.get(5).setColor(3);
+//
+//        int jj = 8;
+//        for(SnakeBodyPart sbp: sbp2) {
+//            sbp.setPositionX(jj);
+//            jj += 1;
+//            sbp.setPositionY(6);
+//        }
+//
+//        // hier für Test Single Player
+//        playground.getSnake2().setCounter(1000000);
 
-        List<SnakeBodyPart> sbp2 = playground.getSnake2().getSnakeBody();
-        sbp2.get(7).setColor(3);
-        sbp2.get(6).setColor(3);
-        sbp2.get(5).setColor(3);
-
-        int jj = 8;
-        for(SnakeBodyPart sbp: sbp2) {
-            sbp.setPositionX(jj);
-            jj += 1;
-            sbp.setPositionY(6);
-        }
-
-        // hier für Test Single Player
-        playground.getSnake2().setCounter(1000000);
-        */
 
         if (!playground.isDuringLevel()) {
             playground.setLevelNumber(0);

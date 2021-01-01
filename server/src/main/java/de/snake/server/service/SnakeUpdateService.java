@@ -15,8 +15,10 @@ public class SnakeUpdateService {
     private final Random rand = new Random();
     private final SimpMessagingTemplate template;
     private final ServerSounds serverSounds;
-    private Timer immortalTimer;
-    private Timer bitingTimer;
+    private Timer immortalTimer1;
+    private Timer bitingTimer1;
+    private Timer immortalTimer2;
+    private Timer bitingTimer2;
 
     public SnakeUpdateService(Playground playground, Level level, SimpMessagingTemplate template, ServerSounds serverSounds) {
         this.playground = playground;
@@ -94,43 +96,75 @@ public class SnakeUpdateService {
                 if (snake.getSnakeBody().size() > 3) {
                     snake.getSnakeBody().remove(snake.getSnakeBody().size() - 1);
                 }
-            } // Color.YELLOW - set immortality
+            } // Color.ORANGE - set immortality
             else if (playground.getFood().getFoodColor() == 2) {
                 try {
-                    immortalTimer.cancel();
+                    if (snake == playground.getSnake1()) immortalTimer1.cancel();
+                    if (snake == playground.getSnake2()) immortalTimer2.cancel();
                 } catch (Exception ignored) {
                 }
 
                 snake.setImmortal(true);
                 // reset immortality after specified time
-                immortalTimer = new Timer();
-                immortalTimer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        snake.setImmortal(false);
-                    }
-                    // snake will be immortal for 20 seconds
-                }, 30000);
+                if (snake == playground.getSnake1()) {
+                    immortalTimer1 = new Timer();
+                    immortalTimer1.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            snake.setImmortal(false);
+                        }
+                        // snake will be immortal for 30 seconds
+                    }, 30000);
+                }
+                if (snake == playground.getSnake2()) {
+                    immortalTimer2 = new Timer();
+                    immortalTimer2.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            snake.setImmortal(false);
+                        }
+                        // snake will be immortal for 30 seconds
+                    }, 30000);
+                }
+
             } // Color.RED - position for biting
             else if (playground.getFood().getFoodColor() == 3) {
                 try {
-                    bitingTimer.cancel();
+                    if (snake == playground.getSnake1()) bitingTimer1.cancel();
+                    if (snake == playground.getSnake2()) bitingTimer2.cancel();
                 } catch (Exception ignored) {
                 }
 
                 snake.setPossibleToBite(true);
                 // reset after specified time
-                bitingTimer = new Timer();
-                bitingTimer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        snake.setPossibleToBite(false);
-                        for (SnakeBodyPart sbp : snake.getSnakeBody()) {
-                            sbp.setColor(0);
+                if (snake == playground.getSnake1()) {
+
+                    bitingTimer1 = new Timer();
+                    bitingTimer1.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            snake.setPossibleToBite(false);
+                            for (SnakeBodyPart sbp : snake.getSnakeBody()) {
+                                sbp.setColor(0);
+                            }
                         }
-                    }
-                    // snake can be bitten for 15 seconds
-                }, 15000);
+                        // snake can be bitten for 30 seconds
+                    }, 30000);
+                }
+                if (snake == playground.getSnake2()) {
+
+                    bitingTimer2 = new Timer();
+                    bitingTimer2.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            snake.setPossibleToBite(false);
+                            for (SnakeBodyPart sbp : snake.getSnakeBody()) {
+                                sbp.setColor(0);
+                            }
+                        }
+                        // snake can be bitten for 30 seconds
+                    }, 30000);
+                }
 
                 // first set color back to default
                 for (SnakeBodyPart sbp : snake.getSnakeBody()) {

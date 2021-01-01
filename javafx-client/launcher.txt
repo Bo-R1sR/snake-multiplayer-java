@@ -1,0 +1,7 @@
+java -jar ./server-0.0.1-SNAPSHOT
+java -jar ./fx-client-0.0.1-SNAPSHOT --server.ip=192.168.0.103 --log.type=console
+java -jar ./fx-client-0.0.1-SNAPSHOT --server.ip=192.168.0.125 --log.type=file
+
+java -jar .\fx-client-0.0.1-SNAPSHOT.jar --server.ip=192.168.0.125 --log.type=file
+
+

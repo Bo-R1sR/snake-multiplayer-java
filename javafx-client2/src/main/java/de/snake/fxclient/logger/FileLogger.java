@@ -12,12 +12,14 @@ public class FileLogger implements MyLogger {
     final LocalDateTime now = LocalDateTime.now();
     BufferedWriter writer;
 
+    public FileLogger() {
+
+    }
+
     @Override
     public void log(String message) {
         try {
-            if (writer == null) {
-                writer = new BufferedWriter(new FileWriter("log.txt", true));
-            }
+            writer = new BufferedWriter(new FileWriter("log.txt", true));
             writer.append(dtf.format(now)).append(" ").append(message).append("\n");
             writer.close();
         } catch (IOException ignored) {

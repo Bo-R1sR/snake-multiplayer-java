@@ -17,7 +17,7 @@ public class Circle extends Shape {
         switch (backgroundColorNumber) {
             case 0 -> backgroundColor = Color.PURPLE;
             case 1 -> backgroundColor = Color.LIGHTBLUE;
-            case 2 -> backgroundColor = Color.YELLOW;
+            case 2 -> backgroundColor = Color.DARKORANGE;
             case 3 -> backgroundColor = Color.RED;
             case 4 -> backgroundColor = Color.PINK;
             case 5 -> backgroundColor = Color.DARKGREEN;
