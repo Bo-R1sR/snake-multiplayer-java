@@ -31,6 +31,10 @@ public class MainController {
         backgroundController.changeView(HistoryController.class);
     }
 
+    public void showHelp() {
+        backgroundController.changeView(HelpController.class);
+    }
+
     public void logout() {
         user.reset();
         backgroundController.changeView(LoginController.class);
