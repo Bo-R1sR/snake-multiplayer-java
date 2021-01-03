@@ -3,7 +3,7 @@
 ## Eine 2-Spieler-Variante des Klassikers "Snake"
 
 ## Wie man spielt:
-Damit ein Spiel gestartet werden kann müssen sich 2 Spieler mit dem Server verbinden und sich über "Spiel starten" bereit erklären.
+Damit ein Spiel gestartet werden kann, müssen sich 2 Spieler mit dem Server verbinden und sich über "Spiel starten" bereit erklären.
 Wenn beide Spieler bereit sind, wird das Spiel automatisch vom Server gestartet.
 
 Ein Spiel besteht aus 5 unterschiedlichen Leveln, welche sich durch ihre Hindernisse unterscheiden.
@@ -15,6 +15,8 @@ Wenn eine Schlange die andere beißt oder sie mit einem Hindernis oder einer Wan
 Erst wenn die 5 Runden beendet werden, wird das fertige Spiel in die Historie geschrieben.
 Falls zwischen drin das Spiel abgebrochen wurde muss wieder mit dem ersten Level begonnen werden.
 
+Gesteuert werden die Schlangen durch die Pfeiltasten.
+
 ### Futter:
 Die Schlangen können Futter mit unterschiedlichen Farben fressen, welche spezielle Effekte haben:
 
@@ -25,7 +27,7 @@ Fügt der fressenden Schlange einen Block zu.
 Entfernt einen Block der fressenden Schlange.
 
 #### Gelb:
-Macht die Schlange für kurze Zeit unsterblich
+Gibt der Schlange für kurze Zeit einen Schutzschild.
 
 #### Rot:
 Die fressende Schlange wird abbeißbar.
