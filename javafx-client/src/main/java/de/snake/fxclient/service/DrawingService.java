@@ -45,7 +45,7 @@ public class DrawingService {
     public void updatePlayground() {
         GraphicsContext gc = gameController.getGC();
         if (playground.isGameOver() && playground.isLevelFinish()) {
-            Shape gameOverText = new Text(gc, new Point2D(100, 250), "GAME OVER\nweiter mit neuer Spielrunde", Color.ORANGERED, true);
+            Shape gameOverText = new Text(gc, new Point2D(100, 250), "GAME OVER\nWeiter mit neuer Spielrunde", Color.ORANGERED, true);
             Shape score1 = new Text(gc, new Point2D(200, 100), "" + playground.getSnake2().getPoints(), snakeColor.getColorSnake1(), false);
             Shape space = new Text(gc, new Point2D(250, 100), " : ", Color.WHITE, false);
             Shape score2 = new Text(gc, new Point2D(300, 100), "" + playground.getSnake1().getPoints(), snakeColor.getColorSnake2(), false);
@@ -56,7 +56,7 @@ public class DrawingService {
         }
         // special screen only for game over
         if (playground.isGameOver()) {
-            Shape gameOverText = new Text(gc, new Point2D(100, 250), "weiter mit nächstem Level", Color.ORANGERED, true);
+            Shape gameOverText = new Text(gc, new Point2D(100, 250), "Weiter mit nächstem Level", Color.ORANGERED, true);
             Shape score1 = new Text(gc, new Point2D(200, 100), "" + playground.getSnake2().getPoints(), snakeColor.getColorSnake1(), false);
             Shape space = new Text(gc, new Point2D(250, 100), " : ", Color.WHITE, false);
             Shape score2 = new Text(gc, new Point2D(300, 100), "" + playground.getSnake1().getPoints(), snakeColor.getColorSnake2(), false);
