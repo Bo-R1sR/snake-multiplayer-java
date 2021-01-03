@@ -28,8 +28,8 @@ public class PlayerService {
     }
 
     public void setScreenText() {
-        //screenText.setPlayerText("auf anderen Spieler warten");
-        screenText.setPlayerText("auf anderen Spieler warten");
+        //screenText.setPlayerText("Auf anderen Spieler warten");
+        screenText.setPlayerText("Auf anderen Spieler warten");
         // send screen text to client
         template.convertAndSend("/topic/screenText", screenText);
     }
