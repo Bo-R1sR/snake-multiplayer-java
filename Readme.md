@@ -26,7 +26,7 @@ Fügt der fressenden Schlange einen Block zu.
 #### Hellblau:
 Entfernt einen Block der fressenden Schlange.
 
-#### Gelb:
+#### Orange:
 Gibt der Schlange für kurze Zeit einen Schutzschild.
 
 #### Rot:
