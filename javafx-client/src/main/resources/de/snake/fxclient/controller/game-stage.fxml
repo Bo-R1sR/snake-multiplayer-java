@@ -1,132 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.geometry.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXSlider?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="dialog" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1"
-      fx:controller="de.snake.fxclient.controller.GameController">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="dialog" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.snake.fxclient.controller.GameController">
     <Label text="Snake Multiplayer">
         <font>
-            <Font name="Segoe UI Bold" size="24.0"/>
+            <Font name="Segoe UI Bold" size="24.0" />
         </font>
     </Label>
     <HBox alignment="TOP_CENTER">
         <VBox.margin>
-            <Insets top="25.0"/>
+            <Insets top="25.0" />
         </VBox.margin>
-        <JFXButton onAction="#initializeGame" prefWidth="111.0" style="-fx-background-color: gainsboro;"
-                   text="Spiel starten">
+        <JFXButton onAction="#initializeGame" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Spiel starten">
             <font>
-                <Font name="Segoe UI" size="12.0"/>
+                <Font name="Segoe UI" size="12.0" />
             </font>
             <HBox.margin>
-                <Insets right="5.0"/>
+                <Insets right="5.0" />
             </HBox.margin>
         </JFXButton>
         <JFXButton onAction="#back" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Hauptmenü">
             <HBox.margin>
-                <Insets left="5.0"/>
+                <Insets left="5.0" />
             </HBox.margin>
             <font>
-                <Font name="Segoe UI" size="12.0"/>
+                <Font name="Segoe UI" size="12.0" />
             </font>
         </JFXButton>
     </HBox>
     <HBox alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT">
         <VBox.margin>
-            <Insets top="25.0"/>
+            <Insets top="25.0" />
         </VBox.margin>
         <VBox maxWidth="250.0" minWidth="250.0" prefWidth="250.0">
             <HBox.margin>
-                <Insets/>
+                <Insets />
             </HBox.margin>
             <JFXTextField fx:id="chatMess" focusColor="#3fa849" promptText="Chatten...">
                 <font>
-                    <Font name="Segoe UI" size="12.0"/>
+                    <Font name="Segoe UI" size="12.0" />
                 </font>
             </JFXTextField>
-            <JFXButton onAction="#submitMessage" prefWidth="111.0" style="-fx-background-color: gainsboro;"
-                       text="Nachricht senden">
+            <JFXButton onAction="#submitMessage" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Nachricht senden">
                 <VBox.margin>
-                    <Insets top="10.0"/>
+                    <Insets top="10.0" />
                 </VBox.margin>
                 <font>
-                    <Font name="Segoe UI" size="12.0"/>
+                    <Font name="Segoe UI" size="12.0" />
                 </font>
             </JFXButton>
 
-            <JFXTextArea fx:id="chatArea" editable="false" focusColor="#f4f4f4" prefHeight="429.0" prefWidth="250.0"
-                         unFocusColor="#f4f4f4">
+            <JFXTextArea fx:id="chatArea" editable="false" focusColor="#f4f4f4" prefHeight="429.0" prefWidth="250.0" unFocusColor="#f4f4f4">
                 <VBox.margin>
-                    <Insets top="10.0"/>
+                    <Insets top="10.0" />
                 </VBox.margin>
                 <font>
-                    <Font name="Segoe UI" size="12.0"/>
+                    <Font name="Segoe UI" size="12.0" />
                 </font>
             </JFXTextArea>
         </VBox>
         <Canvas fx:id="gameCanvas" height="500.0" width="500.0">
             <HBox.margin>
-                <Insets left="25.0" right="25.0"/>
+                <Insets left="25.0" right="25.0" />
             </HBox.margin>
         </Canvas>
         <VBox maxWidth="250.0" minWidth="250.0" prefWidth="250.0">
             <Label alignment="TOP_LEFT" text="Optionen">
                 <font>
-                    <Font name="Segoe UI Bold" size="18.0"/>
+                    <Font name="Segoe UI Bold" size="18.0" />
                 </font>
             </Label>
             <Label text="Musik">
                 <font>
-                    <Font name="Segoe UI Bold" size="14.0"/>
+                    <Font name="Segoe UI Bold" size="14.0" />
                 </font>
                 <VBox.margin>
-                    <Insets top="10.0"/>
+                    <Insets top="10.0" />
                 </VBox.margin>
             </Label>
-            <JFXToggleButton fx:id="musicSwitch" onAction="#toggleMusic" text="Aus/An" toggleColor="#3fa849"
-                             toggleLineColor="#a2dca8">
+            <JFXToggleButton fx:id="musicSwitch" onAction="#toggleMusic" text="Aus/An" toggleColor="#3fa849" toggleLineColor="#a2dca8">
                 <font>
-                    <Font name="Segoe UI" size="12.0"/>
+                    <Font name="Segoe UI" size="12.0" />
                 </font>
             </JFXToggleButton>
-            <JFXSlider fx:id="volumeSlider" majorTickUnit="10.0" minorTickCount="5" onMouseReleased="#changeVolume"
-                       value="50.0"/>
+         <Label text="Lautstärke">
+            <font>
+               <Font name="Segoe UI Bold" size="13.0" />
+            </font>
+         </Label>
+            <JFXSlider fx:id="volumeSlider" majorTickUnit="10.0" minorTickCount="5" onMouseReleased="#changeVolume" value="50.0" />
             <Label text="Sounds">
                 <font>
-                    <Font name="Segoe UI Bold" size="14.0"/>
+                    <Font name="Segoe UI Bold" size="14.0" />
                 </font>
                 <VBox.margin>
-                    <Insets top="25.0"/>
+                    <Insets top="25.0" />
                 </VBox.margin>
             </Label>
-            <JFXToggleButton fx:id="soundSwitch" onAction="#toggleSounds" text="Aus/An" toggleColor="#3fa849"
-                             toggleLineColor="#a2dca8">
+            <JFXToggleButton fx:id="soundSwitch" onAction="#toggleSounds" text="Aus/An" toggleColor="#3fa849" toggleLineColor="#a2dca8">
                 <font>
-                    <Font name="Segoe UI" size="12.0"/>
+                    <Font name="Segoe UI" size="12.0" />
                 </font>
             </JFXToggleButton>
             <Label text="Grafik">
                 <font>
-                    <Font name="Segoe UI Bold" size="14.0"/>
+                    <Font name="Segoe UI Bold" size="14.0" />
                 </font>
                 <VBox.margin>
-                    <Insets top="25.0"/>
+                    <Insets top="25.0" />
                 </VBox.margin>
             </Label>
-            <JFXComboBox fx:id="colorPicker" focusColor="#3fa849" onAction="#changeColor" prefHeight="25.0"
-                         prefWidth="250.0" promptText="Schlangenfarbe">
+            <JFXComboBox fx:id="colorPicker" focusColor="#3fa849" onAction="#changeColor" prefHeight="25.0" prefWidth="250.0" promptText="Schlangenfarbe">
                 <VBox.margin>
-                    <Insets top="10.0"/>
+                    <Insets top="10.0" />
                 </VBox.margin>
             </JFXComboBox>
         </VBox>
     </HBox>
     <padding>
-        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
     </padding>
 
 </VBox>
