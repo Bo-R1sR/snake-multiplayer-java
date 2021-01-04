@@ -69,7 +69,6 @@ public class GameController {
         gc = gameCanvas.getGraphicsContext2D();
         initializeColorList();
         soundSetting.setSoundMuted(true);
-        gameService.changeColor("Blau/Grün");
         Shape background = new Square(gc, Color.BLACK, new Point2D(0, 0), playground.getWidth() * playground.getSnakeBodySize(), playground.getHeight() * playground.getSnakeBodySize());
         background.draw();
     }
@@ -79,7 +78,6 @@ public class GameController {
             soundAndMusicService.playMusic();
         } else {
             soundAndMusicService.pauseMusic();
-
         }
     }
 
@@ -102,6 +100,7 @@ public class GameController {
         colorPicker.getItems().clear();
         colorPicker.getItems().addAll("Blau/Grün", "Gelb/Rosa", "Lila/Cyan");
         colorPicker.getSelectionModel().select("Blau/Grün");
+        gameService.changeColor("Blau/Grün");
     }
 
     public void changeColor() {
@@ -131,8 +130,7 @@ public class GameController {
         user.setReadyToPlay(true);
         // send username to server
         // afterwards player id is assigned and returned to client
-        // this callback will then execute method sendReadyToServer in PlayerAcitveController
-        //user.getSession().send("/app/playerId/" + user.getName(), "connect");
+        // this callback will then execute method sendReadyToServer in PlayerActiveController
         playerActiveService.sendReadyToServer();
         // assign arrow keys for game control
         gameService.registerArrowKeys();

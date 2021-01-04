@@ -29,6 +29,9 @@ public class SoundAndMusicService {
     // Game Start
     private final String gameStartPath = "src/main/resources/sounds/368691__fartbiscuit1700__8-bit-arcade-video-game-start-sound-effect-gun-reload-and-jump.wav";
     final Media gameStartMedia = new Media(new File(gameStartPath).toURI().toString());
+    // biting
+    private final String bitingPath = "src/main/resources/sounds/360685__herrabilbo__eating-v2.mp3";
+    final Media bitingMedia = new Media(new File(bitingPath).toURI().toString());
 
     private final MediaPlayer musicPlayer = new MediaPlayer(musicMedia);
 
@@ -52,6 +55,9 @@ public class SoundAndMusicService {
             }
             case "RoundOver" -> {
                 new MediaPlayer(roundOverMedia).play();
+            }
+            case "Biting" -> {
+                new MediaPlayer(bitingMedia).play();
             }
         }
     }

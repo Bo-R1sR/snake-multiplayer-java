@@ -26,7 +26,9 @@ public class ChatController {
     public OutputMessage send(Message message) {
         String time = new SimpleDateFormat("HH:mm").format(new Date());
         // send screen text again when player connects to see actual status
-        template.convertAndSend("/topic/screenText", screenText);
+        if (message.getFrom().equals("SYSTEM")) {
+            template.convertAndSend("/topic/screenText", screenText);
+        }
         return new OutputMessage(message.getFrom(), message.getText(), time);
     }
 }

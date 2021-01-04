@@ -59,7 +59,6 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
 
                 Platform.runLater(() -> {
                     user.setPlayerId((Integer) payload);
-                    //playerActiveService.sendReadyToServer();
                 });
             }
         });
@@ -81,10 +80,13 @@ public class CustomStompSessionHandler extends StompSessionHandlerAdapter {
                 if (user.isReadyToPlay() && screenText.getPlayerText().equals("Bitte Spiel starten")) {
                     user.setReadyToPlay(false);
                 }
-                if (!user.isReadyToPlay() && screenText.getPlayerText().equals("auf anderen Spieler warten")) {
-                    screenText.setPlayerText("der andere Spieler ist bereit");
+                if (!user.isReadyToPlay() && screenText.getPlayerText().equals("Auf anderen Spieler warten")) {
+                    screenText.setPlayerText("Der andere Spieler ist bereit");
                 }
                 myLogger.log("Received : screenText " + screenText.getPlayerText());
+                if (screenText.getPlayerText().contains("3")) {
+                    playground.setRunning(true);
+                }
                 drawingService.updateScreenText();
             }
         });

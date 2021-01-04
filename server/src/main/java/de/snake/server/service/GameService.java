@@ -1,10 +1,9 @@
 package de.snake.server.service;
 
+import de.snake.server.config.WebSocketEventListener;
 import de.snake.server.domain.game.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class GameService {
@@ -13,12 +12,14 @@ public class GameService {
     private final SimpMessagingTemplate template;
     private final Playground playground;
     private final ServerSounds serverSounds;
+    private final WebSocketEventListener webSocketEventListener;
 
-    public GameService(ScreenText screenText, SimpMessagingTemplate template, Playground playground, ServerSounds serverSounds) {
+    public GameService(ScreenText screenText, SimpMessagingTemplate template, Playground playground, ServerSounds serverSounds, WebSocketEventListener webSocketEventListener) {
         this.screenText = screenText;
         this.template = template;
         this.playground = playground;
         this.serverSounds = serverSounds;
+        this.webSocketEventListener = webSocketEventListener;
     }
 
     public void startCountdown() throws InterruptedException {
@@ -60,14 +61,20 @@ public class GameService {
         // always same color at start, during game random
         playground.getFood().setFoodColor(0);
         // initial movement direction for snakes
-        playground.getSnake1().setSnakeDirectionEnum(SnakeDirection.LEFT);
-        playground.getSnake2().setSnakeDirectionEnum(SnakeDirection.RIGHT);
+        playground.getSnake1().setSnakeDirection(SnakeDirection.LEFT);
+        playground.getSnake2().setSnakeDirection(SnakeDirection.RIGHT);
+        playground.getSnake1().setMoveDirection(SnakeDirection.LEFT);
+        playground.getSnake2().setMoveDirection(SnakeDirection.RIGHT);
+
+        playground.getSnake2().setUsername(webSocketEventListener.getUsername1());
+        playground.getSnake1().setUsername(webSocketEventListener.getUsername2());
 
 //        // ab hier für TEST beißen
 //
 //        playground.setSnake2(new Snake(8, 12, 15));
 //        playground.getSnake2().setPossibleToBite(true);
-//        playground.getSnake2().setSnakeDirectionEnum(SnakeDirection.RIGHT);
+//        playground.getSnake2().setSnakeDirection(SnakeDirection.RIGHT);
+//        playground.getSnake2().setMoveDirection(SnakeDirection.RIGHT);
 //
 //        List<SnakeBodyPart> sbp2 = playground.getSnake2().getSnakeBody();
 //        sbp2.get(7).setColor(3);

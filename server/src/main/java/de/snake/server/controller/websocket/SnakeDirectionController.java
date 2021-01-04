@@ -17,28 +17,27 @@ public class SnakeDirectionController {
     // receive directions from player1
     @MessageMapping("/direction1")
     public void changeDirection1(SnakeDirection direction) {
-        if (direction == SnakeDirection.UP && playground.getSnake1().getSnakeDirectionEnum() != SnakeDirection.DOWN)
-            playground.getSnake1().setSnakeDirectionEnum(direction);
-        if (direction == SnakeDirection.DOWN && playground.getSnake1().getSnakeDirectionEnum() != SnakeDirection.UP)
-            playground.getSnake1().setSnakeDirectionEnum(direction);
-        if (direction == SnakeDirection.RIGHT && playground.getSnake1().getSnakeDirectionEnum() != SnakeDirection.LEFT)
-            playground.getSnake1().setSnakeDirectionEnum(direction);
-        if (direction == SnakeDirection.LEFT && playground.getSnake1().getSnakeDirectionEnum() != SnakeDirection.RIGHT)
-            playground.getSnake1().setSnakeDirectionEnum(direction);
+        if (direction == SnakeDirection.UP && playground.getSnake1().getMoveDirection() != SnakeDirection.DOWN)
+            playground.getSnake1().setSnakeDirection(direction);
+        if (direction == SnakeDirection.DOWN && playground.getSnake1().getMoveDirection() != SnakeDirection.UP)
+            playground.getSnake1().setSnakeDirection(direction);
+        if (direction == SnakeDirection.RIGHT && playground.getSnake1().getMoveDirection() != SnakeDirection.LEFT)
+            playground.getSnake1().setSnakeDirection(direction);
+        if (direction == SnakeDirection.LEFT && playground.getSnake1().getMoveDirection() != SnakeDirection.RIGHT)
+            playground.getSnake1().setSnakeDirection(direction);
     }
 
     // receive directions from player2
     @MessageMapping("/direction2")
     public void changeDirection2(SnakeDirection direction) {
-//        playground.getSnake2().setSnakeDirectionEnum(direction);
-        if (direction == SnakeDirection.UP && playground.getSnake2().getSnakeDirectionEnum() != SnakeDirection.DOWN)
-            playground.getSnake2().setSnakeDirectionEnum(direction);
-        if (direction == SnakeDirection.DOWN && playground.getSnake2().getSnakeDirectionEnum() != SnakeDirection.UP)
-            playground.getSnake2().setSnakeDirectionEnum(direction);
-        if (direction == SnakeDirection.RIGHT && playground.getSnake2().getSnakeDirectionEnum() != SnakeDirection.LEFT)
-            playground.getSnake2().setSnakeDirectionEnum(direction);
-        if (direction == SnakeDirection.LEFT && playground.getSnake2().getSnakeDirectionEnum() != SnakeDirection.RIGHT)
-            playground.getSnake2().setSnakeDirectionEnum(direction);
+        if (direction == SnakeDirection.UP && playground.getSnake2().getMoveDirection() != SnakeDirection.DOWN)
+            playground.getSnake2().setSnakeDirection(direction);
+        if (direction == SnakeDirection.DOWN && playground.getSnake2().getMoveDirection() != SnakeDirection.UP)
+            playground.getSnake2().setSnakeDirection(direction);
+        if (direction == SnakeDirection.RIGHT && playground.getSnake2().getMoveDirection() != SnakeDirection.LEFT)
+            playground.getSnake2().setSnakeDirection(direction);
+        if (direction == SnakeDirection.LEFT && playground.getSnake2().getMoveDirection() != SnakeDirection.RIGHT)
+            playground.getSnake2().setSnakeDirection(direction);
     }
 
 }

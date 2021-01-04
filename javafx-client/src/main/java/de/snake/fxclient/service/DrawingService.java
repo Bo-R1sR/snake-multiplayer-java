@@ -73,7 +73,10 @@ public class DrawingService {
         Shape snakes = new CompositeShape(gc, List.of(snake1, snake2));
         Shape food = new Circle(gc, playground.getFood().getFoodColor(), new Point2D(playground.getFood().getFoodPositionX() * playground.getSnakeBodySize(), playground.getFood().getFoodPositionY() * playground.getSnakeBodySize()), playground.getSnakeBodySize());
         Shape playground = new CompositeShape(gc, List.of(background, level, snakes, food));
-        playground.draw();
+        try {
+            playground.draw();
+        } catch (Exception ignored) {
+        }
     }
 
     public List<Shape> createLevel(int levelNumber, Color colorBack, Color colorFront) {

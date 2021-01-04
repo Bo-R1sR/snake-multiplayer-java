@@ -1,9 +1,12 @@
 package de.snake.server.service;
 
+import de.snake.server.domain.OutputMessage;
 import de.snake.server.domain.game.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,10 +37,22 @@ public class SnakeUpdateService {
         }
         SnakeBodyPart snakeHead = snake.getSnakeBody().get(0);
         switch (direction) {
-            case UP -> snakeHead.decreaseY();
-            case DOWN -> snakeHead.increaseY();
-            case LEFT -> snakeHead.decreaseX();
-            case RIGHT -> snakeHead.increaseX();
+            case UP -> {
+                snakeHead.decreaseY();
+                snake.setMoveDirection(direction);
+            }
+            case DOWN -> {
+                snakeHead.increaseY();
+                snake.setMoveDirection(direction);
+            }
+            case LEFT -> {
+                snakeHead.decreaseX();
+                snake.setMoveDirection(direction);
+            }
+            case RIGHT -> {
+                snakeHead.increaseX();
+                snake.setMoveDirection(direction);
+            }
         }
     }
 
@@ -62,13 +77,24 @@ public class SnakeUpdateService {
     }
 
     public boolean checkSnakeLength(Snake snake1, Snake snake2) {
-        // if snake is 5 elements longer than other snake
-        if (snake1.getSnakeBody().size() >= snake2.getSnakeBody().size() + 10) {
-            snake2.increasePoints();
-            return true;
-        } else if (snake2.getSnakeBody().size() >= snake1.getSnakeBody().size() + 10) {
-            snake1.increasePoints();
-            return true;
+        // if snake is 10 elements longer than other snake
+        if (!snake2.isImmortal()) {
+            if (snake1.getSnakeBody().size() >= snake2.getSnakeBody().size() + 10) {
+                snake2.increasePoints();
+                template.convertAndSend("/topic/messages",
+                        new OutputMessage("SYSTEM", "Spieler " + snake2.getUsername() + " ist 10 Felder kürzer als Gegner.", new SimpleDateFormat("HH:mm").format(new Date())));
+
+                return true;
+            }
+        }
+        if (!snake1.isImmortal()) {
+            if (snake2.getSnakeBody().size() >= snake1.getSnakeBody().size() + 10) {
+                snake1.increasePoints();
+                template.convertAndSend("/topic/messages",
+                        new OutputMessage("SYSTEM", "Spieler " + snake1.getUsername() + " ist 10 Felder kürzer als Gegner.", new SimpleDateFormat("HH:mm").format(new Date())));
+
+                return true;
+            }
         }
         return false;
     }
@@ -278,10 +304,17 @@ public class SnakeUpdateService {
                             targetSnake.getSnakeBody().remove(ii);
                             bitingSnake.getSnakeBody().add(new SnakeBodyPart(-1, -1, 0));
                         }
+                        serverSounds.setText("Biting");
+                        template.convertAndSend("/topic/serverSounds", serverSounds);
                     }
                 } else {
-                    bitingSnake.increasePoints();
-                    return true;
+                    if (!bitingSnake.isImmortal()) {
+                        bitingSnake.increasePoints();
+                        template.convertAndSend("/topic/messages",
+                                new OutputMessage("SYSTEM", "Spieler " + bitingSnake.getUsername() + " hat Gegner gebissen.", new SimpleDateFormat("HH:mm").format(new Date())));
+
+                        return true;
+                    }
                 }
             }
         }

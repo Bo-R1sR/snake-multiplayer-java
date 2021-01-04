@@ -1,5 +1,6 @@
 package de.snake.server.controller.websocket;
 
+import de.snake.server.domain.OutputMessage;
 import de.snake.server.domain.game.Playground;
 import de.snake.server.domain.game.ServerSounds;
 import de.snake.server.domain.game.Snake;
@@ -9,10 +10,8 @@ import de.snake.server.service.SnakeUpdateService;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 public class GameController {
@@ -45,22 +44,24 @@ public class GameController {
 
     // in case of game over stop refreshing
     public void setGameOver() {
-        playground.setGameOver(true);
-        playground.setPlayer1active(false);
-        playground.setPlayer2active(false);
-        playground.setRunning(false);
-        refreshTimer.cancel();
+        if (!playground.isGameOver()) {
+            playground.setGameOver(true);
+            playground.setPlayer1active(false);
+            playground.setPlayer2active(false);
+            playground.setRunning(false);
+            refreshTimer.cancel();
 
 
-        if (playground.getLevelNumber() == 4) {
-            playground.setDuringLevel(false);
-            playground.setLevelFinish(true);
-            serverSounds.setText("RoundOver");
-            historyService.saveGame();
-        } else {
-            serverSounds.setText("GameOver");
+            if (playground.getLevelNumber() == 4) {
+                playground.setDuringLevel(false);
+                playground.setLevelFinish(true);
+                serverSounds.setText("RoundOver");
+                historyService.saveGame();
+            } else {
+                serverSounds.setText("GameOver");
+            }
+            template.convertAndSend("/topic/serverSounds", serverSounds);
         }
-        template.convertAndSend("/topic/serverSounds", serverSounds);
     }
 
     public class SnakeUpdateTask extends TimerTask {
@@ -78,19 +79,30 @@ public class GameController {
                 if (snake.getCounter() == snake.getSpeed()) {
                     snake.resetCounter();
                     // move snake head forward
-                    //snakeUpdateService.updateSnakePosition(snake, snakeDirections.getDirection1());
-                    snakeUpdateService.updateSnakePosition(snake, snake.getSnakeDirectionEnum());
+                    snakeUpdateService.updateSnakePosition(snake, snake.getSnakeDirection());
                     // check snake head versus playground
-                    if (snakeUpdateService.checkSnakeAgainstPlayground(snake)) {
-                        setGameOver();
+                    if (!snake.isImmortal()) {
+                        if (snakeUpdateService.checkSnakeAgainstPlayground(snake)) {
+                            template.convertAndSend("/topic/messages",
+                                    new OutputMessage("SYSTEM", "Spieler " + snake.getUsername() + " hat Spielfeldrand berührt.", new SimpleDateFormat("HH:mm").format(new Date())));
+                            setGameOver();
+                        }
                     }
                     // check snake head versus obstacles
-                    if (snakeUpdateService.checkSnakeAgainstWall(snake)) {
-                        setGameOver();
+                    if (!snake.isImmortal()) {
+                        if (snakeUpdateService.checkSnakeAgainstWall(snake)) {
+                            template.convertAndSend("/topic/messages",
+                                    new OutputMessage("SYSTEM", "Spieler " + snake.getUsername() + " hat Hindernis berührt.", new SimpleDateFormat("HH:mm").format(new Date())));
+
+                            setGameOver();
+                        }
                     }
                     // check if snake bites itself
                     if (!snake.isImmortal()) {
                         if (snakeUpdateService.checkSnakeAgainstSelf(snake)) {
+                            template.convertAndSend("/topic/messages",
+                                    new OutputMessage("SYSTEM", "Spieler " + snake.getUsername() + " hat sich selbst gebissen.", new SimpleDateFormat("HH:mm").format(new Date())));
+
                             setGameOver();
                         }
                     }
@@ -99,16 +111,14 @@ public class GameController {
                 } else snake.increaseCounter();
             }
             // wait for both snakes to update position before checking against each other
-            if (!snake1.isImmortal()) {
-                if (snakeUpdateService.checkSnakeAgainstOther(snake2, snake1)) {
-                    setGameOver();
-                }
+            if (snakeUpdateService.checkSnakeAgainstOther(snake2, snake1)) {
+                setGameOver();
             }
-            if (!snake2.isImmortal()) {
-                if (snakeUpdateService.checkSnakeAgainstOther(snake1, snake2)) {
-                    setGameOver();
-                }
+
+            if (snakeUpdateService.checkSnakeAgainstOther(snake1, snake2)) {
+                setGameOver();
             }
+
             if (snakeUpdateService.checkSnakeLength(snake1, snake2)) {
                 setGameOver();
             }
@@ -116,4 +126,3 @@ public class GameController {
         }
     }
 }
-
