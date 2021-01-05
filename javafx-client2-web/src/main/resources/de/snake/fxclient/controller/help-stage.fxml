@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="dialog" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.snake.fxclient.controller.HelpController">
+    <padding>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+    </padding>
+    <Label text="Hilfe">
+        <font>
+            <Font name="Segoe UI Bold" size="24.0" />
+        </font>
+    </Label>
+    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ein Spiel besteht aus jeweils fünf Runden.">
+        <VBox.margin>
+            <Insets top="10.0" />
+        </VBox.margin>
+        <font>
+            <Font name="Segoe UI" size="14.0" />
+        </font>
+    </Text>
+    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gesteuert wird mit den vier Pfeiltasten.">
+        <font>
+            <Font name="Segoe UI" size="14.0" />
+        </font>
+    </Text>
+    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Das Futter kann verschiedene Farben haben:">
+        <VBox.margin>
+            <Insets top="10.0" />
+        </VBox.margin>
+        <font>
+            <Font name="Segoe UI Bold" size="14.0" />
+        </font>
+    </Text>
+    <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="300.0">
+        <VBox.margin>
+            <Insets top="10.0"/>
+        </VBox.margin>
+        <VBox fillWidth="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lila:">
+                <font>
+                    <Font name="Segoe UI Bold" size="12.0"/>
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hellbau:">
+                <font>
+                    <Font name="Segoe UI Bold" size="12.0"/>
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Orange:">
+                <font>
+                    <Font name="Segoe UI Bold" size="12.0"/>
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rot:">
+                <font>
+                    <Font name="Segoe UI Bold" size="12.0"/>
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Grün:">
+                <font>
+                    <Font name="Segoe UI Bold" size="12.0"/>
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pink:">
+                <font>
+                    <Font name="Segoe UI Bold" size="12.0"/>
+                </font>
+            </Text>
+        </VBox>
+        <VBox maxWidth="175.0" minWidth="150.0" prefHeight="100.0" prefWidth="175.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Schlange wird länger">
+                <font>
+                    <Font name="Segoe UI" size="12.0"/>
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Schlange wird kürzer">
+                <font>
+                    <Font name="Segoe UI" size="12.0"/>
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Schlange bekommt Schutzschild">
+                <font>
+                    <Font name="Segoe UI" size="12.0"/>
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Schlange wird abbeißbar">
+                <font>
+                    <Font name="Segoe UI" size="12.0"/>
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Schlange wird langsamer">
+                <font>
+                    <Font name="Segoe UI" size="12.0"/>
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Schlange wird schneller">
+                <font>
+                    <Font name="Segoe UI" size="12.0"/>
+                </font>
+            </Text>
+        </VBox>
+    </HBox>
+    <JFXButton onAction="#back" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Hauptmenü">
+        <font>
+            <Font name="Segoe UI" size="12.0" />
+        </font>
+        <VBox.margin>
+            <Insets top="25.0" />
+        </VBox.margin>
+    </JFXButton>
+</VBox>

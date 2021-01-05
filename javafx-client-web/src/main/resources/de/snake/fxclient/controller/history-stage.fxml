@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="dialog" alignment="TOP_CENTER" prefWidth="800.0"
+      xmlns="http://javafx.com/javafx/11.0.1" fx:controller="de.snake.fxclient.controller.HistoryController">
+    <Label text="Historie">
+        <font>
+            <Font name="Segoe UI Bold" size="24.0"/>
+        </font>
+        <VBox.margin>
+            <Insets bottom="25.0"/>
+        </VBox.margin>
+    </Label>
+    <TableView fx:id="tableView" focusTraversable="false" maxHeight="500.0" maxWidth="700.0" minHeight="500.0"
+               minWidth="700.0" prefHeight="500.0" prefWidth="700.0">
+        <columns>
+            <TableColumn fx:id="date" editable="false" prefWidth="139.0" resizable="false" sortType="DESCENDING"
+                         sortable="false" text="Datum" reorderable="false"/>
+            <TableColumn fx:id="yourPoints" editable="false" prefWidth="139.0" resizable="false" sortable="false"
+                         text="Deine Punkte" reorderable="false"/>
+            <TableColumn fx:id="enemyPoints" editable="false" prefWidth="139.0" resizable="false" sortable="false"
+                         text="Gegnerpunkte" reorderable="false"/>
+            <TableColumn fx:id="enemyName" editable="false" prefWidth="139.0" resizable="false" sortable="false"
+                         text="Gegner" reorderable="false"/>
+            <TableColumn fx:id="decision" editable="false" prefWidth="139.0" resizable="false" sortable="false"
+                         text="Entscheidung" reorderable="false"/>
+        </columns>
+    </TableView>
+    <JFXButton onAction="#back" prefWidth="111.0" style="-fx-background-color: gainsboro;" text="Hauptmenü">
+        <VBox.margin>
+            <Insets top="25.0"/>
+        </VBox.margin>
+        <font>
+            <Font name="Segoe UI" size="12.0"/>
+        </font>
+    </JFXButton>
+    <padding>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
+    </padding>
+</VBox>
