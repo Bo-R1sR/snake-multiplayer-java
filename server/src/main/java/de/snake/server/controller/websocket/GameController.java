@@ -81,31 +81,25 @@ public class GameController {
                     // move snake head forward
                     snakeUpdateService.updateSnakePosition(snake, snake.getSnakeDirection());
                     // check snake head versus playground
-                    if (!snake.isImmortal()) {
-                        if (snakeUpdateService.checkSnakeAgainstPlayground(snake)) {
-                            template.convertAndSend("/topic/messages",
-                                    new OutputMessage("SYSTEM", "Spieler " + snake.getUsername() + " hat Spielfeldrand berührt.", new SimpleDateFormat("HH:mm").format(new Date())));
-                            setGameOver();
-                        }
+                    if (snakeUpdateService.checkSnakeAgainstPlayground(snake)) {
+                        template.convertAndSend("/topic/messages",
+                                new OutputMessage("SYSTEM", "Spieler " + snake.getUsername() + " hat Spielfeldrand berührt.", new SimpleDateFormat("HH:mm").format(new Date())));
+                        setGameOver();
                     }
                     // check snake head versus obstacles
-                    if (!snake.isImmortal()) {
-                        if (snakeUpdateService.checkSnakeAgainstWall(snake)) {
-                            template.convertAndSend("/topic/messages",
-                                    new OutputMessage("SYSTEM", "Spieler " + snake.getUsername() + " hat Hindernis berührt.", new SimpleDateFormat("HH:mm").format(new Date())));
+                    if (snakeUpdateService.checkSnakeAgainstWall(snake)) {
+                        template.convertAndSend("/topic/messages",
+                                new OutputMessage("SYSTEM", "Spieler " + snake.getUsername() + " hat Hindernis berührt.", new SimpleDateFormat("HH:mm").format(new Date())));
 
-                            setGameOver();
-                        }
+                        setGameOver();
                     }
                     // check if snake bites itself
-                    if (!snake.isImmortal()) {
                         if (snakeUpdateService.checkSnakeAgainstSelf(snake)) {
                             template.convertAndSend("/topic/messages",
                                     new OutputMessage("SYSTEM", "Spieler " + snake.getUsername() + " hat sich selbst gebissen.", new SimpleDateFormat("HH:mm").format(new Date())));
 
                             setGameOver();
                         }
-                    }
                     // check if snake can eat food
                     snakeUpdateService.checkSnakeAgainstFood(snake);
                 } else snake.increaseCounter();

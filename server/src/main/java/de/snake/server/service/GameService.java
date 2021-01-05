@@ -79,7 +79,6 @@ public class GameService {
 //        List<SnakeBodyPart> sbp2 = playground.getSnake2().getSnakeBody();
 //        sbp2.get(7).setColor(3);
 //        sbp2.get(6).setColor(3);
-//        sbp2.get(5).setColor(3);
 //
 //        int jj = 8;
 //        for(SnakeBodyPart sbp: sbp2) {

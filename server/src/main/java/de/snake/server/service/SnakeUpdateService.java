@@ -78,23 +78,19 @@ public class SnakeUpdateService {
 
     public boolean checkSnakeLength(Snake snake1, Snake snake2) {
         // if snake is 10 elements longer than other snake
-        if (!snake2.isImmortal()) {
-            if (snake1.getSnakeBody().size() >= snake2.getSnakeBody().size() + 10) {
-                snake2.increasePoints();
-                template.convertAndSend("/topic/messages",
-                        new OutputMessage("SYSTEM", "Spieler " + snake2.getUsername() + " ist 10 Felder kürzer als Gegner.", new SimpleDateFormat("HH:mm").format(new Date())));
+        if (snake1.getSnakeBody().size() >= snake2.getSnakeBody().size() + 5) {
+            snake2.increasePoints();
+            template.convertAndSend("/topic/messages",
+                    new OutputMessage("SYSTEM", "Spieler " + snake2.getUsername() + " ist 10 Felder kürzer als Gegner.", new SimpleDateFormat("HH:mm").format(new Date())));
 
-                return true;
-            }
+            return true;
         }
-        if (!snake1.isImmortal()) {
-            if (snake2.getSnakeBody().size() >= snake1.getSnakeBody().size() + 10) {
-                snake1.increasePoints();
-                template.convertAndSend("/topic/messages",
-                        new OutputMessage("SYSTEM", "Spieler " + snake1.getUsername() + " ist 10 Felder kürzer als Gegner.", new SimpleDateFormat("HH:mm").format(new Date())));
+        if (snake2.getSnakeBody().size() >= snake1.getSnakeBody().size() + 5) {
+            snake1.increasePoints();
+            template.convertAndSend("/topic/messages",
+                    new OutputMessage("SYSTEM", "Spieler " + snake1.getUsername() + " ist 10 Felder kürzer als Gegner.", new SimpleDateFormat("HH:mm").format(new Date())));
 
-                return true;
-            }
+            return true;
         }
         return false;
     }
@@ -293,7 +289,7 @@ public class SnakeUpdateService {
             if (bitingSnake.getHead().getPositionX() == targetSnake.getSnakeBody().get(i).getPositionX() &&
                     bitingSnake.getHead().getPositionY() == targetSnake.getSnakeBody().get(i).getPositionY()) {
                 // only bite if possible
-                if (targetSnake.isPossibleToBite()) {
+                if (targetSnake.isPossibleToBite() && !targetSnake.isImmortal()) {
                     for (SnakeBodyPart sbp : targetSnake.getSnakeBody()) {
                         if (sbp.getColor() == 3) {
                             numberOfParts += 1;
@@ -308,13 +304,11 @@ public class SnakeUpdateService {
                         template.convertAndSend("/topic/serverSounds", serverSounds);
                     }
                 } else {
-                    if (!bitingSnake.isImmortal()) {
-                        bitingSnake.increasePoints();
-                        template.convertAndSend("/topic/messages",
-                                new OutputMessage("SYSTEM", "Spieler " + bitingSnake.getUsername() + " hat Gegner gebissen.", new SimpleDateFormat("HH:mm").format(new Date())));
+                    bitingSnake.increasePoints();
+                    template.convertAndSend("/topic/messages",
+                            new OutputMessage("SYSTEM", "Spieler " + bitingSnake.getUsername() + " hat Gegner gebissen.", new SimpleDateFormat("HH:mm").format(new Date())));
 
-                        return true;
-                    }
+                    return true;
                 }
             }
         }
