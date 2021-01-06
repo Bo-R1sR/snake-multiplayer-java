@@ -26,7 +26,7 @@ public class CustomStompClient {
         webSocketStompClient.setMessageConverter(new MappingJackson2MessageConverter());
         WebSocketHttpHeaders handshakeHeaders = new WebSocketHttpHeaders();
         handshakeHeaders.add("Authorization", user.getJsonWebToken());
-        webSocketStompClient.connect("ws://snake-server.eu-central-1.elasticbeanstalk.com/game", handshakeHeaders, sessionHandler);
+        webSocketStompClient.connect("ws://serversnake-env.eba-wxmhruen.eu-central-1.elasticbeanstalk.com/game", handshakeHeaders, sessionHandler);
     }
 
 

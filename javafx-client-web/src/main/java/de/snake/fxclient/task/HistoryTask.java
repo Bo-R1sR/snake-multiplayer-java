@@ -25,7 +25,7 @@ public class HistoryTask extends Task<Integer> {
 
     @Override
     protected Integer call() {
-        String url = "http://snake-server.eu-central-1.elasticbeanstalk.com" + "/history";
+        String url = "http://serversnake-env.eba-wxmhruen.eu-central-1.elasticbeanstalk.com" + "/history";
 
         try {
             HttpResponse<String> res = Unirest.get(url).header("Authorization", user.getJsonWebToken()).queryString("username", user.getName()).asString();

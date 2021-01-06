@@ -23,7 +23,7 @@ public class LoginTask extends Task<Integer> {
             return -2;
         }
 
-        String url = "http://snake-server.eu-central-1.elasticbeanstalk.com" + "/login";
+        String url = "http://serversnake-env.eba-wxmhruen.eu-central-1.elasticbeanstalk.com" + "/login";
 
         JSONObject json = new JSONObject();
         json.put("username", user.getName());

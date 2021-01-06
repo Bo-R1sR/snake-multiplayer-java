@@ -26,7 +26,7 @@ public class SignupTask extends Task<Integer> {
             return -1;
         }
 
-        String url = "http://snake-server.eu-central-1.elasticbeanstalk.com" + "/api/user/create";
+        String url = "http://serversnake-env.eba-wxmhruen.eu-central-1.elasticbeanstalk.com" + "/api/user/create";
 
         JSONObject json = new JSONObject();
         json.put("username", user.getName());
