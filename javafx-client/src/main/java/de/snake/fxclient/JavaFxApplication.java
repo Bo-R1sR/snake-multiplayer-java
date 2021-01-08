@@ -30,7 +30,7 @@ public class JavaFxApplication extends Application {
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(BackgroundController.class);
         Scene scene = new Scene(root, 1102, 662);
-        stage.setTitle("Snake Multiplayer");
+        stage.setTitle("Snake 42");
         stage.setResizable(false);
         stage.setScene(scene);
         stage.getIcons().add(new Image("file:src/main/resources/icon/snake.png"));
