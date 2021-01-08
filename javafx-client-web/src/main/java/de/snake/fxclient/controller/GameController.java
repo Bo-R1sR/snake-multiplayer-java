@@ -69,6 +69,7 @@ public class GameController {
         gc = gameCanvas.getGraphicsContext2D();
         initializeColorList();
         soundSetting.setSoundMuted(true);
+        changeVolume();
         Shape background = new Square(gc, Color.BLACK, new Point2D(0, 0), playground.getWidth() * playground.getSnakeBodySize(), playground.getHeight() * playground.getSnakeBodySize());
         background.draw();
     }
